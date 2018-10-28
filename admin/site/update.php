@@ -15,44 +15,31 @@
 
 <div class="left">
 	<div class="add_wrap">
-		<div class="box_header">Updateinformationen</div>
+		<div class="box_header">SuS Allgemein</div>
 			<div class="box">
 				<table class="table" id="user-table">
 				<?php
-					$query = $mysqli->query("SELECT * FROM user WHERE id='".$id."'");
+					$query = $mysqli->query("SELECT * FROM students WHERE idstudents='".$id."'");
 					if($query->num_rows) {
 						while($get = $query->fetch_assoc()) {
 							echo '<tr>';
-							echo '<td>IP:</td>';
-							echo '<td>'.$get['ip'].'</td>';
+							echo '<td>Vorname:</td>';
+							echo '<td>'.$get['surname'].'</td>';
 							echo '</tr>';
 							echo '<tr>';
-							echo '<td>letztes Update:</td>';
-							if(date('d.m.Y', strtotime($get['lastupdate'])) == '30.11.-0001') {
-								echo '<td>-</td>';
-							} else {
-								echo '<td>'.date('d.m.Y', strtotime($get['lastupdate'])).'</td>';
-							}
+							echo '<td>weitere Vornamen:</td>';
+                            echo '<td>'.$get['middlename'].'</td>';
 							echo '</tr>';
 							echo '<tr>';
-							echo '<td>Uhrzeit:</td>';
-							if(date('d.m.Y', strtotime($get['lastupdate'])) == '30.11.-0001') {
-								echo '<td>-</td>';
-							} else {
-								echo '<td>'.date('H:i:s', strtotime($get['lastupdate'])).'</td>';
-							}
+							echo '<td>Nachname:</td>';
+							echo '<td>'.$get['givenname'].'</td>';
 							echo '</tr>';
 							echo '<tr>';
-							echo '<td>Updatemethode:</td>';
-							if($get['router'] == 1) {
-								echo '<td>FritzBox</td>';
-							}
-							elseif($get['router'] == 0) {
-								echo '<td>Server</td>';
-							}
-							else {
-								echo '<td>pfSense</td>';
-							}
+							echo '<td>weitere Nachnamen:</td>';
+							echo '<td>'.$get['moregivenname'].'</td>';
+							echo '</tr>';
+                            echo '<td>Geburtsdatum:</td>';
+							echo '<td>'.$get['birthdate'].'</td>';
 							echo '</tr>';
 						}
 					}
@@ -62,26 +49,35 @@
 	</div>
 
 	<div class="add_wrap">
-		<div class="box_header">Vertragsaublaufdatum</div>
+		<div class="box_header">Klassendaten</div>
 			<div class="box">
 				<table class="table" id="user-table">
 					<form method="POST" action="" id="ablauf" class="form">
 					<?php
-					$query = $mysqli->query("SELECT user.ablaufdatum as ablaufdatum FROM user WHERE id='".$id."'");
+					$query = $mysqli->query("SELECT students.classcode,schoolform.schoolform,department.name,teacher.surname as tsurname,teacher.givenname as tgivenname FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where students.idstudents= '".$id."' and teacher_class.classteacher=1;");
 					if($query->num_rows) {
 						while($get = $query->fetch_assoc()) {
 							echo '<tr>';
-								echo '<td><input type="hidden" id="id" value="'.$id.'"></td>';;
+							echo '<td>Klasse:</td>';
+							echo '<td>'.$get['classcode'].'</td>';
 							echo '</tr>';
 							echo '<tr>';
-							if(date('d.m.Y', strtotime($get['ablaufdatum'])) == '30.11.-0001') {
-								echo '<td><input type="text" id="ablauf" value="-"></td>';
-							} else {
-								echo '<td><input type="text" id="ablauf" value="'.date('d.m.Y', strtotime($get['ablaufdatum'])).'"></td>';
-							};
+							echo '<td>Schulform:</td>';
+                            echo '<td>'.$get['schoolform'].'</td>';
 							echo '</tr>';
 							echo '<tr>';
-								echo '<td><input type="submit" name="submit" id="submit" value="Speichern"></td>';
+							echo '<td>Klassenlehrer:</td>';
+							echo '<td>'.$get['tsurname'].' '.$get['tgivenname'].'</td>';
+							echo '</tr>';
+							echo '<tr>';
+							echo '<td>Abteilung:</td>';
+							echo '<td>'.$get['name'].'</td>';
+						    echo '</tr>';
+                            echo '<td>Abteilungsleiter:</td>';
+                            if(isset($get['headofdepartment']))
+				                echo '<td>'.$get['headofdepartment'].'</td>';
+                            else
+                                echo '<td></td>';
 							echo '</tr>';
 						}
 					}
@@ -174,6 +170,7 @@
 </div>
 
 
+<!--
 <div class="table_wrap">
 	<table class="table" id="user-table">
 		<tr>
@@ -181,7 +178,7 @@
 		</tr>
 		<form method="POST" action="" id="adminuser" class="form">
 			<?php
-				$query = $mysqli->query("SELECT vertragspartner.name as vp, vertragspartner.ort as ort, vertragspartner.adresse as adresse, vertragspartner.email as email, vertragspartner.telefon as telefon FROM user LEFT JOIN vertragspartner ON (user.vertragspartner=vertragspartner.idvertragspartner) WHERE id='".$id."' ");
+				/*$query = $mysqli->query("SELECT vertragspartner.name as vp, vertragspartner.ort as ort, vertragspartner.adresse as adresse, vertragspartner.email as email, vertragspartner.telefon as telefon FROM user LEFT JOIN vertragspartner ON (user.vertragspartner=vertragspartner.idvertragspartner) WHERE id='".$id."' ");
 				if($query->num_rows) {
 					while($get = $query->fetch_assoc()) {
 							echo '<tr>';
@@ -206,31 +203,34 @@
 							echo '</tr>';
 					}
 				}
-
+*/
 			?>
 		</form>
 	</table>
 </div>
+-->
 
 
 
+<!--
 <div class="table_wrap">
 	<table class="table" id="user-table">
 		<tr>
 			<th>Aktivierungsschlüssel für das Serverprogramm</th>
 		</tr>
 		<?php
-			$query = $mysqli->query("SELECT * FROM user WHERE id='".$id."'");
+			/*$query = $mysqli->query("SELECT * FROM user WHERE id='".$id."'");
 			if($query->num_rows) {
 				while($get = $query->fetch_assoc()) {
 					echo '<tr>';
 					echo '<td colspan="2">'.$get['activation'].'</td>';
 					echo '</tr>';
 				}
-			}
+			}*/
 		?>
 	</table>
 </div>
+-->
 
 <div class="table_wrap">
 	<table class="table" id="user-table">

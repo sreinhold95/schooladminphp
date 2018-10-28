@@ -38,14 +38,45 @@
             <form method="POST" action="" id="useranlegen" class="form">
                 <label for="surname" class="label">Vorname:</label>
                 <input class="field" type="text" size="24" maxlength="50" name="surname" id="surname">
-                <label for="middlename" class="label">2ter Vorname:</label>
+                <label for="middlename" class="label">weitere Vornamen:</label>
                 <input class="field" type="text" size="24" maxlength="50" name="middlename" id="middlename">
                 <label for="givenname" class="label">Nachname:</label>
                 <input class="field" type="text" size="24" maxlength="50" name="givenname" id="givenname">
                 <label for="givenname" class="label">weitere Nachnamen:</label>
                 <input class="field" type="text" size="24" maxlength="50" name="moregivenname" id="moregivenname">
+                <label for="surname" class="label">Adresse:</label>
+                <input class="field" type="text" size="24" maxlength="50" name="address" id="address">
+                <label for="givenname" class="label">Bundesland:</label>
+                <input class="field" type="text" size="24" maxlength="50" name="province" id="moregivenname">
                 <label for="birthdate" class="label">Geburtsdatum:</label>
                 <input class="field" type="date" size="24" maxlength="50" name="birthdate" id="birthdate">
+                <label for="middlename" class="label">Geburtsland:</label>
+                <input class="field" type="text" size="24" maxlength="50" name="birthcountry" id="birthcountry">
+                <label for="givenname" class="label">Geburtsort:</label>
+                <input class="field" type="text" size="24" maxlength="50" name="birthtown" id="birthtown">
+                <label for="givenname" class="label">Nationalität:</label>
+                <input class="field" type="text" size="24" maxlength="50" name="nationality" id="nationality">
+                <label for="birthdate" class="label">Muttersprache:</label>
+                <input class="field" type="text" size="24" maxlength="50" name="family_speech" id="family_speech">
+                <label for="birthdate" class="label">Telefon:</label>
+                <input class="field" type="text" size="24" maxlength="50" name="phone" id="phone">
+                <label for="surname" class="label">Mobiltelefon:</label>
+                <input class="field" type="text" size="24" maxlength="50" name="mobilephone" id="mobilephone">
+                <label for="middlename" class="label">E-Mail:</label>
+                <input class="field" type="text" size="24" maxlength="50" name="email" id="email">
+                <label for="givenname" class="label">Schulabschluss:</label>
+                <select name "classs" class="field"size="1">
+                    <?php
+                    $check = $mysqli->query( "SELECT * FROM graduation;" );
+                    while($row = mysqli_fetch_array($check)) {
+                        if($row['graduation']!=""){
+                            $graduation=$row['graduation'];
+                            echo "<option value=" . $idgraduation . ">" . $graduation . "</option>";
+                        }
+                    }
+                        
+                    ?>
+                </select>
 				<input type="submit" name="submit" id="submit" value="Speichern">
             </form>
         </div>
