@@ -146,7 +146,19 @@
         $givenname=$_GET['givenname'];
         $moregivenname=$_GET['moregivenname'];
         $birthdate=$_GET['birthdate'];
+		$birthtown = $_GET['birthtown'];
+		$birthcountry = $_GET['birthcountry'];
+		$nationality = $_GET['nationality'];
+		$address = $_GET['address'];
+		$province = $_GET['province'];
+		$phone = $_GET['phone'];
+		$mobilephone = $_GET['mobilephone'];
+		$idgraduation = $_GET['idgraduation'];
+		$religion = $_GET['religion'];
+		$family_speech = $_GET['family_speech'];
         $token=$_GET['token'];
+        echo $surname;
+        echo $token;
 		if(empty($surname))
 			$errors['surname'] = 'Vorname darf nicht leer sein.';
 		if(empty($middlename))
@@ -155,10 +167,13 @@
 			$errors['givenname'] = 'Nachname darf nicht leer sein.';
         if(empty($birthdate))
 			$errors['birthdate'] = 'Geburtsdatum darf nicht leer sein.';
-		$query = $mysqli->query("SELECT classcode FROM class WHERE token='".$token."';");
+		$check_query = $mysqli->query("SELECT classcode FROM class WHERE token='".$token."'");
+		if($check_query->num_rows == 1) {
 			 while ( $get = $query->fetch_assoc() ) {
-                 $classs=$get['classcode'];
+                 $classs=$_GET['classcode'];
+                 echo $classs;
              }
+		}
 		if(!empty($errors)) {
 			$data['success'] = false;
 			$data['errors'] = $errors;
@@ -166,14 +181,26 @@
 			$check = false;
 		} else {
 			$createuser = "INSERT INTO students
-						(surname, middlename, givenname, moregivenname, classcode, active)
+						(surname, middlename, givenname, moregivenname, birthdate,birthtown,birthcountry,nationality,address,province,phone,mobilephone,graduation,religion,family_speech, class, activ)
 						VALUES
 						('".$mysqli->real_escape_string($surname)."',
 						'".$mysqli->real_escape_string($middlename)."',
 						'".$mysqli->real_escape_string($givenname)."',
 						'".$mysqli->real_escape_string($moregivenname)."',
+						'".$mysqli->real_escape_string($birthdate)."',
+						'".$mysqli->real_escape_string($birthtown)."',
+						'".$mysqli->real_escape_string($birthcountry)."',
+						'".$mysqli->real_escape_string($nationality)."',
+						'".$mysqli->real_escape_string($address)."',
+						'".$mysqli->real_escape_string($province)."',
+						'".$mysqli->real_escape_string($phone)."',
+						'".$mysqli->real_escape_string($mobilephone)."',
+						'".$mysqli->real_escape_string($idgraduation)."',
+						'".$mysqli->real_escape_string($religion)."',
+						'".$mysqli->real_escape_string($family_speech)."',
 						'".$mysqli->real_escape_string($classs)."',
-						1);";
+						'1','
+						)";
 
 			$data['success'] = true;
 			$data['message'] = 'Success!';
