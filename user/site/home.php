@@ -47,7 +47,7 @@
                 <label for="surname" class="label">Adresse:</label>
                 <input class="field" type="text" size="24" maxlength="50" name="address" id="address">
                 <label for="givenname" class="label">Bundesland:</label>
-                <input class="field" type="text" size="24" maxlength="50" name="province" id="moregivenname">
+                <input class="field" type="text" size="24" maxlength="50" name="province" id="province">
                 <label for="birthdate" class="label">Geburtsdatum:</label>
                 <input class="field" type="date" size="24" maxlength="50" name="birthdate" id="birthdate">
                 <label for="middlename" class="label">Geburtsland:</label>
@@ -58,6 +58,8 @@
                 <input class="field" type="text" size="24" maxlength="50" name="nationality" id="nationality">
                 <label for="birthdate" class="label">Muttersprache:</label>
                 <input class="field" type="text" size="24" maxlength="50" name="family_speech" id="family_speech">
+				<label for="birthdate" class="label">Religion:</label>
+                <input class="field" type="text" size="24" maxlength="50" name="religion" id="religion">
                 <label for="birthdate" class="label">Telefon:</label>
                 <input class="field" type="text" size="24" maxlength="50" name="phone" id="phone">
                 <label for="surname" class="label">Mobiltelefon:</label>
@@ -65,12 +67,13 @@
                 <label for="middlename" class="label">E-Mail:</label>
                 <input class="field" type="text" size="24" maxlength="50" name="email" id="email">
                 <label for="givenname" class="label">Schulabschluss:</label>
-                <select name "classs" class="field"size="1">
+                <select name "graduation"  id="graduation" class="field"size="1">
                     <?php
                     $check = $mysqli->query( "SELECT * FROM graduation;" );
                     while($row = mysqli_fetch_array($check)) {
                         if($row['graduation']!=""){
                             $graduation=$row['graduation'];
+							$idgraduation=$row['idgraduation'];
                             echo "<option value=" . $idgraduation . ">" . $graduation . "</option>";
                         }
                     }
@@ -93,8 +96,19 @@
         var middlename = $( 'input#middlename' ).val();
         var givenname = $( 'input#givenname' ).val();
         var moregivenname = $( 'input#moregivenname' ).val();
-        var birthdate = $( 'input#birthdate' ).val();
         var token = "";
+		var address = $( 'input#address' ).val();
+        var province = $( 'input#province' ).val();
+        var birthdate = $( 'input#birthdate' ).val();
+        var birthtown = $( 'input#birthtown' ).val();
+        var birthcountry = $( 'input#birthcountry' ).val();
+		var nationality = $( 'input#nationality' ).val();
+        var family_speech = $( 'input#family_speech' ).val();
+        var phone = $( 'input#phone' ).val();
+        var mobilephone = $( 'input#mobilephone' ).val();
+        var email = $( 'input#email' ).val();
+		var idgraduation = $( '#graduation option:selected' ).val();
+		var religion = $( 'input#religion' ).val();
         <?php
         echo " token = \"".$_SESSION['token']."\";";
         ?>
@@ -107,7 +121,7 @@
                 $( "#val" ).show();
             }
         } else {
-            $.get( 'function.php?add_student&surname=' + surname + '&middlename=' + middlename + '&givenname=' + givenname + '&moregivenname=' + moregivenname + '&birthdate=' + birthdate +'&token=' + token, function ( data ) {
+            $.get( 'function.php?add_student&surname=' + surname + '&middlename=' + middlename + '&givenname=' + givenname + '&moregivenname=' + moregivenname + '&birthdate=' + birthdate +'&token=' + token +'&address=' + address + '&province=' + province + '&birthtown=' + birthtown + '&birthcountry=' + birthcountry +'&nationality=' + nationality + '&family_speech=' + family_speech + '&phone=' + phone + '&mobilephone=' + mobilephone + '&graduation=' + idgraduation + '&email=' + email+ '&religion=' + religion, function ( data ) {
                 console.log( data );
 
                 if ( data == 'true' ) {

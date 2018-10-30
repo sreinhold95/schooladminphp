@@ -14,10 +14,10 @@
 
 			$check = false;
 		} else {
-			$query = $mysqli->query("SELECT * FROM students WHERE (surname='".$search."') OR (givenname LIKE '%".$search."%') OR (classcode LIKE'%".$search."%')");
+			$query = $mysqli->query("SELECT id FROM user WHERE (kdnr='".$search."') OR (schulname LIKE '%".$search."%') OR (username LIKE'%".$search."%')");
 				if($query->num_rows) {
 					while($get = $query->fetch_assoc()) {
-						$id = $get['idstudents'];
+						$id = $get['id'];
 					}
 				}
 
@@ -32,35 +32,40 @@
 
 	if(isset($_GET['search_result'])) {
 		$search = $_GET['searchvalue'];
-?>
-		<tr>
-            <th>Status</th>
-            <th>Vorname</th>
-            <th>Vorname 2</th>
-            <th>Nachname</th>
-            <th>Nachname weitere</th>
-            <th>Klasse</th>
-            <th></th>
-        </tr>
-<?php
-		$query = $mysqli->query("SELECT * FROM students WHERE (surname='".$search."') OR (givenname LIKE '%".$search."%') OR (classcode LIKE'%".$search."%')");
+
+		echo '<table class="usertable" id="user-table"';
+		echo '<tr>';
+		echo '<th></th>';
+		echo '<th>Kundennummer</th>';
+		echo '<th>Kundenname</th>';
+		echo '<th>Benutzername</th>';
+		echo '<th>Letztes Update</th>';
+		echo '<th></th>';
+		echo '</tr>';
+		$query = $mysqli->query("SELECT * FROM user WHERE (kdnr='".$search."') OR (schulname LIKE '%".$search."%') OR (username LIKE'%".$search."%')");
 			if($query->num_rows) {
-                echo '<tr>';
-                if ( $get[ 'active' ] == 1 ) {
-                    echo '<td><img src="../style/true.png" alt="active" id="aktiv"></td>';
-                } else {
-                    echo '<td><img src="../style/false.png" alt="active"></td>';
-                }
-                echo '<td>' . $get[ 'surname' ] . '</td>';
-                echo '<td>' . $get[ 'middlename' ] . '</td>';
-                echo '<td>' . $get[ 'givenname' ] . '</td>';
-                echo '<td>' . $get[ 'moregivenname' ] . '</td>';
-                echo '<td>' . $get[ "classcode" ] . '</td>';
-                echo '<td>';
-                echo '<a href="index.php?site=update&id=' . $get['idstudents'] . '" class="link"><img src="../style/edit.png" alt="Edit"></a>';
-                echo '</td>';
-                echo '</tr>';
+				while($get = $query->fetch_assoc()) {
+					echo '<tr>';
+					if($get['isactiv'] == 1) {
+						echo '<td><img src="../style/true.png" alt="active"></td>';
+					}
+					else {
+						echo '<td><img src="../style/false.png" alt="active"></td>';
+					}
+					echo '<td>'.$get['kdnr'].'</td>';
+					echo '<td>'.$get['schulname'].'</td>';
+					echo '<td>'.$get['username'].'</td>';
+					if(date('d.m.Y', strtotime($get['lastupdate'])) == '30.11.-0001') {
+							echo '<td>-</td>';
+					} else {
+							echo '<td>'.date('d.m.Y', strtotime($get['lastupdate'])).'</td>';
+					}
+					echo '<td>';
+					echo '<a href="index.php?site=update&id='.$get['id'].'" class="link"><img src="../style/edit.png" alt="Edit"></a>';
+					echo '</td>';
+					echo '</tr>';
 				}
+			}
 		echo '</table>';
 	}
 
@@ -148,12 +153,10 @@
 		$province = $_GET['province'];
 		$phone = $_GET['phone'];
 		$mobilephone = $_GET['mobilephone'];
-		$idgraduation = $_GET['idgraduation'];
+		$idgraduation = $_GET['graduation'];
 		$religion = $_GET['religion'];
 		$family_speech = $_GET['family_speech'];
         $token=$_GET['token'];
-        echo $surname;
-        echo $token;
 		if(empty($surname))
 			$errors['surname'] = 'Vorname darf nicht leer sein.';
 		if(empty($middlename))
@@ -162,11 +165,10 @@
 			$errors['givenname'] = 'Nachname darf nicht leer sein.';
         if(empty($birthdate))
 			$errors['birthdate'] = 'Geburtsdatum darf nicht leer sein.';
-		$check_query = $mysqli->query("SELECT classcode FROM class WHERE token='".$token."'");
-		if($check_query->num_rows == 1) {
-			 while ( $get = $query->fetch_assoc() ) {
-                 $classs=$_GET['classcode'];
-                 echo $classs;
+		$class_query = $mysqli->query("SELECT classcode FROM class WHERE token='".$token."'");
+		if($class_query->num_rows == 1) {
+			 while ( $get = $class_query->fetch_assoc() ) {
+                 $classs=$get['classcode'];
              }
 		}
 		if(!empty($errors)) {
@@ -175,34 +177,13 @@
 
 			$check = false;
 		} else {
-			$createuser = "INSERT INTO students
-						(surname, middlename, givenname, moregivenname, birthdate,birthtown,birthcountry,nationality,address,province,phone,mobilephone,graduation,religion,family_speech, class, activ)
-						VALUES
-						('".$mysqli->real_escape_string($surname)."',
-						'".$mysqli->real_escape_string($middlename)."',
-						'".$mysqli->real_escape_string($givenname)."',
-						'".$mysqli->real_escape_string($moregivenname)."',
-						'".$mysqli->real_escape_string($birthdate)."',
-						'".$mysqli->real_escape_string($birthtown)."',
-						'".$mysqli->real_escape_string($birthcountry)."',
-						'".$mysqli->real_escape_string($nationality)."',
-						'".$mysqli->real_escape_string($address)."',
-						'".$mysqli->real_escape_string($province)."',
-						'".$mysqli->real_escape_string($phone)."',
-						'".$mysqli->real_escape_string($mobilephone)."',
-						'".$mysqli->real_escape_string($idgraduation)."',
-						'".$mysqli->real_escape_string($religion)."',
-						'".$mysqli->real_escape_string($family_speech)."',
-						'".$mysqli->real_escape_string($classs)."',
-						'1','
-						)";
+			$createuser = "INSERT INTO students(surname,middlename,givenname,moregivenname,birthdate,birthtown,birthcountry,nationality,address,province,phone,mobilephone, idgraduation,religion,family_speech,classcode,active)VALUES('".$mysqli->real_escape_string($surname)."','".$mysqli->real_escape_string($middlename)."','".$mysqli->real_escape_string($givenname)."','".$mysqli->real_escape_string($moregivenname)."','".$mysqli->real_escape_string($birthdate)."','".$mysqli->real_escape_string($birthtown)."','".$mysqli->real_escape_string($birthcountry)."','".$mysqli->real_escape_string($nationality)."','".$mysqli->real_escape_string($address)."','".$mysqli->real_escape_string($province)."','".$mysqli->real_escape_string($phone)."','".$mysqli->real_escape_string($mobilephone)."','".$mysqli->real_escape_string($idgraduation)."','".$mysqli->real_escape_string($religion)."','".$mysqli->real_escape_string($family_speech)."','".$mysqli->real_escape_string($classs)."','1');";
 
 			$data['success'] = true;
 			$data['message'] = 'Success!';
 			$check = true;
 			$mysqli->query($createuser);
             echo json_encode($check);
-			
 		}
 	}
 
@@ -210,106 +191,51 @@
 		$errors = array();
 		$data = array();
 
-		$schoolnumber = $_GET['schoolnumber'];
-		$schoolname = $_GET['schoolname'];
-		$username = $_GET['user'];
-		$telefon = $_GET['telefon'];
-		$ort = $_GET['ort'];
-		$adresse = $_GET['adresse'];
+		$birthtown = $_GET['birthtown'];
+		$birthcountry = $_GET['birthcountry'];
+		$nationality = $_GET['nationality'];
+		$address = $_GET['address'];
+		$province = $_GET['province'];
+		$phone = $_GET['phone'];
+		$mobilephone = $_GET['mobilephone'];
+		//$religion = $_GET['religion'];
+		$family_speech = $_GET['family_speech'];
 		$active = $_GET['active'];
-
-		if(empty($schoolnumber))
-			$errors['schoolnumber'] = 'Schulnummer darf nicht leer sein.';
-		if(empty($schoolname))
-			$errors['schoolname'] = 'Schulname darf nicht leer sein.';
-		if(empty($user))
-			$errors['user'] = 'Benutzername darf nicht leer sein.';
-
-		if(empty($errors)) {
-			$data['success'] = false;
-			$data['errors'] = $errors;
-
-			$check = false;
-		} else {
-			$updateuser = "UPDATE user SET schulname='".$schoolname."', user='".$username."', isactiv='".$active."' WHERE kdnr='".$schoolnumber."'";
-			$mysqli->query($updateuser);
-
-			$data['success'] = true;
-			$data['message'] = 'Success!';
-
-			$check = true;
-		}
-
-		echo json_encode($check);
-	}
-
-	if(isset($_GET['reset'])) {
-		$errors = array();
-		$data = array();
-
-		$username = $_GET['username'];
-		$id = "";
-		$schoolnumber = "";
-
-		if(empty($schoolnumber))
-			$errors['username'] = 'Schulnummer darf nicht leer sein.';
-
-		if(empty($errors)) {
-			$data['success'] = false;
-			$data['errors'] = $errors;
-
-			$check = false;
-		} else {
-
-			$selectquery = $mysqli->query("SELECT * FROM user WHERE username='".$username."'");
-			if($selectquery->num_rows) {
-				while($get = $selectquery->fetch_assoc()) {
-					$id = $get['id'];
-					$schoolnumber = $get['kdnr'];
-					$password = hash('sha256', $schoolnumber);
-				}
-			}
-
-			$query = "UPDATE user SET password='".$password."' WHERE id='".$id."'";
-
-			if($mysqli->query($query) == true) {
-			}
-			else { trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->error, E_USER_ERROR); }
-
-			$data['success'] = true;
-			$data['message'] = 'Success!';
-
-			$check = true;
-		}
-
-		echo json_encode($check);
-	}
-
-	if(isset($_GET['abgelaufen'])) {
-		$errors = array();
-		$data = array();
-
-		$ablauf = $_GET['datum'];
-		$id = $_GET['id'];
-
-		if(empty($ablauf))
-			$errors['datum'] = 'Schulnummer darf nicht leer sein.';
-
+		$email="";
+		if(empty($birthtown))
+			$errors['birthtown'] = 'Geburtsort darf nicht leer sein.';
+		if(empty($birthcountry))
+			$errors['birthcountry'] = 'Geburtsland darf nicht leer sein.';
+        if(empty($nationality))
+			$errors['nationality'] = 'Nationalität darf nicht leer sein.';
+		if(empty($address))
+			$errors['address'] = 'Addresse darf nicht leer sein.';
+		if(empty($province))
+			$errors['province'] = 'Bundesland darf nicht leer sein.';
+		if(empty($phone))
+			$errors['phone'] = 'Telefon darf nicht leer sein.';
+		if(empty($mobilephone))
+			$errors['mobilephone'] = 'Mobiltelefon darf nicht leer sein.';
+		/*if(empty($religion))
+			$errors['religion'] = 'Religion darf nicht leer sein.';*/
+		if(empty($family_speech))
+			$errors['family_speech'] = 'Muttersprache darf nicht leer sein.';
 		if(!empty($errors)) {
 			$data['success'] = false;
 			$data['errors'] = $errors;
 
 			$check = false;
 		} else {
-			$updateuser = "UPDATE user SET ablaufdatum='".$ablauf."' WHERE id='".$id."'";
+			$updateuser = "update students set birthtown = '".$birthtown."', birthcountry = '".$birthcountry."', nationality = '".$nationality."', address = '".$address."', province = '".$province."', phone = '".$phone."', mobilephone = '".$mobilephone."', family_speech = '".$family_speech."', email = '".$email."', active='".$active."' where idstudents='".$_GET['idstudents']."';";
+			//$updateuser = "UPDATE user SET schulname='".$schoolname."', user='".$username."', isactiv='".$active."' WHERE kdnr='".$schoolnumber."'";
 			$mysqli->query($updateuser);
 
 			$data['success'] = true;
 			$data['message'] = 'Success!';
-
+			$data['query']= $updateuser;
 			$check = true;
 		}
 
-		echo json_encode($check);
+		echo json_encode($data);
 	}
 ?>

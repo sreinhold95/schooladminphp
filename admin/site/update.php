@@ -97,65 +97,53 @@
 		</tr>
 		<form method="POST" action="" id="adminuser" class="form">
 			<?php
-				$query = $mysqli->query("SELECT user.kdnr as kdnr, user.schulname as schulname, user.user as user, user.isschool as isschool, user.isactiv as isactiv, user.telefon as telefon, user.email as email FROM user LEFT JOIN vertragspartner ON (user.vertragspartner=vertragspartner.idvertragspartner) WHERE id='".$id."'");
+				$query = $mysqli->query("SELECT * FROM students WHERE idstudents='".$id."'");
 				if($query->num_rows) {
 					while($get = $query->fetch_assoc()) {
-						if($get['isschool'] == 0) {
-							echo '<tr>';
-							echo '<td>Schulnummer</td>';
-							echo '<td><input type="text" id="schoolnumber" value="'.$get['kdnr'].'" READONLY></td>';
-							echo '</tr>';
-							echo '<tr>';
-							echo '<td>Schulname</td>';
-							echo '<td><input type="text" id="schoolname" value="'.$get['schulname'].'"></td>';
-							echo '</tr>';
-							echo '<tr>';
-							echo '<td>Technischer Ansprechpartner</td>';
-							echo '<td><input type="text" id="user" value="'.$get['user'].'"></td>';
-							echo '</tr>';
-						} elseif($get['isschool'] == 1) {
-							echo '<tr>';
-							echo '<td>Kundennummer</td>';
-							echo '<td><input type="text" id="schoolnumber" value="'.$get['kdnr'].'" READONLY></td>';
-							echo '</tr>';
-							echo '<tr>';
-							echo '<td>Firmenname</td>';
-							echo '<td><input type="text" id="schoolname" value="'.$get['schulname'].'"></td>';
-							echo '</tr>';
-							echo '<tr>';
-							echo '<td>Ansprechpartner</td>';
-							echo '<td><input type="text" id="user" value="'.$get['user'].'"></td>';
-							echo '</tr>';
-						} else {
-							echo '<tr>';
-							echo '<td>Kundennummer</td>';
-							echo '<td><input type="text" id="schoolnumber" value="'.$get['kdnr'].'" READONLY></td>';
-							echo '</tr>';
-							echo '<tr>';
-							echo '<td>Ansprechpartner</td>';
-							echo '<td><input type="text" id="user" value="'.$get['user'].'"></td>';
-							echo '</tr>';
-						}
+						echo '<tr>';
+						echo '<td>Geburtsort</td>';
+						echo '<td><input type="text" id="birthtown" value="'.$get['birthtown'].'"></td>';
+						echo '</tr>';
+						echo '<tr>';
+						echo '<td>Geburtsland</td>';
+						echo '<td><input type="text" id="birthcountry" value="'.$get['birthcountry'].'"></td>';
+						echo '</tr>';
+						echo '<tr>';
+						echo '<td>Bundesland</td>';
+						echo '<td><input type="text" id="province" value="'.$get['province'].'"></td>';
+						echo '</tr>';
+						echo '<tr>';
+						echo '<td>Nationalität</td>';
+						echo '<td><input type="text" id="nationality" value="'.$get['nationality'].'"></td>';
+						echo '</tr>';
+						echo '<tr>';
+						echo '<td>Muttersprache</td>';
+						echo '<td><input type="text" id="family_speech" value="'.$get['family_speech'].'"></td>';
+						echo '</tr>';
 						echo '<tr>';
 						echo '<td>Telefon</td>';
-						echo '<td><input type="text" id="telefon" value="'.$get['telefon'].'"></td>';
+						echo '<td><input type="text" id="phone" value="'.$get['phone'].'"></td>';
+						echo '</tr>';
+						echo '<tr>';
+						echo '<td>Mobiltelefon</td>';
+						echo '<td><input type="text" id="mobilephone" value="'.$get['mobilephone'].'"></td>';
 						echo '</tr>';
 						echo '<tr>';
 						echo '<td>E-Mail</td>';
-						echo '<td><input type="text" id="adresse" value="'.$get['email'].'"></td>';
+						echo '<td><input type="text" id="email" value="'.$get['email'].'"></td>';
 						echo '</tr>';
 						echo '<tr>';
-						if($get['isactiv'] == 1) {
-							echo '<td>Account:</td>';
-							echo '<td><input type="radio" name="activate" id="activate" value="1" CHECKED>Aktiviert';
+						if($get['active'] == 1) {
+							echo '<td>Schüler:</td>';
+							echo '<td><input type="radio" name="activate" id="activate" value="1" CHECKED>aktiver Schüler';
 							echo '<br>';
-							echo '<input type="radio" name="activate" id="activate" value="0">Deaktiviert</td>';
+							echo '<input type="radio" name="activate" id="activate" value="0">inaktiver Schüler</td>';
 						}
 						else {
-							echo '<td>Account:</td>';
-							echo '<td><input type="radio" name="activate" id="activate" value="1" >Aktiviert';
+							echo '<td>Status:</td>';
+							echo '<td><input type="radio" name="activate" id="activate" value="1" >aktiver Schüler';
 							echo '<br>';
-							echo '<input type="radio" name="activate" id="activate" value="0" CHECKED>Deaktiviert</td>';
+							echo '<input type="radio" name="activate" id="activate" value="0" CHECKED>inaktiver Schüler</td>';
 						}
 						echo '</tr>';
 						echo '<tr>';
@@ -268,42 +256,46 @@ $("#activation").submit(function(event) {
 });
 
 $("#adminuser").submit(function(event) {
-	var schoolnumber = $('input#schoolnumber').val();
-	var schoolname = $('input#schoolname').val();
-	var user = $('input#user').val();
-	var adresse = $('input#adresse').val();
-	var telefon = $('input#telefon').val();
-	var ort = $('input#ort').val();
-	var active = $('input#activate:checked').val();
+		var address = $( 'input#address' ).val();
+        var province = $( 'input#province' ).val();
+        var birthdate = $( 'input#birthdate' ).val();
+        var birthtown = $( 'input#birthtown' ).val();
+        var birthcountry = $( 'input#birthcountry' ).val();
+		var nationality = $( 'input#nationality' ).val();
+        var family_speech = $( 'input#family_speech' ).val();
+        var phone = $( 'input#phone' ).val();
+        var mobilephone = $( 'input#mobilephone' ).val();
+        var email = $( 'input#email' ).val();
+		var activate = $( 'input#activate:checked').val()
+		var religion = $( 'input#religion' ).val();
+		var idstudents="";
+		<?php
+        	echo " idstudents = \"".$id."\";";
+        ?>
 	event.preventDefault();
 	$(".error_wrap").show();
-	if(schoolnumber == '' || schoolname == '' || user == '' || adresse == '' || telefon == '') {
-		$("#success").hide();
-		$("#error").hide();
-		$("#val").hide();
-		$("#emptyfield").show();
-		if(isNaN(schoolnumber)) {
-			$("#success").hide();
-			$("#error").hide();
-			$("#emptyfield").hide();
-			$("#val").show();
-		} 
+	if ( address == '' ||  province == '' || birthtown == '' || birthcountry == '' || nationality == '' || family_speech == '' ) {
+            $( "#emptyfield" ).show();
+            if ( isNaN( province ) ) {
+                $( "#emptyfield" ).hide();
+                $( "#val" ).show();
+            }
 	}
 	else {
-			$.get('function.php?user_update&schoolnumber='+schoolnumber+'&schoolname='+schoolname+'&user='+user+'&telefon='+telefon+'&adresse='+adresse+'&ort='+ort+'&active='+active, function(data) {
-			console.log(data);
-
-			if(data == 'true') {
-				$("#emptyfield").hide();
-				$("#val").hide();
-				$("#error").hide();
-				$("#success").show();
-			}
-			else {
-				$("#emptyfield").hide();
-				$("#val").hide();
-				$("#error").show();
-			}
+			$.get( 'function.php?user_update&birthdate=' + birthdate +'&address=' + address + '&province=' + province + '&birthtown=' + birthtown + '&birthcountry=' + birthcountry +'&nationality=' + nationality + '&family_speech=' + family_speech + '&phone=' + phone + '&mobilephone=' + mobilephone + '&email=' + email+ '&religion=' + religion + '&idstudents='+ idstudents + '&active='+activate, function ( data ) {
+                console.log( data );
+				var obj=jQuery.parseJSON(data);
+				if(obj.success) {
+                    $( "#emptyfield" ).hide();
+                    $( "#val" ).hide();
+                    $( "#error" ).hide();
+                    $( "#success" ).show();
+                } else {
+                    $( "#emptyfield" ).hide();
+                    $( "#val" ).hide();
+                    $( "#error" ).show();
+                }
+                
 		});
 	}
 });

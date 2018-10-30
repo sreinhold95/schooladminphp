@@ -153,12 +153,10 @@
 		$province = $_GET['province'];
 		$phone = $_GET['phone'];
 		$mobilephone = $_GET['mobilephone'];
-		$idgraduation = $_GET['idgraduation'];
+		$idgraduation = $_GET['graduation'];
 		$religion = $_GET['religion'];
 		$family_speech = $_GET['family_speech'];
         $token=$_GET['token'];
-        echo $surname;
-        echo $token;
 		if(empty($surname))
 			$errors['surname'] = 'Vorname darf nicht leer sein.';
 		if(empty($middlename))
@@ -167,11 +165,10 @@
 			$errors['givenname'] = 'Nachname darf nicht leer sein.';
         if(empty($birthdate))
 			$errors['birthdate'] = 'Geburtsdatum darf nicht leer sein.';
-		$check_query = $mysqli->query("SELECT classcode FROM class WHERE token='".$token."'");
-		if($check_query->num_rows == 1) {
-			 while ( $get = $query->fetch_assoc() ) {
-                 $classs=$_GET['classcode'];
-                 echo $classs;
+		$class_query = $mysqli->query("SELECT classcode FROM class WHERE token='".$token."'");
+		if($class_query->num_rows == 1) {
+			 while ( $get = $class_query->fetch_assoc() ) {
+                 $classs=$get['classcode'];
              }
 		}
 		if(!empty($errors)) {
@@ -180,33 +177,14 @@
 
 			$check = false;
 		} else {
-			$createuser = "INSERT INTO students
-						(surname, middlename, givenname, moregivenname, birthdate,birthtown,birthcountry,nationality,address,province,phone,mobilephone,graduation,religion,family_speech, class, activ)
-						VALUES
-						('".$mysqli->real_escape_string($surname)."',
-						'".$mysqli->real_escape_string($middlename)."',
-						'".$mysqli->real_escape_string($givenname)."',
-						'".$mysqli->real_escape_string($moregivenname)."',
-						'".$mysqli->real_escape_string($birthdate)."',
-						'".$mysqli->real_escape_string($birthtown)."',
-						'".$mysqli->real_escape_string($birthcountry)."',
-						'".$mysqli->real_escape_string($nationality)."',
-						'".$mysqli->real_escape_string($address)."',
-						'".$mysqli->real_escape_string($province)."',
-						'".$mysqli->real_escape_string($phone)."',
-						'".$mysqli->real_escape_string($mobilephone)."',
-						'".$mysqli->real_escape_string($idgraduation)."',
-						'".$mysqli->real_escape_string($religion)."',
-						'".$mysqli->real_escape_string($family_speech)."',
-						'".$mysqli->real_escape_string($classs)."',
-						'1','
-						)";
+			$createuser = "INSERT INTO students(surname,middlename,givenname,moregivenname,birthdate,birthtown,birthcountry,nationality,address,province,phone,mobilephone, idgraduation,religion,family_speech,classcode,active)VALUES('".$mysqli->real_escape_string($surname)."','".$mysqli->real_escape_string($middlename)."','".$mysqli->real_escape_string($givenname)."','".$mysqli->real_escape_string($moregivenname)."','".$mysqli->real_escape_string($birthdate)."','".$mysqli->real_escape_string($birthtown)."','".$mysqli->real_escape_string($birthcountry)."','".$mysqli->real_escape_string($nationality)."','".$mysqli->real_escape_string($address)."','".$mysqli->real_escape_string($province)."','".$mysqli->real_escape_string($phone)."','".$mysqli->real_escape_string($mobilephone)."','".$mysqli->real_escape_string($idgraduation)."','".$mysqli->real_escape_string($religion)."','".$mysqli->real_escape_string($family_speech)."','".$mysqli->real_escape_string($classs)."','1');";
 
 			$data['success'] = true;
 			$data['message'] = 'Success!';
 			$check = true;
 			$mysqli->query($createuser);
             echo json_encode($check);
+			echo json_encode($createuser);
 			
 		}
 	}
