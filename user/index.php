@@ -1,5 +1,6 @@
 <?php
 
+	error_reporting(E_ALL);
 	require('../include/config.inc.php');
 	session_start();
 
@@ -19,7 +20,7 @@
 	}
 
 	if($_SESSION['loggedin'] == true) {
-		if(isset($_SESSION['token'])) {
+		if(isset($_SESSION['idstudents'])) {
 			include("../style/header.php");
 			include("../style/menu.php");
 			include("../style/content.php");

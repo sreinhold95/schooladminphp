@@ -29,7 +29,9 @@ body {
 	display: none;
 
 }
-
+.label {
+	color:#000 !important;
+}
 .header {
 	margin: 0px auto;
 	width: 100%;
@@ -90,6 +92,20 @@ body {
 	margin-bottom: 10px;
 }
 
+.create_wrap {
+	float:left;
+	width: 1000px;
+	color: #303030;
+	font-weight: 400;
+	font-size: 12px;
+	background: #fff;
+	padding: 10px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	border: 1px solid #D4D4D4;
+	margin-bottom: 10px;
+}
 .table {
    border-collapse: collapse;
    width: 100%;
@@ -128,12 +144,30 @@ body {
 	text-align: left;
 	padding: 10px;
 }
-
+#classmate{
+	text-align: center;
+	background: cornflowerblue;
+}
 /** User anlegen **/
 
 .add_wrap {
 	float: left;
 	width: 349px;
+	color: #303030;
+	font-weight: 400;
+	font-size: 12px;
+	background: #fff;
+	padding: 10px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	border: 1px solid #D4D4D4;
+	margin-bottom: 10px;
+}
+
+.schüler_create_wrap {
+	float: left;
+	width: 975px;
 	color: #303030;
 	font-weight: 400;
 	font-size: 12px;
@@ -181,7 +215,20 @@ body {
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
-
+.box .form .eltern {
+	width: 100%;
+	padding: 5px;
+	font-size: 12px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.box .form .opt {
+	width: 100%;
+	padding: 5px;
+	font-size: 12px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
 .box .form .select {
 	width: 100%;
 	padding: 5px;
@@ -216,10 +263,10 @@ fieldset {
 	border: none;
 }
 
-/** Such-Dingsbums **/
+/** Such-Filter **/
 
 .search_wrap {
-	margin-top: 10px;
+	margin-top: 0px;
 	float: left;
 	width: 349px;
 	color: #303030;
@@ -268,6 +315,19 @@ fieldset {
 /** Error Management **/
 
 #emptyfield {
+	margin: auto;
+	margin-bottom: 5px;
+	width: 100%;
+	background: #E84F4F;
+	display: none;
+	color: #fff;
+	padding: 5px;
+	border: 1px solid #BF3939;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+#fields {
 	margin: auto;
 	margin-bottom: 5px;
 	width: 100%;
