@@ -44,6 +44,9 @@ if ( isset( $_GET[ "site" ] ) ) {
             //$text="";
             $text="site/lusdimport.php";
         }
+        else if ( $site == "susimport" ) {
+            $text="site/susimportnormal.php";
+        }
 		else {
             $text = "site/home.php";
         }

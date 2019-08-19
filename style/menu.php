@@ -10,7 +10,8 @@
 						<li><a href="index.php?site=class" class="link">Klassen</a></li>
 						<!--<li><a href="index.php?site=lanisexport" class="link">LANiS Export</a></li>-->
 						<li><a href="index.php?site=lanisimport" class="link">LANiS Import</a></li>
-						<li><a href="index.php?site=lusdimport" class="link">LUSD Import</a></li>
+						<li><a href="index.php?site=susimport" class="link">SuS Import</a></li>
+						<!--<li><a href="index.php?site=lusdimport" class="link">LUSD Import</a></li>-->
 						<li><a href="logout.php" class="link">Logout</a></li>
 					<?php
 				} else if ( $_SESSION[ 'userrole' ] == 3 ) {

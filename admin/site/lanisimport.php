@@ -25,7 +25,7 @@ if ( $loggedin == true ) {
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="filebutton">Select File</label>
                         <div class="col-md-4">
-                            <input type="file" name="file" id="file" class="input-large">
+                            <input type="file" name="file" id="file" class="input-large" accept=".csv">
                         </div>
                     </div>
                     <!-- Button -->

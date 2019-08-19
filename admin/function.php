@@ -92,7 +92,76 @@
 			}
 			fclose($file);  
 		 }
-	  }   
+	  }
+	  
+	  if(isset($_POST["importsus"])){
+		set_time_limit(600);
+		$filename=$_FILES["file"]["tmp_name"];    
+		 if($_FILES["file"]["size"] > 0)
+		 {
+			$errors[]=array();
+			$file = fopen($filename, "r");
+			$i=0;
+			$result="";
+			$entrydate=date('Y-m-d');
+			$plz='00000';
+			$studentstmt =$mysqli->prepare( "insert into students (surname,givenname,birthdate,entryDate,classcode,plz,idberuf) values(?,?,?,?,?,?,?)");
+			while (($getData = fgetcsv($file, 10000, ";")) !== FALSE)
+			{
+				if($i>0){
+					switch($getData[4]){
+						case "FISI":
+							$beruf=21;
+						case "FIAE":
+							$beruf=18;
+						case "ITSE":
+							$beruf=23;
+						case "ITSK":
+							$beruf=24;
+						case "IK":
+							$beruf=22;	
+					} 
+					$year=substr($getData[2],-4);
+					$month=substr($getData[2],-7,2);
+					$day=substr($getData[2],-10,2);
+					//$date = $getData[6];
+					$birthdate=$year."-".$month."-".$day;
+					$studentstmt->bind_param('ssssssi',
+					$getData[0],
+					$getData[1],
+					$birthdate,
+					$entrydate,
+					$getData[3],
+					$plz,
+					$beruf);
+					$studentstmt->execute();
+					echo $studentstmt->error;
+				}
+				$i++;
+				
+			}
+			$studentstmt->close();
+			if(!isset($result))
+			{
+			echo "<script type=\"text/javascript\">
+				alert(\"Invalid File:Please Upload CSV File.\");
+				//window.location = \index.php?site=lanisimport\"
+				</script>";    
+			}
+			else {
+				echo "<script type=\"text/javascript\">
+				alert(\"CSV File has been successfully Imported.\");
+				//window.location = \"index.php?site=lanisimport\"
+			</script>";
+			}
+			fclose($file);  
+		 }
+	  }
+	  
+
+
+
+
 	  if(isset($_POST["Importlusd"])){
 		set_time_limit(600);
 		$filename=$_FILES["file"]["tmp_name"];    
