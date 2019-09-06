@@ -445,7 +445,16 @@
 							?>
 						</td>
 					</tr>
-							
+					<tr>
+						<td>
+								<label for="entryDate" class="label">Eintrittsdatum:</label>
+								<input type="date" class="field" id="entryDate" value="<?php echo $get["entryDate"];?>">
+						</td>
+						<td>
+								<label for="entryDate" class="label">Austrittsdatum:</label>
+								<input type="date" class="field" id="exitDate" value="<?php echo $get["exitDate"];?>">
+						</td>
+					</tr>		
 					<tr>
 						<th>Informationen zur Ausbildung</th>
 						<th></th>
@@ -710,6 +719,7 @@
 							<input class="field" type="text" size="24" maxlength="50" name="address" id="father_mobilephone" value="<?php echo $get['father_mobilephone']; ?>">
 						</td>
 					</tr>
+					
 					<?php
 					echo '<tr>';
 						if($get['active'] == 1) {
@@ -874,7 +884,12 @@ $("#Klasseneinstellungen").submit(function(event) {
 });
 
 $("#adminuser").submit(function(event) {
-
+	var exitDate="";
+	/*if($( 'input#exitDate' ).val()=="")
+		exitDate=""
+	else*/
+		exitDate=$( 'input#exitDate' ).val()
+		
 	var student = {
 			'surname':$( 'input#surname' ).val(),
 			'middlename':$( 'input#middlename' ).val(),
@@ -905,13 +920,13 @@ $("#adminuser").submit(function(event) {
 				'mother_surname':$( 'input#mother_surname' ).val(),
 				'mother_lastname':$( 'input#mother_givenname' ).val(),
 				'mother_address':$( 'input#mother_address' ).val(),
-				'mother_postalcode':$( 'input#mother_postalcode' ).val(),
+				'mother_postalcode':$( 'input#mother_plz' ).val(),
 				'mother_phone':$( 'input#mother_phone' ).val(),
 				'mother_mobilephone':$( 'input#mother_mobilephone' ).val(),
 				'father_surname':$( 'input#father_surname' ).val(),
 				'father_lastname':$( 'input#father_givenname' ).val(),
 				'father_address':$( 'input#father_address' ).val(),
-				'father_postalcode':$( 'input#father_postalcode' ).val(),
+				'father_postalcode':$( 'input#father_plz' ).val(),
 				'father_phone':$( 'input#father_phone' ).val(),
 				'father_mobilephone':$( 'input#father_mobilephone' ).val(),
 				'idparents':<?php echo $idparents; ?>
@@ -934,7 +949,9 @@ $("#adminuser").submit(function(event) {
 					'Name':$( 'input#ausbildungsbetrieb_ausbilder_name' ).val(),
 				}
 			},
-			'idstudent':'<?php echo $id ?>'
+			'idstudent':'<?php echo $id ?>',
+			'entryDate':$( 'input#entryDate' ).val(),
+			'exitDate':exitDate
 		};
 		/*var surname = $( 'input#surname' ).val();
 		var middlename = $( 'input#middlename' ).val();

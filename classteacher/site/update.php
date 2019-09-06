@@ -443,7 +443,16 @@
 							?>
 						</td>
 					</tr>
-							
+					<tr>
+						<td>
+								<label for="entryDate" class="label">Eintrittsdatum:</label>
+								<input type="date" class="field" id="entryDate" value="<?php echo $get["entryDate"];?>">
+						</td>
+						<td>
+								<label for="entryDate" class="label">Austrittsdatum:</label>
+								<input type="date" class="field" id="exitDate" value="<?php echo $get["exitDate"];?>">
+						</td>
+					</tr>		
 					<tr>
 						<th>Informationen zur Ausbildung</th>
 						<th></th>
@@ -708,6 +717,8 @@
 							<input class="field" type="text" size="24" maxlength="50" name="address" id="father_mobilephone" value="<?php echo $get['father_mobilephone']; ?>">
 						</td>
 					</tr>
+					</tr>
+					
 					<?php
 					echo '<tr>';
 						if($get['active'] == 1) {
@@ -932,26 +943,10 @@ $("#adminuser").submit(function(event) {
 					'Name':$( 'input#ausbildungsbetrieb_ausbilder_name' ).val(),
 				}
 			},
-			'idstudent':'<?php echo $id ?>'
-		};
-		/*var surname = $( 'input#surname' ).val();
-		var middlename = $( 'input#middlename' ).val();
-		var givenname = $( 'input#givenname' ).val();
-		var moregivenname = $( 'input#moregivenname' ).val();
-		var address = $( 'input#address' ).val();
-        var province = $( 'input#province' ).val();
-        var birthdate = $( 'input#birthdate' ).val();
-        var birthtown = $( 'input#birthtown' ).val();
-        var birthcountry = $( 'input#birthcountry' ).val();
-		var nationality = $( 'input#nationality' ).val();
-        var family_speech = $( 'input#family_speech' ).val();
-        var phone = $( 'input#phone' ).val();
-        var mobilephone = $( 'input#mobilephone' ).val();
-        var email = $( 'input#email' ).val();
-		var activate = $( 'input#activatest:checked').val()
-		var religion = $( 'input#religion' ).val();
-		var idstudents="";
-		var classs = $( '#classs option:selected' ).val();*/
+			'idstudent':'<?php echo $id ?>',
+			'entryDate':$( 'input#entryDate' ).val(),
+			'exitDate':$( 'input#exitDate' ).val()
+		}
 		<?php
         	echo " idstudents = \"".$id."\";";
         ?>
@@ -986,30 +981,6 @@ $("#adminuser").submit(function(event) {
 		}
 		var json = JSON.stringify(student)
 		xhr.send("student=" +json);
-
-			/*$.get( 'function.php?user_update&birthdate=' + student.birthdate + '&surname=' + student.surname +'&middlename=' + student.middlename +'&givenname=' + student.givenname +'&moregivenname=' + student.moregivenname +'&address=' + student.street + '&province=' + student.province + '&birthtown=' + student.birthtown + '&birthcountry=' + student.birthcountry +'&nationality=' + student.nationality + '&family_speech=' + student.family_speech + '&phone=' + student.phone + '&mobilephone=' + student.mobilephone + '&email=' + student.email+ '&religion=' + student.religion + '&idstudents='+ idstudents + '&active='+ student.active + '&class='+student.classcode + '&birthdate='+student.birthdate, function ( data ) {
-                console.log( data );
-				var obj=jQuery.parseJSON(data); 
-				if(obj.success){
-                    $( "#emptyfield" ).hide();
-                    $( "#val" ).hide();
-                    $( "#error" ).hide();
-                    $( "#success" ).show();
-                } else {
-					if(obj.emptyfield){
-					 	$( "#emptyfield" ).show();
-                    	$( "#val" ).hide();
-                    	$( "#error" ).show();
-						var div = document.getElementById("emptyfield");
-						for (var x in obj.errors)
-								div.textContent+=" "+x;
-    					var text = div.textContent;
-					}else
-						$( "#error" ).show();
-                   
-                }
-                
-		});*/
 	}
 });
 

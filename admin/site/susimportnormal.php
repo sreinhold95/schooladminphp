@@ -13,6 +13,9 @@ if ( $loggedin == true ) {
 
 
 ?>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>	
 
 <div id="table_wrap">
     <div class="container">
@@ -37,46 +40,26 @@ if ( $loggedin == true ) {
                     </div>
                 </fieldset>
             </form>
-            <form class="form-horizontal" action="" method="post" name="susmitbetrieb">
+            <form class="form-horizontal" action="function.php" method="post" name="susmitbetrieb"  enctype="multipart/form-data">
                 <fieldset>
                     <!-- Form Name -->
-                    <legend>Import SuS Nachname,Vorname,Klasse,Geburtsdatum, Betrieb</legend>
+                    <legend>Import SuS Nachname,Vorname,Geburtsdatum,Klasse,Berufskürzel,entryDate,Betrieb,Betrieb_PLZ,Betrieb_Email</legend>
                     <!-- File Button -->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="filebutton">Suche Datei</label>
                         <div class="col-md-4">
-                            <input type="file" name="file" id="submit" class="input-large" accept=".csv">
+                            <input type="file" name="file" id="susbetriebfile" class="input-large" accept=".csv">
                         </div>
                     </div>
                     <!-- Button -->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="singlebutton">Import SuS</label>
                         <div class="col-md-4">
-                            <button type="submit" id="submit" name="submit" class="btn btn-primary button-loading" data-loading-text="Loading...">Import</button>
+                            <button type="submit" id="submit" name="susbetrieb" class="btn btn-primary button-loading" data-loading-text="Loading...">Import</button>
                         </div>
                     </div>
                 </fieldset>
             </form>
-            <form class="form-horizontal" action="function.php" method="post" name="upload_excel" enctype="multipart/form-data">
-                <fieldset>
-                    <!-- Form Name -->
-                    <legend>Import der LUSD Daten </legend>
-                    <!-- File Button -->
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="filebutton">Suche Datei</label>
-                        <div class="col-md-4">
-                            <input type="file" name="file" id="file" class="input-large"  accept=".csv">
-                        </div>
-                    </div>
-                    <!-- Button -->
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="singlebutton">Import SuS</label>
-                        <div class="col-md-4">
-                            <button type="submit" id="submit" name="submit" class="btn btn-primary button-loading" data-loading-text="Loading...">Import</button>
-                        </div>
-                    </div>
-                </fieldset>
-            </form> 
         </div>
     </div>
 </div>

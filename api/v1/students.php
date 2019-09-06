@@ -213,10 +213,13 @@ function updatestudent($json){
 		$errors["parentidstmt"]=$parentidstmt->error;
 		$data["parentid"]=$idparents;
 		$parentidstmt->close();
-		$entrydate=date('Y-m-d');
-		$studentstmt=$mysqli->prepare("update students set surname=?,middlename=?,givenname=?,moregivenname=?,birthdate=?,birthtown=?,birthcountry=?,province=?,entryDate=?,classcode=?,address=?,religion=?,nationality=?,family_speech=?,phone=?,mobilephone=?,email=?,idgraduation=?,idberuf=?,active=?,town=?,plz=?,sex=?,lastschool=?,lastschooltown=?,lastschooldate=?,lastschoolprovince=?,Ausbildungsbeginn=?,Ausbildungsbetrieb=?,Ausbildungsbetrieb_strasse=?,Ausbildungsbetrieb_PLZ=?,Ausbildungsbetrieb_Telefon=?,Ausbildungsbetrieb_Fax=?,Ausbildungsbetrieb_Email=?,Ausbildungsbetrieb_Ausbilder_Anrede=?,Ausbildungsbetrieb_Ausbilder_Name=?,indeutschlandseit=?,sprachniveau=? where idstudents=?;"); 
+		if($jsonobj->exitDate=null)
+			$exitDate=null;
+		else
+			$exitDate=$jsonobj->exitDate;
+		$studentstmt=$mysqli->prepare("update students set surname=?,middlename=?,givenname=?,moregivenname=?,birthdate=?,birthtown=?,birthcountry=?,province=?,entryDate=?,classcode=?,address=?,religion=?,nationality=?,family_speech=?,phone=?,mobilephone=?,email=?,idgraduation=?,idberuf=?,active=?,town=?,plz=?,sex=?,lastschool=?,lastschooltown=?,lastschooldate=?,lastschoolprovince=?,Ausbildungsbeginn=?,Ausbildungsbetrieb=?,Ausbildungsbetrieb_strasse=?,Ausbildungsbetrieb_PLZ=?,Ausbildungsbetrieb_Telefon=?,Ausbildungsbetrieb_Fax=?,Ausbildungsbetrieb_Email=?,Ausbildungsbetrieb_Ausbilder_Anrede=?,Ausbildungsbetrieb_Ausbilder_Name=?,indeutschlandseit=?,sprachniveau=?,exitDate=? where idstudents=?;"); 
 		if($studentstmt){
-			$studentstmt->bind_param('sssssssssssssssssiiisssssssssssssssssss',
+			$studentstmt->bind_param('sssssssssssssssssiiissssssssssssssssssss',
 			$jsonobj->surname,
 			$jsonobj->middlename,
 			$jsonobj->givenname,
@@ -225,7 +228,7 @@ function updatestudent($json){
 			$jsonobj->birthtown,
 			$jsonobj->birthcountry,
 			$jsonobj->province,
-			$entrydate,
+			$jsonobj->entryDate,
 			$jsonobj->classcode,
 			$jsonobj->street,
 			$jsonobj->religion,
@@ -255,6 +258,7 @@ function updatestudent($json){
 			$jsonobj->Ausbildungsbetrieb->Ausbilder->Name,
 			$jsonobj->indeutschlandseit,
 			$jsonobj->sprachniveau,
+			$jsonobj->exitDate,
 			$jsonobj->idstudent);
 			$studentstmt->execute();
 			$errors["studentstmt"]=$studentstmt->error;
@@ -262,11 +266,12 @@ function updatestudent($json){
 		}else{
 			$errors["studentstmt"]="MySQL Syntax Error";
 		}
-		if($errors["studentstmt"]=="")
+		//if($errors["studentstmt"]=="")
 		if($errors["parentstmt"]==""&&$errors["studentstmt"]=="")
 			$data['success'] = true;
 		else
 			$data['success'] = false;
+		$errors["exitDate"]=$jsonobj->exitDate;
 		$data['errors'] = $errors;
 		echo json_encode($data);
 	}
