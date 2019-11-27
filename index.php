@@ -20,7 +20,7 @@
 	<div class="content">
 	<div class="login_wrap">
         <h2>Schüleranmeldung</h2>
-		<form method="POST" action="/class/index.php?site=homeclass" class="normal" id="loginmanagement">
+		<form method="POST" action="/class/index.php?site=homeclass" class="normal" id="logintoken">
 			<input type="submit" class="button" value="zum Token" name="management">
 		</form>
 	</div>

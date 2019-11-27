@@ -23,7 +23,7 @@ if ( $loggedin == true ) {
             <form class="form-horizontal" action="function.php" method="post" name="upload_excel" enctype="multipart/form-data">
                 <fieldset>
                     <!-- Form Name -->
-                    <legend>Aus LDAP_LANiS von "csv aus pftp erstellen" Userids setzen</legend>
+                    <legend>Aus LDAP_LANiS von "Webuntis" Userids setzen</legend>
                     <!-- File Button -->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="filebutton">Select File</label>

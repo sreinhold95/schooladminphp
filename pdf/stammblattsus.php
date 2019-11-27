@@ -429,7 +429,7 @@ if ( $query->num_rows ) {
                 </tbody>
         </table><br><br>
         <br><b style="color:red">Das Passwort muss nach der ersten Anmeldung am PC im Schülermodul geändert werden.</b>
-        <br><b>Ihre Anmeldedaten werden im laufe von 2 Werktagen in allen eltronischen Systemen  der Schule eingebungen</b>
+        <br><b>Ihre Anmeldedaten werden im Laufe von 2 Werktagen in allen elektronischen Systemen der Schule eingebunden.</b>
         ';
         $i++;
     }
@@ -541,7 +541,7 @@ foreach($html as $page){
     $pdf->write2DBarcode('https://portal.lanis-system.de/6283', 'QRCODE,Q', 90, 150, 30, 30, $style, 'N');
     $pdf->Text(133, 145, 'Moodle');
     $pdf->write2DBarcode('https://moodle.fls-da.de', 'QRCODE,Q', 125, 150, 30, 30, $style, 'N');
-    $pdf->Text(20, 185, 'Biite bewahren Sie diesen Zettel sorgfältig auf.');
+    $pdf->Text(20, 185, 'Bitte bewahren Sie diesen Zettel sorgfältig auf.');
     $i++;
 }
 $i=0;

@@ -18,7 +18,7 @@
 					?>
 						<li><a href="index.php?site=home" class="link">Home</a></li>
 						<li><a href="index.php?site=students" class="link">Schüler</a></li>
-						<li><a href="index.php?site=class" class="link">Klasse</a></li>
+						<li><a href="index.php?site=class" class="link">Klassen</a></li>
 						<li><a href="logout.php" class="link">Logout</a></li>
 					<?php
 				} else if ( $_SESSION[ 'userrole' ] == 4 ) {

@@ -5,6 +5,7 @@
 	$activetoken="";
 	$classteacher="";
 	$idparents=0;
+	$_SESSION['classcode']=$id;
 	if(isset($_GET['idteacher'])){
 		$idteacher=$_GET["idteacher"];
 		//$_SESSION['idteacher']=0;
@@ -170,6 +171,7 @@
 								echo '</tr>';
 							}
 						}
+
 					}
 					?>
 			</table>
@@ -228,9 +230,92 @@
 				</table>
 			</div>	
 		</div>
+	<?php
+	if(isset($_GET["class"]))
+		echo '<div class="add_wrap" id="Klassenwechsel_wrap" style="display:none">';
+	else
+		echo '<div class="add_wrap" id="Klassenwechsel_wrap" style="display:none">';
+	?>
+	
+		<div class="box_header">Klassenwechsel</div>
+			<div class="box">
+				<table class="table" id="side-table">
+					<form method="POST" action="" id="klassenwechsel" class="form">
+						<tr>
+							<td width="100">
+								aktuelle Klasse:
+							</td>
+							<td>
+								<?php
+									echo $classcode;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								neue Klasse:
+							</td>
+							<td>
+							<?php
+							echo'<select name "newclass"  id="newclass" class="field"size="1">';
+							$check = $mysqli->query( "SELECT classcode FROM class;" );
+							while($row = mysqli_fetch_array($check)) {
+								if($row['classcode']!=""){
+									$graduation=$row['classcode'];
+									$idgraduation=$row['classcode'];
+									if($row['classcode']==$get['classcode'])
+										echo '<option value="'.$graduation.'" selected=selected>'.$graduation.'</option>';
+									else
+										echo '<option value="'.$graduation.'">'.$graduation.'</option>';
+								}
+							}
+							echo '</select>';
+							?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Stichtag:
+							</td>
+							<td>
+								<input type="date" name="Stichtag_class">
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+							<input type="submit" name="submit">
+							</td>
+						</tr>
+					</form>
+				</table>
+			</div>	
+		</div>
+		<!--Schüer anlegen.-->
+	<?php
+	if(isset($_GET["class"]))
+		echo '<div class="add_wrap" id="Schüeleranlegen_wrap">';
+	else
+		echo '<div class="add_wrap" id="Schüeleranlegen_wrap" style="display:none">';
+	?>
+	
+		<div class="box_header">Schüeler anlegen</div>
+			<div class="box">
+				<table class="table" id="side-table">
+				<tr>
+					<td>Schüler anlegen</td>
+					<td>
+					<a href="index.php?site=create" class="link"><img src="../style/edit.png" alt="Edit">
+					</td>
+				</tr>
+				</table>
+			</div>	
+		</div>
+	</div>		
+</div>
 	</div>	
 </div>
-	
+</div>
 
 <div class="table_wrap">
 	
@@ -389,6 +474,11 @@
 							}
 							else if ($get['geschlecht']=="d"){
 								echo '<option selected="selected" value="d">divers</option>';
+								echo '<option value="m">männlich</option>';
+								echo '<option value="w">weiblich</option>';
+							}
+							else{
+								echo '<option value="d">divers</option>';
 								echo '<option value="m">männlich</option>';
 								echo '<option value="w">weiblich</option>';
 							}

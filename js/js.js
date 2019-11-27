@@ -29,6 +29,17 @@ function settown(select,inputtown,province){
         }
     });
 }
+function setdate(select,datefield){
+    $.get('../../api/v1/plz.php?plz='+postalcode,function(data){
+        var state = $( select).val()
+        if (state=="0"){
+            var datum = new Date()
+            date=datum.getDate()+"."+ (datum.getMonth()+ 1)+"." + datum.getFullYear()
+            document.getElementById(datefield).value = date ;
+        }else
+            document.getElementById(datefield).value =null ;
+    });
+}
 
 function stringreplace(select,elementid,rep_string,replacer){
     var select = $( select).val()

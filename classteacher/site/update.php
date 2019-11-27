@@ -2,12 +2,13 @@
 
 	$id = $_GET['id'];
 	$classcode="";
+	$_SESSION['classcode']=$_GET['id'];
 	$activetoken="";
 	$classteacher="";
 	$idparents=0;
 	if(isset($_GET['idteacher'])){
 		$idteacher=$_GET["idteacher"];
-		$_SESSION['idteacher']=0;
+		//$_SESSION['idteacher']=0;
 	}
 	else if(isset($_GET['id'])){
 		$id = $_GET['id'];
@@ -228,7 +229,27 @@
 				</table>
 			</div>	
 		</div>
-	</div>	
+<!--Schüer anlegen.-->
+	<?php
+	if(isset($_GET["class"]))
+		echo '<div class="add_wrap" id="Schüeleranlegen_wrap">';
+	else
+		echo '<div class="add_wrap" id="Schüeleranlegen_wrap" style="display:none">';
+	?>
+	
+		<div class="box_header">Schüeler anlegen</div>
+			<div class="box">
+				<table class="table" id="side-table">
+				<tr>
+					<td>Schüler anlegen</td>
+					<td>
+					<a href="index.php?site=create" class="link"><img src="../style/edit.png" alt="Edit">
+					</td>
+				</tr>
+				</table>
+			</div>	
+		</div>
+	</div>		
 </div>
 	
 
@@ -390,6 +411,12 @@
 								echo '<option value="m">männlich</option>';
 								echo '<option value="w">weiblich</option>';
 							}
+							else{
+								echo '<option value="" selected disabled hidden>Bitte auswählen</option>';
+								echo '<option value="d">divers</option>';
+								echo '<option value="m">männlich</option>';
+								echo '<option value="w">weiblich</option>';
+							}
 							?>
 							</select>
 							<label for="nationality" class="label">Staatsangehörigkeit:</label>
@@ -427,7 +454,7 @@
 							<label for="classc" class="label">Klasse:</label>
 							
 							<?php
-							echo'<select name "classs"  id="classs" class="field"size="1">';
+							echo'<select name "classs"  disabled="true" id="classs" class="field"size="1">';
 							$check = $mysqli->query( "SELECT classcode FROM class;" );
 							while($row = mysqli_fetch_array($check)) {
 								if($row['classcode']!=""){
@@ -812,7 +839,7 @@
 };*/
 
 function deleteuser( idstudents ) {
-		var idteacher="<?php echo $idteacher?>";
+		var idteacher="<?php echo $_SESSION['idteacher']?>";
 		if ( confirm( "Möchten Sie wirklich deaktivieren" ) )
 			if ( idstudents == "" ) {
 				$( "#deleteuser" ).show();
@@ -967,7 +994,7 @@ $("#adminuser").submit(function(event) {
 				if(users.success){
 					var nodes = document.querySelectorAll(".field");
 					if ( confirm( "gespeichert." ) ){
-						window.location.replace('../admin/index.php?site=update&idteacher=0&class=1&id='+student.classcode);
+						window.location.replace('../classteacher/index.php?site=update&idteacher='+<?php echo $idteacher?>+'&class=1&id='+student.classcode);
 						}
 					/*for (var i=0; i<nodes.length; i++)
 					{

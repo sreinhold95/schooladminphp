@@ -2,6 +2,9 @@
 	if(!isset($_SESSION[ 'userrole' ]))
 		header('location: ../../index.php');
 ?>
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>-->
 <div class="error_wrap">
 	<div id="searchempty">Oops! Nach was soll ich suchen?</div>
 	<div id="searcherror">Leider finde ich keine Schüler mit ihren werten in der Datenbank.</div>
@@ -359,6 +362,12 @@
 	</div>
 </div>
 <script>
+/*$( function() {
+    $( "#birthdate" ).datepicker({ dateFormat: 'dd.mm.yy' });
+} );
+$( function() {
+    $( "#ausbildungsbeginn" ).datepicker({ dateFormat: 'dd.mm.yy' });
+} );*/
 $("#useranlegen").keypress(function(e) {
   //Enter key
   if (e.which == 13) {

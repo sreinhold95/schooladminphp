@@ -68,7 +68,9 @@
 					//$getData[0],
 					//$getData[2]);
 					//$studentstmt->execute();
-					$sql = "update students set lanisid=".$getData[10]." where birthdate='".$newDate."' and givenname='".$getData[0]."' and surname='".$getData[2]."';";
+					$gname=preg_replace('/(\d+)/','',$getData[0]);
+					$sname=preg_replace('/(\d+)/','',$getData[2]);
+					$sql = "update students set lanisid=".$getData[10]." where birthdate='".$newDate."' and givenname='".$gname."' and surname='".$sname."';";
 					$error=$mysqli->query($sql);
 					//echo $studentstmt->error;
 					//$result = $studentstmt->error;

@@ -14,7 +14,7 @@
 			<th>Klasse</th>
 			<th>Langname</th>
 			<th>Schülerbogen</th>
-			<th>Klasse beabreiten</th>
+			<th>Klasse bearbeiten</th>
 		</tr>
 		<?php
 		$query = $mysqli->query( "SELECT * FROM class inner join teacher_class on class.classcode=teacher_class.classcode where teacher_class.idteacher='".$_SESSION["idteacher"]."';" );
@@ -44,7 +44,7 @@
 	</table>
 </div>
 <div class="search_wrap">
-	<div class="box_header">Klasse auswählen</div>
+	<div class="box_header"><?php echo $_SESSION['idteacher']?></div>
 		<div class="box">
 			<select name="classs" id=classs class="field" size="1">
 				<?php

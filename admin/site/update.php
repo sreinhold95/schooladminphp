@@ -392,6 +392,11 @@
 								echo '<option value="m">männlich</option>';
 								echo '<option value="w">weiblich</option>';
 							}
+							else{
+								echo '<option value="d">divers</option>';
+								echo '<option value="m">männlich</option>';
+								echo '<option value="w">weiblich</option>';
+							}
 							?>
 							</select>
 							<label for="nationality" class="label">Staatsangehörigkeit:</label>
@@ -723,16 +728,20 @@
 					<?php
 					echo '<tr>';
 						if($get['active'] == 1) {
-							echo '<td>Schüler:</td>';
-							echo '<td><input type="radio" name="activate" id="activatest" value="1" CHECKED>aktiver Schüler';
-							echo '<br>';
-							echo '<input type="radio" name="activate" id="activatest" value="0">inaktiver Schüler</td>';
+							?>
+							<td>Schüler:</td>
+							<td><input type="radio" name="activate" id="activatest" value="1" CHECKED onchange='setdate("input#activatest:checked","exitDate")'>aktiver Schüler
+							<br>
+							<input type="radio" name="activate" id="activatest" value="0" onchange='setdate("input#activatest:checked","exitDate")'>inaktiver Schüler</td>
+							<?php
 						}
 						else {
-							echo '<td>Status:</td>';
-							echo '<td><input type="radio" name="activate" id="activatest" value="1" >aktiver Schüler';
-							echo '<br>';
-							echo '<input type="radio" name="activate" id="activatest" value="0" CHECKED>inaktiver Schüler</td>';
+							?>
+							<td>Status:</td>
+							<td><input type="radio" name="activate" id="activatest" value="1" onchange='setdate("input#activatest:checked","exitDate")'>aktiver Schüler
+							<br>
+							<input type="radio" name="activate" id="activatest" value="0" CHECKED onchange='setdate("input#activatest:checked","exitDate")'>inaktiver Schüler</td>
+							<?php
 						}
 						echo '</tr>';
 						?>
