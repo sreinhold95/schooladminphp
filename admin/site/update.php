@@ -730,17 +730,17 @@
 						if($get['active'] == 1) {
 							?>
 							<td>Schüler:</td>
-							<td><input type="radio" name="activate" id="activatest" value="1" CHECKED onchange='setdate("input#activatest:checked","exitDate")'>aktiver Schüler
+							<td><input type="radio" name="activate" id="activatest" value="1" CHECKED >aktiver Schüler
 							<br>
-							<input type="radio" name="activate" id="activatest" value="0" onchange='setdate("input#activatest:checked","exitDate")'>inaktiver Schüler</td>
+							<input type="radio" name="activate" id="activatest" value="0" >inaktiver Schüler</td>
 							<?php
 						}
 						else {
 							?>
 							<td>Status:</td>
-							<td><input type="radio" name="activate" id="activatest" value="1" onchange='setdate("input#activatest:checked","exitDate")'>aktiver Schüler
+							<td><input type="radio" name="activate" id="activatest" value="1">aktiver Schüler
 							<br>
-							<input type="radio" name="activate" id="activatest" value="0" CHECKED onchange='setdate("input#activatest:checked","exitDate")'>inaktiver Schüler</td>
+							<input type="radio" name="activate" id="activatest" value="0" CHECKED>inaktiver Schüler</td>
 							<?php
 						}
 						echo '</tr>';
@@ -893,11 +893,11 @@ $("#Klasseneinstellungen").submit(function(event) {
 });
 
 $("#adminuser").submit(function(event) {
-	var exitDate="";
-	/*if($( 'input#exitDate' ).val()=="")
+	/*var exitDate="";
+	if($( 'input#exitDate' ).val()=="")
 		exitDate=""
-	else*/
-		exitDate=$( 'input#exitDate' ).val()
+	else
+		exitDate=$( 'input#exitDate' ).val()*/
 		
 	var student = {
 			'surname':$( 'input#surname' ).val(),
@@ -960,7 +960,7 @@ $("#adminuser").submit(function(event) {
 			},
 			'idstudent':'<?php echo $id ?>',
 			'entryDate':$( 'input#entryDate' ).val(),
-			'exitDate':exitDate
+			'exitDate':$( 'input#exitDate' ).val()
 		};
 		/*var surname = $( 'input#surname' ).val();
 		var middlename = $( 'input#middlename' ).val();
