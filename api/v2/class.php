@@ -5,7 +5,7 @@ session_start();
 if ($_SERVER['REQUEST_METHOD']=='GET'){
 	if (isset($_GET['username'])||isset($_GET['password'])){
 		login($_GET['username'],$_GET['password']);
-		$result = getdepartment($_GET['department']);
+		$result = getclass($_GET['classcode']);
 		header('HTTP/1.0 200 OK');
 		header('Content-Type: application/json');
 	echo $result;
@@ -17,7 +17,38 @@ if ($_SERVER['REQUEST_METHOD']=='GET'){
 		echo json_encode($data);
 	}
 }
-function getdepartment($json){
+function login($username,$password){
+	global $mysqli;
+	if (isset($username)&isset($password) ) {
+			$check =$mysqli->query( "SELECT * FROM user WHERE username= '" . $mysqli->real_escape_string( $username ) . "' 
+									AND password = '" . $mysqli->real_escape_string( $password )."';" );
+			if ( $check->num_rows ) {
+				$_SESSION[ 'loggedin' ] = true;
+				while ( $row = $check->fetch_assoc() ) {
+					$_SESSION[ 'id' ] = $row[ 'iduser' ];
+                    if(isset($row[ 'role' ])){
+                        $_SESSION[ 'userrole' ] = $row[ 'role' ];
+						if($row['teacher']!='')
+							$_SESSION['idteacher'] = $row['teacher'];
+                    }
+					//if (isset($row[ 'isactiv' ])){
+                        $_SESSION[ 'isactiv' ] = 1;
+                    //}
+				}
+				if ( $_SESSION[ 'isactiv' ] == 1 ) {
+					if ( $_SESSION[ 'userrole' ] == 1 ) {
+						return;
+					} else if ($_SESSION[ 'userrole' ] == 2){
+						return;
+					} else if ($_SESSION[ 'userrole' ] == 3){
+						return;
+					}
+				}
+		}
+	}
+}
+
+function getclass($classcode){
 	global $mysqli;
 	//require $_SERVER['DOCUMENT_ROOT'].'/include/config.inc.php';
 	$data=array();

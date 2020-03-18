@@ -48,6 +48,7 @@
 				$_SESSION[ 'loggedin' ] = true;
 				while ( $row = $check->fetch_assoc() ) {
 					$_SESSION[ 'id' ] = $row[ 'iduser' ];
+					$_SESSION["username"]=$row['username'];
                     if(isset($row[ 'role' ])){
                         $_SESSION[ 'userrole' ] = $row[ 'role' ];
 						if($row['teacher']!='')
