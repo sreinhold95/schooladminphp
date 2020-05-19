@@ -76,17 +76,14 @@ function tabellen_none(select,tabelle,apikey){
     var url = endpoint + formatParams(params)
 		var xhr = new XMLHttpRequest();
 		xhr.open("get", url, true);
-		//xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		xhr.onload = function () {
 		var users = JSON.parse(xhr.responseText);
 			if (xhr.readyState == 4 && xhr.status == "200") {
 				if(users.Schulform=="Teilzeit"){
-                    document.getElementById(tabelle).style.display="inline-table";
-                    //document.getElementById("Schulabschluss").style.display="none";
-                    document.getElementById("Abgang").style.display="inline-table";
+                    document.getElementById(tabelle).style.display="";
+                    document.getElementById("Abgang").style.display="";
                 }else{
                     document.getElementById(tabelle).style.display="none";
-                   // document.getElementById("Schulabschluss").style.display="inline-table";
                     document.getElementById("Abgang").style.display="none";
                 }
 			} else {

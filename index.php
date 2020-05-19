@@ -1,26 +1,24 @@
 ﻿<!DOCTYPE html>
 <html>
-<head>
-	<title>Schulverwaltung- Anmelden</title>
-	<meta charset="utf-8">
-	<link rel="stylesheet" href="style/admincp.css" type="text/css">
-
-</head>
+<?php
+include("style/header.php");
+//ini_set('session.gc_maxlifetime', 10*60); 
+//ini_set('session.cookie_lifetime', 10*60);
+session_start();
+?>
 <body>
 	<noscript>
  		 <div class="jserror">Bitte aktivieren Sie Javascript, sonst ist der Funktionsumfang eingeschränkt.</div>
 	</noscript>
 	<div id="wartung">Herzlich Willkommen in der Schulverwaltung der FLS</div>
-	<div class="header"><div id="logo">Verwaltung - FLS</div>
-	<?php 
-	//include( "style/header.php" );
+	<?php
 	include( "style/menu.php" );
 	?>
 	</div>
 	<div class="content">
 	<div class="login_wrap">
         <h2>Schüleranmeldung</h2>
-		<form method="POST" action="/class/index.php?site=homeclass" class="normal" id="logintoken">
+		<form method="POST" action="/class/index.php?site=login" class="normal" id="logintoken">
 			<input type="submit" class="button" value="zum Token" name="management">
 		</form>
 	</div>
@@ -36,9 +34,13 @@
 			<br>
 			<input type="password" class="field" id="password" name="password" />
 			<br> 
-			<input type="submit" class="button" value="Login" name="management">
+			<input type="submit" value="Login" name="management">
 		</form>
 	</div>
-        <br>
+		<br>
+		<?php include("style/bootstrap.php");?>
 </body>
+<?php
+include("style/footer.php")
+?>
 </html>

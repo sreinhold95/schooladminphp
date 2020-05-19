@@ -1,3 +1,29 @@
+<?php
+session_start();
+$session_timeout = 600; // 1800 Sek./60 Sek. = 10 Minuten
+if (!isset($_SESSION['last_visit'])) {
+$_SESSION['last_visit'] = time();
+// Aktion der Session wird ausgeführt
+}
+if((time() - $_SESSION['last_visit']) > $session_timeout) {
+session_destroy();
+session_unset();
+header( 'location: ../index.php' );
+// Aktion der Session wird erneut ausgeführt
+}
+$_SESSION['last_visit'] = time();
+
+if ( isset( $_SESSION[ 'loggedin' ] ) ) {
+    $loggedin = $_SESSION[ 'loggedin' ];
+}else
+    $loggedin = false;
+if ( $loggedin == true ) {
+    if ( $_SESSION[ 'userrole' ] == 1 ) {
+        
+    }
+} else {
+    header( 'location: ../index.php' );
+}?>
 <div class="error_wrap">
 	<div id="searchempty">Oops! Nach was soll ich suchen?</div>
 	<div id="searcherror">Leider finde ich keine Schüler mit ihren werten in der Datenbank.</div>
@@ -59,7 +85,7 @@
 				<label for="middlename" class="label">E-Mail:</label>
 				<input class="field" type="text" size="24" maxlength="50" name="email" id="email">
 				<label for="givenname" class="label">Schulabschluss:</label>
-				<select name "graduation" id="graduation" class="field" size="1">
+				<select name="graduation" id="graduation" class="field" size="1">
 					<?php
 					$check = $mysqli->query( "SELECT * FROM graduation;" );
 					while ( $row = mysqli_fetch_array( $check ) ) {
@@ -167,7 +193,8 @@
 								$( "#error" ).show();
 							}
 						}
-					} );
+					});
+				}
 				$( "#classs" ).change( function ( event ) {
 					var classcode = $( "#classs option:selected" ).val();
 					event.preventDefault();

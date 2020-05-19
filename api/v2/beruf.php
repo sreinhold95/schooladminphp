@@ -1,20 +1,31 @@
 <?php
-require( '../../include/config.inc.php' );
+require $_SERVER['DOCUMENT_ROOT'].'/include/config.inc.php';
 session_start();
 
 //global $apikey;
 if ($_SERVER['REQUEST_METHOD']=='GET'){
-	if (isset($_GET['apikey'])||isset($_GET['Berufs_ID'])){
-		if($apikey==$_GET['apikey']){
+	$headers = apache_request_headers();
+	$uuid = $headers['uuid'];
+	$auth=false;
+	$check=$mysqli->query("select teacher from user where uuid='".$uuid."' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+	if($check->num_rows){
+    	while($row=$check->fetch_assoc()){
+			//$idteacher=$row["teacher"];
+			
+        	$auth=true;
+    	}
+	}
+	if (isset($_GET['Berufs_ID'])){
+		if($auth){
 			header('HTTP/1.0 200 OK');
 			header('Content-Type: application/json');
 			$result = getberuf($_GET['Berufs_ID']);
 			echo $result;
 		}else{
-			header('HTTP/1.0 200 OK');
+			header('HTTP/1.0 403 Forbitten');
 			header('Content-Type: application/json');
 			$data = array();
-			$data['error']='no apikey or falsch';
+			$data['error']='not authorited';
 			echo json_encode($data);
 		}
 	}
@@ -22,12 +33,12 @@ if ($_SERVER['REQUEST_METHOD']=='GET'){
 		header('HTTP/1.0 200 OK');
 		header('Content-Type: application/json');
 		$data = array();
-		$data['error']='no apikey and Berufs_ID Set';
+		$data['error']='no Berufs_ID Set';
 		echo json_encode($data);
 	}
 }
 else{
-	header('HTTP/1.0 200 OK');
+	header('HTTP/1.0 400 Bad Protocol');
 		header('Content-Type: application/json');
 		$data = array();
 		$data['error']='not get';
@@ -38,7 +49,7 @@ function getberuf($Beruf_ID){
 	global $mysqli;
 	//require $_SERVER['DOCUMENT_ROOT'].'/include/config.inc.php';
 	$data = array();
-    $student= $mysqli->query("select * from beruf where Berufs_ID ='".$Beruf_ID."';");
-    $json=json_encode($student->fetch_assoc());
+    $beruf= $mysqli->query("select * from beruf where Berufs_ID ='".$Beruf_ID."';");
+    $json=json_encode($beruf->fetch_assoc());
 	return($json);
 }

@@ -1,41 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
 <?php
-	error_reporting(E_ALL);
-	require('../include/config.inc.php');
-	//session_destroy();
-	//ini_set('session.gc_maxlifetime', 5*60); 
-	//ini_set('session.cookie_lifetime', 5*60);
-	session_start();
-	/*$session_timeout = 5*60; // 360 Sek./60 Sek. = 6 Minuten
-	if (!isset($_SESSION['last_visit'])) {
+include($_SERVER['DOCUMENT_ROOT'] . "/style/header.php");
+error_reporting(E_ERROR);
+require($_SERVER['DOCUMENT_ROOT'] . '/include/config.inc.php');
+session_start();
+$session_timeout = 600; // 1800 Sek./60 Sek. = 10 Minuten
+if (!isset($_SESSION['last_visit'])) {
 	$_SESSION['last_visit'] = time();
 	// Aktion der Session wird ausgeführt
-	}
-	if((time() - $_SESSION['last_visit']) > $session_timeout) {*
+}
+if ((time() - $_SESSION['last_visit']) > $session_timeout) {
 	session_destroy();
+	session_unset();
+	header('location: ../index.php');
 	// Aktion der Session wird erneut ausgeführt
-	}*/
-	$_SESSION['last_visit'] = time();
-	if(isset($_GET["site"])) {
-		$site = $_GET['site'];
-		if(strlen($site) != 0) {
-			if($site == "homeclass") {
-				$text = "site/login.php";
-				include("../style/header.php");
-				include("../style/menu.php");
-				include("../style/content.php");
-			}
-			else if($site == "create") {
-				$text = "site/create.php";
-				include("../style/header.php");
-				include("../style/menu.php");
-				include("../style/content.php");
-			}
-			else if($site == "createtest") {
-				$text = "site/createtest.php";
-				include("../style/header.php");
-				include("../style/menu.php");
-				include("../style/content.php");
-			}
-		}
-	}
-?> 
+}
+if (isset($_GET["site"])) {
+    $site = $_GET['site'];
+    if (strlen($site) != 0) {
+        $text = "site/" . $site . ".php";
+    }
+}
+include($_SERVER['DOCUMENT_ROOT'] .  "/style/menu.php" );
+if ($text!=""){
+	//echo "<body>";
+	include($_SERVER['DOCUMENT_ROOT'].'/style/content.php');
+}
+else
+{
+	//echo "<body>";
+	include($text1);
+}
+include($_SERVER['DOCUMENT_ROOT'] . '/style/bootstrap.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/class/scripts/' . $_GET['site'] . '.php');
+echo "</body>";
+include($_SERVER['DOCUMENT_ROOT'] . '/style/footer.php');
+?>
+</html>

@@ -1,47 +1,96 @@
-	<div id="menu">
-		<ul>
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+	<span class="navbar-brand mb-0 h1">Schulverwaltung</span>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
 			<?php
 			if(isset($_SESSION[ 'userrole' ])){
 				if ( $_SESSION[ 'userrole' ] == 1 ) {
 					?>
-						<li><a href="index.php?site=home" class="link">Home</a></li>
-						<li><a href="index.php?site=students" class="link">Schüler</a></li>
-						<li><a href="index.php?site=teacher" class="link">Lehrer</a></li>
-						<li><a href="index.php?site=class" class="link">Klassen</a></li>
-						<!--<li><a href="index.php?site=lanisexport" class="link">LANiS Export</a></li>-->
-						<li><a href="index.php?site=lanisimport" class="link">LANiS Import</a></li>
-						<li><a href="index.php?site=susimport" class="link">SuS Import</a></li>
-						<!--<li><a href="index.php?site=lusdimport" class="link">LUSD Import</a></li>-->
-						<li><a href="logout.php" class="link">Logout</a></li>
+						<li class="nav-item <?php if($_GET[ 'site' ]=="home") echo "active";?>">
+							<a class="nav-link " href="index.php?site=home" >Home</a>
+						</li>
+						<li class="nav-item <?php if($_GET[ 'site' ]=="students"||$_GET[ 'site' ]=="update") echo "active";?>">
+							<a class="nav-link" href="index.php?site=students">Schüler</a>
+						</li>
+						<li class="nav-item <?php if($_GET[ 'site' ]=="teacher") echo "active";?>">
+							<a class="nav-link" href="index.php?site=teacher" >Lehrer</a>
+						</li>
+						<li class="nav-item <?php if($_GET[ 'site' ]=="class"||$_GET[ 'site' ]=="update.class") echo "active";?>">
+							<a class="nav-link" href="index.php?site=class">Klassen</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Import</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="index.php?site=lanisimport">LANiS Import</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="index.php?site=susimport">SuS Import</a>
+							</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="logout.php">Logout</a>
+							</li>
 					<?php
 				} else if ( $_SESSION[ 'userrole' ] == 3 ) {
 					?>
-						<li><a href="index.php?site=home" class="link">Home</a></li>
-						<li><a href="index.php?site=students" class="link">Schüler</a></li>
-						<li><a href="index.php?site=class" class="link">Klassen</a></li>
-						<li><a href="logout.php" class="link">Logout</a></li>
+						<li class="nav-item <?php if($_GET[ 'site' ]=="home") echo "active";?>">
+							<a class="nav-link " href="index.php?site=home" >Home</a>
+						</li>
+						<li class="nav-item <?php if($_GET[ 'site' ]=="students"||$_GET[ 'site' ]=="update") echo "active";?>">
+							<a class="nav-link" href="index.php?site=students">Schüler</a>
+						</li>
+						</li>
+						<li class="nav-item <?php if($_GET[ 'site' ]=="update.class"||$_GET[ 'site' ]=="class") echo "active";?>">
+							<a class="nav-link" href="index.php?site=class">Klassen</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="logout.php">Logout</a>
+							</li>
 					<?php
 				} else if ( $_SESSION[ 'userrole' ] == 4 ) {
 					?>
-						<li><a href="index.php?site=home" class="link">Home</a></li>
-						<li><a href="index.php?site=students" class="link">Schüler</a></li>
-						<li><a href="index.php?site=teacher" class="link">Lehrer</a></li>
-						<li><a href="logout.php" class="link">Logout</a></li>
-					
+						<li class="nav-item <?php if($_GET[ 'site' ]=="home") echo "active";?>">
+							<a class="nav-link " href="index.php?site=home" >Home</a>
+						</li>
+						<li class="nav-item <?php if($_GET[ 'site' ]=="students"||$_GET[ 'site' ]=="update") echo "active";?>">
+							<a class="nav-link" href="index.php?site=students">Schüler</a>
+						</li>
+						<li class="nav-item <?php if($_GET[ 'site' ]=="teacher") echo "active";?>">
+							<a class="nav-link" href="index.php?site=teacher" >Lehrer</a>
+						</li>
+						<li class="nav-item <?php if($_GET[ 'site' ]=="update.class"||$_GET[ 'site' ]=="class") echo "active";?>">
+							<a class="nav-link" href="index.php?site=class">Klassen</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Export</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="index.php?site=export.all">SuS Export-Alle</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="index.php?site=export.new">SuS Export-nur neue Seit letzer Anmeldung</a>
+							</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="logout.php">Logout</a>
+							</li>
 					<?php
 				} else if ( $_SESSION[ 'userrole' ] == 2 ) {
 					?>
-				
-						<li><a href="index.php?site=home" class="link">Home</a></li>
-						<li><a href="index.php?site=students" class="link">Schüler</a></li>
-						<li><a href="index.php?site=class" class="link">Klassen</a></li>
-						<li><a href="logout.php" class="link">Logout</a></li>
-					
+					<li class="nav-item <?php if($_GET[ 'site' ]=="home") echo "active";?>">
+						<a class="nav-link " href="index.php?site=home" >Home</a>
+					</li>
+					<li class="nav-item <?php if($_GET[ 'site' ]=="students"||$_GET[ 'site' ]=="update") echo "active";?>">
+						<a class="nav-link" href="index.php?site=students">Schüler</a>
+					</li>
+					<li class="nav-item <?php if($_GET[ 'site' ]=="class"||$_GET[ 'site' ]=="update.class") echo "active";?>">
+						<a class="nav-link" href="index.php?site=class">Klassen</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="logout.php">Logout</a>
+					</li>
 					<?php
 				}
 				else{
 					?>
-					<li><a href="logout.php" class="link">Logout</a></li>
+					<li class="nav-item "><a href="logout.php">Logout</a></li>
 					<?php
 				}
 			}
@@ -49,21 +98,21 @@
 				if($_GET["site"]=="homeclass")
 				{
 					?>
-							<li><a href="../index.php" class="link">Startseite</a></li> 
+							<li class="nav-item "><a href="../index.php">Startseite</a></li> 
 					<?php
 				}
 				else {
 					?>
-						<li><a href="class/index.php?site=home" class="link">Registrieren</a></li> 
+						<li class="nav-item active"><a href="class/index.php?site=home">Registrieren</a></li> 
 					<?php
 				}
 			}
 			else {
 				?>
-					<li><a href="class/index.php?site=homeclass" class="link">Registrieren</a></li>
+					<li class="nav-item active"><a href="class/index.php?site=homeclass">Registrieren</a></li>
 				<?php
 			}
 			?>
 		</ul>
 	</div>
-</div>
+</nav>

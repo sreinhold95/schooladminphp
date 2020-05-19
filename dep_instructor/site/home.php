@@ -7,28 +7,22 @@
 	<div id="error">Fehler: Benutzer konnte nicht angelegt werden!</div>
 	<div id="success">Action erfolgreich ausgeführt</div>
 </div>
-<div class="table_wrap">
-	<h1>Guten Tag</h1>
-	<h2>
+<div class="d-flex flex-column content_allg">
+<h1 class="p-2">Guten Tag im Abteilungsleiter Bereich</h1>
+	<br>
+	<h2 class="p-2">
 	<?php
+	$session_timeout = 600; // 1800 Sek./60 Sek. = 10 Minuten
+	
+	if((time() - $_SESSION['last_visit']) > $session_timeout) {
+	session_destroy();
+	session_unset();
+	header( 'location: ../index.php' );
+	// Aktion der Session wird erneut ausgeführt
+	}
+	$_SESSION['last_visit'] = time();
 	 echo 'Angemeldet als: ';
 	 echo $_SESSION["username"];
 	?>
 	</h2>
-
 </div>
-
-<!--<div class="search_wrap">
-	<div class="box_header">box 1</div>
-	<div class="box">
-	</div>
-	<br>
-	<div class="box_header">Box2</div>
-	<div class="box">
-	</div>
-</div>
-</div>-->
-
-
-</body>
-</html>

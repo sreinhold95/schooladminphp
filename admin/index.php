@@ -1,71 +1,52 @@
-<?php
-require( '../include/config.inc.php' );
-session_start();
-$session_timeout = 1800; // 1800 Sek./60 Sek. = 30 Minuten
-if (!isset($_SESSION['last_visit'])) {
-  $_SESSION['last_visit'] = time();
-  // Aktion der Session wird ausgeführt
-}
-if((time() - $_SESSION['last_visit']) > $session_timeout) {
-  session_destroy();
-  // Aktion der Session wird erneut ausgeführt
-}
-$_SESSION['last_visit'] = time();
-if ( isset( $_GET[ "site" ] ) ) {
-    $site = $_GET[ 'site' ];
-    if ( strlen( $site ) != 0 ) {
-        if ( $site == "students" ) {
-            $text = "site/students.php";
+<!DOCTYPE html>
+<html lang="de">
+    <?php 
+        include($_SERVER['DOCUMENT_ROOT']."/style/header.php");
+        require( $_SERVER['DOCUMENT_ROOT'].'/include/config.inc.php' );
+        error_reporting(E_ERROR);
+        session_start();
+        $session_timeout = 600; // 1800 Sek./60 Sek. = 10 Minuten
+        if (!isset($_SESSION['last_visit'])) {
+        $_SESSION['last_visit'] = time();
+        // Aktion der Session wird ausgeführt
         }
-        else if ( $site == "update" ) {
-            $text = "site/update.php";
+        if((time() - $_SESSION['last_visit']) > $session_timeout) {
+        session_destroy();
+        session_unset();
+        header( 'location: ../index.php' );
+        // Aktion der Session wird erneut ausgeführt
         }
-        else if ( $site == "create" ) {
-            $text = "site/create.php";
+        $_SESSION['last_visit'] = time();
+        if ( isset( $_GET[ "site" ] ) ) {
+            $site = $_GET[ 'site' ];
+            if ( strlen( $site ) != 0 ) {
+                $text="site/".$site.".php";
+            }
         }
-		else if ( $site == "teacher" ) {
-            $text = "site/teacher.php";
+        if ( isset( $_SESSION[ 'loggedin' ] ) ) {
+            $loggedin = $_SESSION[ 'loggedin' ];
+        }else
+            $loggedin = false;
+        if ( $loggedin == true ) {
+            if ( $_SESSION[ 'userrole' ] == 1 ) { 
+                include( $_SERVER['DOCUMENT_ROOT'].'/style/menu.php' );
+                if ($text!=""){
+                    //echo "<body>";
+                    include($_SERVER['DOCUMENT_ROOT'].'/style/content.php');
+                }
+                else
+                {
+                    //echo "<body>";
+                    include($text1);
+                }
+                    
+            }
+        } else {
+            header( 'location: ../index.php' );
         }
-        else if ( $site == "teacherupdate" ) {
-            $text = "site/teacherupdate.php";
-        }
-        else if ( $site == "class" ) {
-            $text = "site/class.php";
-        }
-        else if ( $site == "lanisexport" ) {
-            $text="";
-            $text1="site/lanisexport.php";
-        }
-        else if ( $site == "lanisimport" ) {
-            //$text="";
-            $text="site/lanisimport.php";
-        }
-        else if ( $site == "lusdimport" ) {
-            //$text="";
-            $text="site/lusdimport.php";
-        }
-        else if ( $site == "susimport" ) {
-            $text="site/susimportnormal.php";
-        }
-		else {
-            $text = "site/home.php";
-        }
-    }
-}
-if ( isset( $_SESSION[ 'loggedin' ] ) ) {
-    $loggedin = $_SESSION[ 'loggedin' ];
-}else
-    $loggedin = false;
-if ( $loggedin == true ) {
-    if ( $_SESSION[ 'userrole' ] == 1 ) {
-        include( "../style/header.php" );
-        include( "../style/menu.php" );
-        if ($text!="")
-            include( "../style/content.php" );
-        else
-            include($text1);
-    }
-} else {
-    header( 'location: ../index.php' );
-}
-?>
+        include($_SERVER['DOCUMENT_ROOT'].'/style/bootstrap.php');
+        include($_SERVER['DOCUMENT_ROOT'].'/admin/scripts/'.$_GET[ 'site' ].'.php');
+        echo"</body>";
+        include($_SERVER['DOCUMENT_ROOT'].'/style/footer.php');
+    ?>
+</html>
