@@ -3,6 +3,7 @@
 	define('MYSQL_USER', 	'zeugnis');
 	define('MYSQL_PASS', 	'zeugnis1984#');
 	define('MYSQL_DATABASE', 'bsznsql2');
+	$domian="anmeldung.fls-da.de";
 	$mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DATABASE);
 	$mysqli->set_charset("utf8mb4");
 	$apikey="assjsjnncnceuecnccnnc21wq2";

@@ -3,7 +3,6 @@ ini_set('session.gc_maxlifetime', 60 * 60);
 //ini_set('session.cookie_lifetime', 10*60);
 header('HTTP/1.0 200 OK');
 http_response_code(200);
-$domain = "localhost";
 $session_timeout = 10 * 60; // 360 Sek./60 Sek. = 6 Minuten
 session_start();
 if (!isset($_SESSION['last_visit'])) {
