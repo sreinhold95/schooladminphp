@@ -50,7 +50,7 @@
                     'middlename': $('input#middlename').val(),
                     'givenname': $('input#givenname').val(),
                     'moregivennname': $('input#moregivenname').val(),
-                    'street': $('input#street').val()+' '+$('input#streethnb').val(),
+                    'street': $('input#street').val()+' '+$('input#hnb').val(),
                     'postalcode': $('input#postalcode').val(),
                     'province': $('#province option:selected').val(),
                     'birthdate': $('input#birthdate').val(),
@@ -92,7 +92,7 @@
                     'Ausbildungsbeginn': $('input#ausbildungsbeginn').val(),
                     'Ausbildungsbetrieb': {
                         'Name': $('input#ausbildungsbetrieb_name').val(),
-                        'Strasse': $('input#ausbildungsbetrieb_strasse').val(),
+                        'Strasse': $('input#ausbildungsbetrieb_strasse').val()+' '+$('input#ausbildungsbetrieb_hnb').val(),
                         'PLZ': $('input#ausbildungsbetrieb_plz').val(),
                         'Telefon': $('input#ausbildungsbetrieb_telefon').val(),
                         'Fax': $('input#ausbildungsbetrieb_fax').val(),
@@ -102,9 +102,9 @@
                             'Name': $('input#ausbildungsbetrieb_ausbilder_name').val(),
                         }
                     },
-                    'dsgvo':$('input#dsgvo option:selected').val(),
-                    'houserules':$('input#housrules option:selected').val(),
-                    'edvrules':$('input#edvrules option:selected').val(),
+                    'dsgvo':1,
+                    'houserules':1,
+                    'edvrules':1,
                 };
                 var url = "../../api/v2/students.php";
                 var xhr = new XMLHttpRequest();
@@ -112,6 +112,7 @@
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.setRequestHeader("uuid", getCookie("uuid"))
                 xhr.setRequestHeader("class",$("input#classc").val())
+                xhr.setRequestHeader("classtoken",getCookie("classtoken"))
                 xhr.onload = function() {
                     var users = JSON.parse(xhr.responseText);
                     if (xhr.readyState == 4 && xhr.status == "200") {

@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$auth = false;
 	if (isset($headers['classtoken'])) {
 		$classcode = $headers['classtoken'];
-		$check = $mysqli->query("select classcode from class where uuid='" . $uuid . "' and tokenaktivateat>=DATE_SUB(NOW(),INTERVAL 15 MINUTE)");
+		$check = $mysqli->query("select classcode from class where uuid='" . $uuid . "' and tokenactivateat>=DATE_SUB(NOW(),INTERVAL 15 MINUTE)");
 	} else
 		$check = $mysqli->query("select teacher from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 	if ($check->num_rows) {
@@ -432,11 +432,10 @@ function createstudent($json)
 	$data["parentid"] = $idparents;
 	$parentidstmt->close();
 	$entrydate = date('Y-m-d');
-	$creationdate = date('Y-m-d hh:mm:ss');
-	$studentstmt = $mysqli->prepare("INSERT INTO students(surname,middlename,givenname,moregivenname,birthdate,birthtown,birthcountry,province,entryDate,classcode,address,religion,nationality,family_speech,phone,mobilephone,email,idparents,idgraduation,idberuf,active,town,plz,sex,lastschool,lastschooltown,lastschooldate,lastschoolprovince,Ausbildungsbeginn,Ausbildungsbetrieb,Ausbildungsbetrieb_strasse,Ausbildungsbetrieb_PLZ,Ausbildungsbetrieb_Telefon,Ausbildungsbetrieb_Fax,Ausbildungsbetrieb_Email,Ausbildungsbetrieb_Ausbilder_Anrede,Ausbildungsbetrieb_Ausbilder_Name,indeutschlandseit,sprachniveau,dsgvo,housrules,edvrules) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?;?);");
+	$studentstmt = $mysqli->prepare("INSERT INTO students(surname,middlename,givenname,moregivenname,birthdate,birthtown,birthcountry,province,entryDate,classcode,address,religion,nationality,family_speech,phone,mobilephone,email,idparents,idgraduation,idberuf,active,town,plz,sex,lastschool,lastschooltown,lastschooldate,lastschoolprovince,Ausbildungsbeginn,Ausbildungsbetrieb,Ausbildungsbetrieb_strasse,Ausbildungsbetrieb_PLZ,Ausbildungsbetrieb_Telefon,Ausbildungsbetrieb_Fax,Ausbildungsbetrieb_Email,Ausbildungsbetrieb_Ausbilder_Anrede,Ausbildungsbetrieb_Ausbilder_Name,indeutschlandseit,sprachniveau,dsgvo,houserules,edvrules) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 	if ($studentstmt) {
 		$studentstmt->bind_param(
-			'sssssssssssssssssiiiissssssssssssssssssiiis',
+			'sssssssssssssssssiiiissssssssssssssssssiii',
 			$jsonobj->surname,
 			$jsonobj->middlename,
 			$jsonobj->givenname,
@@ -478,14 +477,14 @@ function createstudent($json)
 			$jsonobj->sprachniveau,
 			$jsonobj->dsgvo,
 			$jsonobj->houserules,
-			$jsonobj->edvrules,
-			$creationdate
+			$jsonobj->edvrules
 		);
 		$studentstmt->execute();
 		$errors["studentstmt"] = $studentstmt->error;
 		$studentstmt->close();
 	} else {
 		$errors["studentstmt"] = "MySQL Syntax Error";
+		$errors["json"]=$_POST['student'];
 	}
 	if ($errors["parentstmt"] == "" && $errors["parentidstmt"] == "" && $errors["studentstmt"] == "")
 		$data['success'] = true;

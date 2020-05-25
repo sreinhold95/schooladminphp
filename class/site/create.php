@@ -25,7 +25,7 @@ if ($loggedin == true) {
 <div class="d-flex">
     <div class="p-2">
         <div class="content_allg">
-            <form method="POST" action="" id="adminuser">
+            <form method="POST" action="" id="useranlegen">
                 <!-- Anfang -->
                 <div class="box">
                     <div class="box_header">Schülerinformationen</div>
@@ -178,8 +178,7 @@ if ($loggedin == true) {
 
                         <div class="form-group col-sm-6">
                             <label for="classc" class="label">Klasse:</label>
-                            <input class="form-control form-control-sm" readonly type="text" size="24" maxlength="100" name="classc" id="classc" value="<?php echo $_SESSION['classcode'];
-                                                                                                                                                        S ?>">
+                            <input class="form-control form-control-sm" readonly type="text" size="24" maxlength="100" name="classc" id="classc" value="<?php echo $_SESSION['classcode'];?>">
                         </div>
                     </div>
                     <div class="form-row">
@@ -223,7 +222,7 @@ if ($loggedin == true) {
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="ausbildungsbetrieb_strasse" class="label">Hausnummer:</label>
-                            <input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="ausbildungsbetrieb_name" id="ausbildungsbetrieb_hausnummer" value="">
+                            <input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="ausbildungsbetrieb_name" id="ausbildungsbetrieb_hnb" value="">
                         </div>
                     </div>
                     <div class="form-row">
@@ -276,7 +275,7 @@ if ($loggedin == true) {
                     <div class="form-row">
                         <div class="form-group col-sm 3">
                             <label for="lastschoolplz" class="label">PLZ:</label>
-                            <input class="form-control form-control-sm" type="number" size="24" maxlength="50" name="address" id="lastschoolplz" onchange='settown("input#lastschoolplz","lastschooltown","false")' value="">
+                            <input class="form-control form-control-sm" type="number" size="24" maxlength="50" name="address" id="lastschoolplz" onchange='settownpr("input#lastschoolplz","lastschooltown","true","lastschoolprovince")' value="">
                         </div>
                         <div class="form-group col-sm-3">
                             <label for="lastschooltown" class="label">Ort</label>

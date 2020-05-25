@@ -29,6 +29,22 @@ function settown(select,inputtown,province){
         }
     });
 }
+function settownpr(select,inputtown,province,provincefield){
+    var postalcode = $( select).val()
+    //var postcalcode = document.getElementById("postalcode").value;
+    //console.log (postalcode);
+    $.get('../../api/v1/plz.php?plz='+postalcode,function(data){
+        //console.table (data)
+        //var jsondata = JSON.parse(data)
+        document.getElementById(inputtown).value = data.ort;
+        if(province=="true"){
+            $.get('../../api/v1/province.php?province='+data.bundesland,function(data1){
+                //console.log (data1)
+                document.getElementById(provincefield).value=data1.province
+            });
+        }
+    });
+}
 function setdate(select,datefield){
     //$.get('../../api/v1/plz.php?plz='+postalcode,function(data){
         var state = $( select).val()
