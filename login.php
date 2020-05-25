@@ -1,5 +1,6 @@
 <?php
 ini_set('session.gc_maxlifetime', 60 * 60);
+
 //ini_set('session.cookie_lifetime', 10*60);
 header('HTTP/1.0 200 OK');
 http_response_code(200);
@@ -27,10 +28,10 @@ if (isset($username) & isset($password)) {
 		$pid = $stmt->get_result();
 		while ($row = $pid->fetch_assoc()) {
 			$_SESSION['loggedin'] = true;
-			setcookie("userid", $row['iduser'],  0, "/", $domain);
-			setcookie("username", $row['username'], 0, "/", $domain);
+			setcookie("userid", $row['iduser'],  0, "/", $domain, true);
+			setcookie("username", $row['username'], 0, "/", $domain, true);
 			if ($row['teacher'] != '')
-				setcookie("idteacher", $row['teacher'], 0, "/", $domain);
+				setcookie("idteacher", $row['teacher'], 0, "/", $domain, true);
 			$_SESSION['id'] = $row['iduser'];
 			$_SESSION["username"] = $row['username'];
 			if (isset($row['role'])) {
@@ -40,7 +41,7 @@ if (isset($username) & isset($password)) {
 			}
 			$_SESSION['isactiv'] = 1;
 			$uuid = uuid($username, $password);
-			setcookie("uuid", $uuid, 0, "/", $domain);
+			setcookie("uuid", $uuid, 0, "/", $domain, true);
 		}
 		if ($_SESSION['isactiv'] == 1) {
 			if ($_SESSION['userrole'] == 1) {

@@ -39,8 +39,8 @@ session_start();
 	</div>
 		<br>
 		<?php include("style/bootstrap.php");?>
-</body>
 <?php
 include("style/footer.php")
 ?>
+</body>
 </html>
