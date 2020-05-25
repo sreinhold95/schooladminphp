@@ -1,5 +1,5 @@
 <?php
-	define('MYSQL_HOST', 	'192.168.0.100');
+	define('MYSQL_HOST', 	'192.168.3.23');
 	define('MYSQL_USER', 	'zeugnis');
 	define('MYSQL_PASS', 	'zeugnis1984#');
 	define('MYSQL_DATABASE', 'bsznsql2');
