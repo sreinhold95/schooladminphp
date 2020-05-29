@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$uuid = $headers['uuid'];
 	$tab = $headers['tab'];
 	$auth = false;
-	$check = $mysqli->query("select username from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+	$check = $mysqli->query("select username from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 12 HOUR)");
 	if ($check->num_rows) {
 		while ($row = $check->fetch_assoc()) {
 			$auth = true;
@@ -58,6 +58,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		session_unset();
 		session_abort();
 		//session_destroy();
+	}
+} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	$headers = apache_request_headers();
+	$uuid = $headers['uuid'];
+	$tab = $headers['tab'];
+	$auth = false;
+	$check = $mysqli->query("select username from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 12 HOUR)");
+	if ($check->num_rows) {
+		while ($row = $check->fetch_assoc()) {
+			$auth = true;
+		}
+	}
+	if ($auth == true) {
+		if (isset($_POST['status'])) {
+			settoken((int)$_POST['status'], $_POST['classcode']);
+			header('HTTP/1.0 200 OK activate');
+			header('Content-Type: application/json');
+			echo $result;
+			session_unset();
+			session_abort();
+		}
 	}
 }
 
@@ -237,54 +258,79 @@ function getallclass()
 	$data = array();
 	if ($_SESSION['isactiv'] == 1) {
 		switch ($_SESSION['userrole']) {
-		case 1:
-			$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.lastname as tgivenname FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 order by students.classcode;");
-			while ($get = $student->fetch_assoc()) {
-				if ($tab == "yes")
-					$data[] = $get;
-				else
-					$data[$get["idstudents"]] = $get;
-			}
-			$json = json_encode($data);
-		break;
-		case 2:
-			$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.lastname as tgivenname FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and depteacher.idteacher='" . $_SESSION['idteacher'] . "' order by students.classcode;");
-			while ($get = $student->fetch_assoc()) {
-				if ($tab == "yes")
-					$data[] = $get;
-				else
-					$data[$get["idstudents"]] = $get;
-			}
-			$json = json_encode($data);
-		break;
-		case 3:
-			$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.lastname as tgivenname FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and cteacher.idteacher='" . $_SESSION['idteacher'] . "' order by students.classcode;");
-			while ($get = $student->fetch_assoc()) {
-				if ($tab == "yes")
-					$data[] = $get;
-				else
-					$data[$get["idstudents"]] = $get;
-			}
-			$json = json_encode($data);
-		break;
-		case 4:
-			$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.lastname as tgivenname FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 order by students.classcode;");
-			while ($get = $student->fetch_assoc()) {
-				if ($tab == "yes")
-					$data[] = $get;
-				else
-					$data[$get["idstudents"]] = $get;
-			}
-			$json = json_encode($data);
-		break;
-		default: 
-			$data["error"] = "keine berechtigung";
-			$json = json_encode($data);
-		
-	}
+			case 1:
+				$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.lastname as tgivenname FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 order by students.classcode;");
+				while ($get = $student->fetch_assoc()) {
+					if ($tab == "yes")
+						$data[] = $get;
+					else
+						$data[$get["idstudents"]] = $get;
+				}
+				$json = json_encode($data);
+				break;
+			case 2:
+				$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.lastname as tgivenname FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and depteacher.idteacher='" . $_SESSION['idteacher'] . "' order by students.classcode;");
+				while ($get = $student->fetch_assoc()) {
+					if ($tab == "yes")
+						$data[] = $get;
+					else
+						$data[$get["idstudents"]] = $get;
+				}
+				$json = json_encode($data);
+				break;
+			case 3:
+				$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.lastname as tgivenname FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and cteacher.idteacher='" . $_SESSION['idteacher'] . "' order by students.classcode;");
+				while ($get = $student->fetch_assoc()) {
+					if ($tab == "yes")
+						$data[] = $get;
+					else
+						$data[$get["idstudents"]] = $get;
+				}
+				$json = json_encode($data);
+				break;
+			case 4:
+				$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.lastname as tgivenname FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 order by students.classcode;");
+				while ($get = $student->fetch_assoc()) {
+					if ($tab == "yes")
+						$data[] = $get;
+					else
+						$data[$get["idstudents"]] = $get;
+				}
+				$json = json_encode($data);
+				break;
+			default:
+				$data["error"] = "keine berechtigung";
+				$json = json_encode($data);
+		}
 	} else {
 		$data["error"] = "not loggedin";
 		$json = json_encode($data);
 	}
 	return ($json);
+}
+
+function settoken($status, $classcode)
+{
+	global $mysqli;
+	$errors = array();
+	$data = array();
+	if (isset($classcode)) {
+		$activatedate = date('Y-m-d H:i:s');
+		if ($status == 1) {
+			$classtokenstmt = $mysqli->prepare("update class set activetoken=?,tokenactivateat=? where classcode=?");
+			$classtokenstmt->bind_param("iss", $status,$activatedate, $classcode);
+		} else {
+			$classtokenstmt = $mysqli->prepare("update class set activetoken=? where classcode=?");
+			$classtokenstmt->bind_param("is", $status, $classcode);
+		}
+		$classtokenstmt->execute();
+		$errors["classtokenstmt"] = $classtokenstmt->error;
+		$classtokenstmt->close();
+		if ($errors["classtokenstmt"] == "")
+			$data['success'] = true;
+		else
+			$data['success'] = false;
+		$data['errors'] = $errors;
+		echo json_encode($data);
+	}
 }

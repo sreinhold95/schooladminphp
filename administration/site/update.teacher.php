@@ -8,7 +8,7 @@ if (!isset($_SESSION['last_visit'])) {
 if ((time() - $_SESSION['last_visit']) > $session_timeout) {
 	session_destroy();
 	session_unset();
-	header('location: ../index.php');
+	header('location: ../logout.php');
 	// Aktion der Session wird erneut ausgeführt
 }
 $_SESSION['last_visit'] = time();
@@ -25,11 +25,18 @@ if ($loggedin == true) {
 			$_SERVER['HTTP_REFERER'];
 			header('Location:' . $_SERVER['HTTP_REFERER']);
 		}
+	}else if ($_SESSION['userrole'] == 4) {
+		if (isset($_GET['idteacher']))
+			$idteacher = $_GET["idteacher"];
+		else {
+			$_SERVER['HTTP_REFERER'];
+			header('Location:' . $_SERVER['HTTP_REFERER']);
+		}
 	}
 } else {
 	session_destroy();
 	session_unset();
-	header('location: ../../index.php');
+	header('location: ../../logout.php');
 }
 ?>
 

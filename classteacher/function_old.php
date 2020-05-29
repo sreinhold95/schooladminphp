@@ -1,7 +1,5 @@
 <?php
 	require_once('../include/config.inc.php');
-
-
 	if(isset($_GET['token'])){
 		$errors = array();
 		$data = array();

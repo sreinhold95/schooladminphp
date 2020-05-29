@@ -6,7 +6,6 @@
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
     let infoIcon = function(value, data, cell, row, options) {
-        //return '<a href="index.php?site=update&id='+v+'" class="link"><img class="infoImage" src="../style/edit.png" alt="Edit"></a>';
         return "<img class='infoImage' src='../style/edit.png'>";
     };
     let printIcon = function(cell, formatterParams) { //plain text value
@@ -100,29 +99,6 @@
         });
     });
 
-    /*function deleteuser( idstudents ) {
-        var idteacher="";
-        if ( confirm( "Möchten Sie wirklich deaktivieren" ) )
-            if ( idstudents == "" ) {
-                $( "#deleteuser" ).show();
-                $( "#searcherror" ).hide();
-            } else {
-                $.get( 'function.php?delete&idstudents=' + idstudents, function ( data ) {
-                    var jsonobj = JSON.parse( data );
-                    if ( !jsonobj.success ) {
-                        $( "#deleteuser" ).show();
-                        $( "#success" ).hide();
-                    } else {
-                        $( "#success" ).show();
-                        $( "#deleteuser" ).hide();
-                        $.get( 'loadusertable.php?idteacher='+idteacher, function ( data ) {
-                            $( '#user-table' ).html( data );
-                        } );
-                    }
-                } );
-            }
-    }*/
-
     $("#Klasseneinstellungen").submit(function(event) {
         event.preventDefault();
 
@@ -131,21 +107,47 @@
             if (confirm("Der Token gilt ab jetzt 15 Minutren.")) {
                 var activetoken = $('input#activate:checked').val()
                 var classcode = "<?php echo $classcode ?>"
-                $.get('../../classteacher/function.php?token&activetoken=' + activetoken + '&classcode=' + classcode, function(data) {
-                    data = JSON.parse(data);
-                    if (data.success)
-                        location.reload();
-                });
+                var url = "../../api/v2/class.php";
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.setRequestHeader("uuid", getCookie("uuid"))
+                xhr.onload = function() {
+                    var users = JSON.parse(xhr.responseText);
+                    if (xhr.readyState == 4 && xhr.status == "200") {
+                        if (users.success) {
+                            location.reload();
+                        }
+                    } else {
+                        console.error(users);
+                    }
+
+                    console.log(users)
+                }
+                xhr.send("status=1&classcode=" + classcode);
             } else {}
         } else {
             if (confirm("Der Token wird jetzt deaktiviert.")) {
                 var activetoken = $('input#activate:checked').val()
                 var classcode = "<?php echo $classcode ?>"
-                $.get('../../classteacher/function.php?token&activetoken=' + activetoken + '&classcode=' + classcode, function(data) {
-                    data = JSON.parse(data);
-                    if (data.success)
-                        location.reload();
-                });
+                var url = "../../api/v2/class.php";
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.setRequestHeader("uuid", getCookie("uuid"))
+                xhr.onload = function() {
+                    var users = JSON.parse(xhr.responseText);
+                    if (xhr.readyState == 4 && xhr.status == "200") {
+                        console.table(users);
+                        if (users.success) {
+                            location.reload();
+                        }
+                    } else {
+                        console.error(users);
+                    }
+                    console.log(users)
+                }
+                xhr.send("status=0&classcode=" + classcode);
             } else {}
         }
     });

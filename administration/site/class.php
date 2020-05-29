@@ -8,7 +8,7 @@ setcookie("userid", "", 0, "/", $domain);
 setcookie("username","" , 0, "/", $domain);
 setcookie("userrole","" , 0, "/", $domain);
 setcookie("uuid", "", 0, "/", $domain);
-header( 'location: ../index.php' );
+header( 'location: ../logout.php' );
 // Aktion der Session wird erneut ausgeführt
 }
 $_SESSION['last_visit'] = time();

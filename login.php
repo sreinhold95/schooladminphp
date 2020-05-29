@@ -88,7 +88,7 @@ if (isset($_POST['token'])) {
 function uuid($username, $password)
 {
 	global $mysqli;
-	$uuid = $mysqli->prepare("update user set uuid=uuid(), uuidlifetime=now() WHERE username= ? AND password = ? and uuidlifetime<=DATE_SUB(NOW(),INTERVAL 24 HOUR) limit 1;");
+	$uuid = $mysqli->prepare("update user set uuid=uuid(), uuidlifetime=now() WHERE username= ? AND password = ? and uuidlifetime<=DATE_SUB(NOW(),INTERVAL 12 HOUR) limit 1;");
 	$uuid->bind_param("ss", $username, $password);
 	$uuid->execute();
 	$uid = "";

@@ -4,7 +4,7 @@ session_start();
 if((time() - $_SESSION['last_visit']) > $session_timeout) {
 session_destroy();
 session_unset();
-header( 'location: ../index.php' );
+header( 'location: ../logout.php' );
 // Aktion der Session wird erneut ausgeführt
 }
 $_SESSION['last_visit'] = time();
@@ -13,7 +13,6 @@ $_SESSION['last_visit'] = time();
 	<div id="searchempty">Oops! Nach was soll ich suchen?</div>
 	<div id="searcherror">Leider finde ich keine Schüler mit ihren werten in der Datenbank.</div>
 	<div id="emptyfield">Bitte füllen Sie alle Felder korrekt aus!</div>
-	<!--<div id="deleteuser">User konnte nicht gelöscht werden!</div>-->
 	<div id="val">Ungültige Zeichen in Schulnummer - nur Zahlen!</div>
 	<div id="error">Fehler: Benutzer konnte nicht angelegt werden!</div>
 	<div id="success">Action erfolgreich ausgeführt</div>
@@ -21,14 +20,6 @@ $_SESSION['last_visit'] = time();
 <div class="d-flex">
 	<div class="p-2">
 		<div class="add_wrap">
-			<!-- <div class="box_header">Schüler suchen</div>
-			<div class="box">
-				<form method="POST" action="" id="search_students" class="form">
-					<input class="field" type="text" size="24" maxlength="50" name="search" id="search">
-					<input type="submit" name="submit" id="submit" value="Suchen">
-				</form>
-			</div>
-			<br> -->
 			<div class="box_header">Klasse auswählen</div>
 			<div class="box">
 				<select name= "classs" id=classs class="field" size="1">
@@ -62,7 +53,6 @@ $_SESSION['last_visit'] = time();
 						<th>Aktiv</th>
 						<th>bearbeiten</th>
 						<th>drucken</th>
-						<!--<th>deaktivieren</th> -->
 						<th>Vorname</th>
 						<th>Nachname</th>
 						<th>Klasse</th>

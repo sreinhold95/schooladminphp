@@ -3,6 +3,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/include/config.inc.php';
 session_start();
 error_reporting(E_ERROR);
 $_SESSION["uuid"] = "";
+$role=0;
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$headers = apache_request_headers();
 	$json = json_encode($headers);
@@ -10,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$tab = $headers['tab'];
 	$auth = false;
 	$username = "";
-	$check = $mysqli->query("select username from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+	$check = $mysqli->query("SELECT username from user where active=1 and uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 	if ($check->num_rows) {
 		while ($row = $check->fetch_assoc()) {
 			$username = $row["username"];
@@ -22,6 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		login();
 		if (isset($_GET['id']))
 			$result = getstudent((int) $_GET['id']);
+		if (isset($_GET['lastdays']))
+			$result = getalllastdaystudent((int) $_GET['lastdays']);
 		if (isset($_GET['all']))
 			$result = getallstudent();
 		if (isset($_GET['search']))
@@ -42,9 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$auth = false;
 	if (isset($headers['classtoken'])) {
 		$classcode = $headers['classtoken'];
-		$check = $mysqli->query("select classcode from class where uuid='" . $uuid . "' and tokenactivateat>=DATE_SUB(NOW(),INTERVAL 15 MINUTE)");
+		$check = $mysqli->query("SELECT classcode from class where uuid='" . $uuid . "' and tokenactivateat>=DATE_SUB(NOW(),INTERVAL 15 MINUTE)");
 	} else
-		$check = $mysqli->query("select teacher from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+		$check = $mysqli->query("SELECT teacher from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 	if ($check->num_rows) {
 		while ($row = $check->fetch_assoc()) {
 			//$idteacher=$row["teacher"];
@@ -68,19 +71,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$uuid = $headers['uuid'];
 	$id = (int) $_GET['id'];
 	$auth = false;
-	$check = $mysqli->query("select teacher from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+	$check = $mysqli->query("SELECT teacher,role from user where active=1 and uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 	if ($check->num_rows) {
 		while ($row = $check->fetch_assoc()) {
-			//$idteacher=$row["teacher"];
+			$_SESSION['userrole']=$row["role"];
 			$auth = true;
 		}
 	}
 	if ($auth) {
-		header('HTTP/1.0 200 OK');
+		$data = array();
+		header('HTTP/1.0 200 OK Patch');
 		header('Content-Type: application/json');
 		parse_str(file_get_contents('php://input'), $_PATCH);
-		$student = $_PATCH['student'];
-		updatestudent($student);
+		$data["setdone"] = $_PATCH['setdone'];
+		$data["idstudent"] = $_PATCH['idstudent'];
+		$data["idstudentfile"] = file_get_contents('php://input');
+		if(isset($_PATCH['student'])){
+			$student = $_PATCH['student'];
+			updatestudent($student);
+		}
+		else if (isset($_PATCH['setdone'])){
+			setdone((int) $_PATCH['setdone'],(int) $_PATCH['idstudent']);
+		}
+		//echo json_encode($data);
 	} else {
 		header('HTTP/1.0 403 Forbitten');
 		header('Content-Type: application/json');
@@ -94,7 +107,7 @@ function login()
 {
 	global $mysqli;
 	if (isset($_SESSION["uuid"])) {
-		$check = $mysqli->query("SELECT * FROM user WHERE uuid= '" . $mysqli->real_escape_string($_SESSION["uuid"]) . "' ;");
+		$check = $mysqli->query("SELECT * FROM user WHERE active=1 and uuid= '" . $mysqli->real_escape_string($_SESSION["uuid"]) . "' ;");
 		if ($check->num_rows) {
 			$_SESSION['loggedin'] = true;
 			while ($row = $check->fetch_assoc()) {
@@ -153,7 +166,7 @@ function getallstudent()
 		} else if ($_SESSION['userrole'] == 4) {
 			if (isset($_GET['active'])) {
 				if ($_GET['active'] == 1) {
-					$student = $mysqli->prepare("select * from all_students where active=1 order by classcode ;");
+					$student = $mysqli->prepare("select * from all_students order by classcode ;");
 					$student->execute();
 					if ($student) {
 						$data = array();
@@ -237,7 +250,122 @@ function getallstudent()
 	}
 	return ($json);
 }
-
+function getalllastdaystudent($days)
+{
+	global $mysqli;
+	global $tab;
+	$data = array();
+	if ($_SESSION['isactiv'] == 1) {
+		if ($_SESSION['userrole'] == 1) {
+			$student = $mysqli->prepare("SELECT * from all_students where admin_modified=0 and TIMESTAMPDIFF(DAY,modified, NOW())<".$days." order by classcode;");
+			$student->execute();
+			if ($student) {
+				$data = array();
+				$stdt = $student->get_result();
+				while ($row = $stdt->fetch_assoc()) {
+					if ($tab == "yes")
+						$data[] = $row;
+					else
+						$data[$row["idstudents"]] = $row;
+				}
+				$json = json_encode($data);
+			}
+			if ($json == "null") {
+				$data["error"] = "no Student";
+				$json = json_encode($data);
+				header('HTTP/1.0 900 no data');
+				header('Content-Type: application/json');
+			} else {
+				header('HTTP/1.0 200 OK');
+				header('Content-Type: application/json');
+			}
+		} else if ($_SESSION['userrole'] == 4) {
+			if (isset($_GET['active'])) {
+				if ($_GET['active'] == 1) {
+					$student = $mysqli->prepare("SELECT * from all_students where administration_modified=0 and TIMESTAMPDIFF(DAY,modified, NOW())<".$days." and active=1 order by classcode;");
+					$student->execute();
+					if ($student) {
+						$data = array();
+						$stdt = $student->get_result();
+						while ($row = $stdt->fetch_assoc()) {
+							if ($tab == "yes")
+								$data[] = $row;
+							else
+								$data[$row["idstudents"]] = $row;
+						}
+						$json = json_encode($data);
+					}
+					if ($json == "null") {
+						$data["error"] = "no Student";
+						$json = json_encode($data);
+						header('HTTP/1.0 900 no data');
+						header('Content-Type: application/json');
+					} else {
+						header('HTTP/1.0 200 OK');
+						header('Content-Type: application/json');
+					}
+				}
+			} else {
+				$student = $mysqli->prepare("SELECT * from all_students where administration_modified=0 and TIMESTAMPDIFF(DAY,modified, NOW())<".$days." order by classcode;");
+				$student->execute();
+				if ($student) {
+					$data = array();
+					$stdt = $student->get_result();
+					while ($row = $stdt->fetch_assoc()) {
+						if ($tab == "yes")
+							$data[] = $row;
+						else
+							$data[$row["idstudents"]] = $row;
+					}
+					$json = json_encode($data);
+				}
+				if ($json == "null") {
+					$data["error"] = "no Student";
+					$json = json_encode($data);
+					header('HTTP/1.0 900 no data');
+					header('Content-Type: application/json');
+				} else {
+					header('HTTP/1.0 200 OK');
+					header('Content-Type: application/json');
+				}
+			}
+		} else if ($_SESSION['userrole'] == 2) {
+			$student = $mysqli->prepare("SELECT * from all_students where dep_modified=0 and TIMESTAMPDIFF(Days,modified, NOW())<.$days. order by classcode;");
+			$student->execute();
+			if ($student) {
+				$data = array();
+				$stdt = $student->get_result();
+				while ($row = $stdt->fetch_assoc()) {
+					if ($tab == "yes")
+						$data[] = $row;
+					else
+						$data[$row["idstudents"]] = $row;
+				}
+				$json = json_encode($data);
+			}
+			if ($json == "null") {
+				$data["error"] = "no Student";
+				$json = json_encode($data);
+				header('HTTP/1.0 900 no data');
+				header('Content-Type: application/json');
+			} else {
+				header('HTTP/1.0 200 OK');
+				header('Content-Type: application/json');
+			}
+		} else {
+			$data["error"] = "no rights" . " " . $_SESSION['userrole'];
+			$json = json_encode($data);
+			header('HTTP/1.0 403 no rights');
+			header('Content-Type: application/json');
+		}
+	} else {
+		$data["error"] = "not loggedin";
+		$json = json_encode($data);
+		header('HTTP/1.0 403 not loggedin');
+		header('Content-Type: application/json');
+	}
+	return ($json);
+}
 function getdepstudent()
 {
 	global $mysqli;
@@ -592,7 +720,32 @@ function updatestudent($json)
 		$data['success'] = true;
 	else
 		$data['success'] = false;
-	$errors["exitDate"] = $jsonobj->exitDate;
+	$data['errors'] = $errors;
+	echo json_encode($data);
+}
+function setdone($setdone,$studentid){
+	global $mysqli;
+	$error = array();
+	$data = array();
+	if ($_SESSION['userrole']==1){
+		$setdonestmt = $mysqli->prepare("update students set admin_modified=? where idstudents=? ");
+	}else if ($_SESSION['userrole']==2){
+		$setdonestmt = $mysqli->prepare("update students set dep_modified=? where idstudents=? ");
+	}else if ($_SESSION['userrole']==4){
+		$setdonestmt = $mysqli->prepare("update students set administration_modified=? where idstudents=? ");
+	}
+	$setdonestmt->bind_param(
+		'ii',
+		$setdone,
+		$studentid	
+	);
+	$setdonestmt->execute();
+	$errors["setdonestmt"] = $setdonestmt->error;
+	$setdonestmt->close();
+	if ($errors["setdonestmt"] == "")
+		$data['success'] = true;
+	else
+		$data['success'] = false;
 	$data['errors'] = $errors;
 	echo json_encode($data);
 }

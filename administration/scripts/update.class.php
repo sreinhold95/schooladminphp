@@ -1,111 +1,149 @@
 <script type="text/javascript">
-function deleteuser( idstudents ) {
-    //var idteacher="";
-    /*if ( confirm( "Möchten Sie wirklich deaktivieren" ) )
-        if ( idstudents == "" ) {
-            $( "#deleteuser" ).show();
-            $( "#searcherror" ).hide();
-        } else {
-            $.get( 'function.php?delete&idstudents=' + idstudents, function ( data ) {
-                var jsonobj = JSON.parse( data );
-                if ( !jsonobj.success ) {
-                    $( "#deleteuser" ).show();
-                    $( "#success" ).hide();
-                } else {
-                    $( "#success" ).show();
-                    $( "#deleteuser" ).hide();
-                    $.get( 'loadusertable.php?idteacher='+idteacher, function ( data ) {
-                        $( '#user-table' ).html( data );
-                    } );
-                }
-            } );
-        }*/
-}
+    function deleteuser(idstudents) {
+    }
 
-function getCookie(name) {
-		let matches = document.cookie.match(new RegExp(
-		"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-		));
-		return matches ? decodeURIComponent(matches[1]) : undefined;
-	}
-let infoIcon = function(value, data, cell, row, options){ 
-		//return '<a href="index.php?site=update&id='+v+'" class="link"><img class="infoImage" src="../style/edit.png" alt="Edit"></a>';
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+    let infoIcon = function(value, data, cell, row, options) {
         return "<img class='infoImage' src='../style/edit.png'>";
-};
-let printIcon = function(cell, formatterParams){ //plain text value
-    return "<i class='fa fa-print'></i>";
-};
-let Config = {
-    method:"get", //set request type to Position
-    headers: {
-		"Content-type": 'application/json; charset=utf-8',//set specific content type
-		"uuid": getCookie("uuid"),
-		"tab": "yes"
-    }
-};
-let table = new Tabulator("#students", {
-    ajaxURL:"../api/v2/class.php?classcode=<?php echo $classcode?>", //ajax URL
-    //ajaxProgressiveLoad:"scroll", //enable progressive loading
-	//ajaxProgressiveLoadScrollMargin:300, //triger next ajax load when scroll bar is 300px or less from the bottom of the table.
-	ajaxConfig:Config,
-	index:"classcode",
-	height:"700px",
-	responsiveLayout:true,
-	layout:"fitColumns",
-	columns:[
-        {title:"#",formatter:"rownum", align:"left", width:20, headerSort:false},
-        {title:"Status", field:"active",formatter:"tickCross", headerSort:false},
-        {title:"Vorname", field:"surname", headerFilter:"input", headerFilterPlaceholder:"VN"},
-        {title:"weitere VN", field:"middlename"},
-        {title:"Nachname", field:"givenname", headerFilter:"input", headerFilterPlaceholder:"NN"},
-        {title:"weitere NN", field:"moregivenname"},
-		{title:"Klasse", field:"classcode"},
-		{title:"bearbeiten", headerSort:false ,formatter:"link",formatterParams:
-			{
-				label:"öffnen",
-				url:function(cell){return "index.php?site=update&id=" + cell.getData().idstudents}
-			}
-        },
-		{title:"drucken", headerSort:false ,formatter:"link",formatterParams:
-			{
-                label:"drucken",
-                target:"_blank",
-				url:function(cell){return "../api/v2/stammblattsus.php?student="+ cell.getData().idstudents+"&uuid="+getCookie("uuid") }
-			}
-		}
-    ]
-});
-
-$("#Klasseneinstellungen").submit(function(event) {
-event.preventDefault();
-
-var activetoken = $( 'input#activate:checked').val()
-if (activetoken==1){
-    if ( confirm( "Der Token gilt ab jetzt 15 Minutren." ) ){
-    var activetoken = $( 'input#activate:checked').val()
-    var classcode = "<?php echo $classcode ?>"
-    $.get('../../classteacher/function.php?token&activetoken='+activetoken+'&classcode='+classcode, function(data) {
-        data=JSON.parse(data);
-        if (data.success)
-            location.reload(); 
+    };
+    let printIcon = function(cell, formatterParams) { //plain text value
+        return "<i class='fa fa-print'></i>";
+    };
+    let Config = {
+        method: "get", //set request type to Position
+        headers: {
+            "Content-type": 'application/json; charset=utf-8', //set specific content type
+            "uuid": getCookie("uuid"),
+            "tab": "yes"
+        }
+    };
+    let table = new Tabulator("#students", {
+        ajaxURL: "../api/v2/class.php?classcode=<?php echo $classcode ?>", //ajax URL
+        //ajaxProgressiveLoad:"scroll", //enable progressive loading
+        //ajaxProgressiveLoadScrollMargin:300, //triger next ajax load when scroll bar is 300px or less from the bottom of the table.
+        ajaxConfig: Config,
+        index: "classcode",
+        height: "700px",
+        responsiveLayout: true,
+        layout: "fitColumns",
+        columns: [{
+                title: "#",
+                formatter: "rownum",
+                align: "left",
+                width: 20,
+                headerSort: false
+            },
+            {
+                title: "Status",
+                field: "active",
+                formatter: "tickCross",
+                headerSort: false
+            },
+            {
+                title: "Vorname",
+                field: "surname",
+                headerFilter: "input",
+                headerFilterPlaceholder: "VN"
+            },
+            {
+                title: "weitere VN",
+                field: "middlename"
+            },
+            {
+                title: "Nachname",
+                field: "givenname",
+                headerFilter: "input",
+                headerFilterPlaceholder: "NN"
+            },
+            {
+                title: "weitere NN",
+                field: "moregivenname"
+            },
+            {
+                title: "Klasse",
+                field: "classcode"
+            },
+            {
+                title: "bearbeiten",
+                headerSort: false,
+                formatter: "link",
+                formatterParams: {
+                    label: "öffnen",
+                    url: function(cell) {
+                        return "index.php?site=update&id=" + cell.getData().idstudents
+                    }
+                }
+            },
+            {
+                title: "drucken",
+                headerSort: false,
+                formatter: "link",
+                formatterParams: {
+                    label: "drucken",
+                    target: "_blank",
+                    url: function(cell) {
+                        return "../api/v2/stammblattsus.php?student=" + cell.getData().idstudents + "&uuid=" + getCookie("uuid")
+                    }
+                }
+            }
+        ]
     });
-    }
-    else {
-    }
-}
-else{
-    if ( confirm( "Der Token wird jetzt deaktiviert." ) ){
-    var activetoken = $( 'input#activate:checked').val()
-    var classcode = "<?php echo $classcode ?>"
-    $.get('../../classteacher/function.php?token&activetoken='+activetoken+'&classcode='+classcode, function(data) {
-        data=JSON.parse(data);
-        if (data.success)
-            location.reload(); 
-    });
-    }
-    else {
-    }
-}
-});
 
+    $("#Klasseneinstellungen").submit(function(event) {
+        event.preventDefault();
+
+        var activetoken = $('input#activate:checked').val()
+        if (activetoken == 1) {
+            if (confirm("Der Token gilt ab jetzt 15 Minutren.")) {
+                var activetoken = $('input#activate:checked').val()
+                var classcode = "<?php echo $classcode ?>"
+                var url = "../../api/v2/class.php";
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.setRequestHeader("uuid", getCookie("uuid"))
+                xhr.onload = function() {
+                    var users = JSON.parse(xhr.responseText);
+                    if (xhr.readyState == 4 && xhr.status == "200") {
+                        if (users.success) {
+                            location.reload();
+                        }
+                    } else {
+                        console.error(users);
+                    }
+
+                    console.log(users)
+                }
+                xhr.send("status=1&classcode=" + classcode);
+            } else {}
+        } else {
+            if (confirm("Der Token wird jetzt deaktiviert.")) {
+                var activetoken = $('input#activate:checked').val()
+                var classcode = "<?php echo $classcode ?>"
+                var url = "../../api/v2/class.php";
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.setRequestHeader("uuid", getCookie("uuid"))
+                xhr.onload = function() {
+                    var users = JSON.parse(xhr.responseText);
+                    if (xhr.readyState == 4 && xhr.status == "200") {
+                        console.table(users);
+                        if (users.success) {
+                            location.reload();
+                        }
+                    } else {
+                        console.error(users);
+                    }
+                    console.log(users)
+                }
+                xhr.send("status=0&classcode=" + classcode);
+            } else {}
+        }
+    });
 </script>
