@@ -13,7 +13,7 @@ if (isset($_SESSION['loggedin'])) {
 } else
     $loggedin = false;
 if ($loggedin == true) {
-    if ($_SESSION['userrole'] == 1) {
+    if ($_SESSION['userrole'] == 2) {
     }
 } else {
     header('location: ../index.php');
@@ -146,6 +146,12 @@ if (isset($_GET['idteacher'])) {
                         ?>
                     </form>
                 </table>
+            </div>
+        </div>
+        <div class="add_wrap" id="Schüeleranlegen_wrap">
+            <div class="box_header">Schüeler anlegen</div>
+            <div class="box">
+                <button id="create_sus" type="button" class="btn btn-primary btn-sm"><a href="index.php?site=create" style="color:inherit"> neuer SuS</a></button>
             </div>
         </div>
         <div class="add_wrap">

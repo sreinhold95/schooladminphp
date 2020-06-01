@@ -16,6 +16,7 @@ if ((time() - $_SESSION['last_visit']) > $session_timeout) {
 }
 $_SESSION['last_visit'] = time();
 require_once('include/config.inc.php');
+global $domain;
 if (isset($_POST['username'])) {
 	$username = $_POST['username'];
 	$password = $_POST['password'];
