@@ -24,7 +24,7 @@ var table = new Tabulator("#dep_classes", {
 		{title:"öffnen",formatter:"link", headerSort:false,formatterParams:
 			{
 				label:"öffnen",
-				url:function(cell){return "index.php?site=update.class&idteacher=0&class=1&id=" + cell.getData().classcode}
+				url:function(cell){return "index.php?site=update.class&id=" + cell.getData().classcode}
 			}
 		},
     ]
