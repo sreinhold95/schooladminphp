@@ -1,0 +1,9 @@
+<Files "*.vs">
+Deny from all
+</Files>
+<Files "*.gitignore">
+Deny from all
+</Files>
+<Files "*.git">
+Deny from all
+</Files>

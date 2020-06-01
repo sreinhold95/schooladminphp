@@ -18,7 +18,7 @@ if (isset($_SESSION['loggedin'])) {
 } else
     $loggedin = false;
 if ($loggedin == true) {
-    if ($_SESSION['userrole'] == 2) {
+    if ($_SESSION['userrole'] == 3) {
     }
 } else {
     header('location: ../index.php');

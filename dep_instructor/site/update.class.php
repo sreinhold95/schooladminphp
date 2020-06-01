@@ -111,6 +111,12 @@ $_SESSION['last_visit'] = time();
                     </table>
                 </div>
         </div>
+        <div class="add_wrap" id="Schüeleranlegen_wrap">
+            <div class="box_header">Schüeler anlegen</div>
+            <div class="box">
+                <button id="create_sus" type="button" class="btn btn-primary btn-sm"><a href="index.php?site=create" style="color:inherit"> neuer SuS</a></button>
+            </div>
+        </div>
         <div class="add_wrap">
             <div class="box_header">Klasseneinstellungen</div>
                 <div class="box">
@@ -159,9 +165,6 @@ $_SESSION['last_visit'] = time();
         <div class="content_allg">
             <table class="table" id="students">
                 <thead>
-                    <!-- <tr>
-                        <th colspan="9" id="classmate">Schüler</th>
-                    </tr> -->
                     <tr>
                         <th>#</th>
                         <th>Status</th>
@@ -171,54 +174,9 @@ $_SESSION['last_visit'] = time();
                         <th>weitere NN</th>
                         <th>drucken</th>
                         <th>bearbeiten</th>
-                        <!-- <th>löschen</th> -->
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                        /*$query = $mysqli->query( "SELECT * FROM all_students where classcode='".$id."' order by givenname;" );
-                        if ( $query->num_rows ) {
-                            $i=1;
-                            while ( $get = $query->fetch_assoc() ) {
-                                echo '<tr>';
-                                echo '<td>'.$i.'</td>';
-                                if ( $get[ 'active' ] == 1 ) {
-                                    echo '<td><img src="../style/true.png" alt="active" id="aktiv"></td>';
-                                } 
-                                else 
-                                {
-                                    echo '<td><img src="../style/false.png" alt="active"></td>';
-                                }
-                                if(mb_detect_encoding ($get[ 'surname' ])=="ASCII")
-                                    echo '<td>' . utf8_decode($get[ 'surname' ]) . '</td>';
-                                else
-                                    echo '<td>' . $get[ 'surname' ] . '</td>';
-                                if(mb_detect_encoding ($get[ 'middlename' ])=="ASCII")
-                                    echo '<td>' .utf8_decode( $get[ 'middlename' ]) . '</td>';
-                                else
-                                    echo '<td>' . $get[ 'middlename' ] . '</td>';
-                                if(mb_detect_encoding ($get[ 'givenname' ])=="ASCII")
-                                    echo '<td>' . utf8_decode ($get[ 'givenname' ]) . '</td>';
-                                else
-                                    echo '<td>' . $get[ 'givenname' ] . '</td>';
-                                if(mb_detect_encoding ($get[ 'moregivenname' ])=="ASCII")
-                                    echo '<td>' . utf8_decode($get[ 'moregivenname' ]) . '</td>';
-                                else
-                                    echo '<td>' . $get[ 'moregivenname' ] . '</td>';
-                                echo '<td>';
-                                echo '<a href="../../pdf/stammblattsus.php?idteacher=' . $classteacher. '&classcode=' . $classcode. '&idstudents=' . $get['idstudents']. '" class="link"><img src="../style/print.png" target="_blank" alt="Edit"></a>';
-                                echo '</td>';
-                                echo '<td>';
-                                echo '<a href="index.php?site=update&idteacher=' . $classteacher . '&id=' . $get[ 'idstudents' ] . '" class="link"><img src="../style/edit.png" alt="Edit" target="_blank"></a>';
-                                echo '</td>';
-                                echo '<td>';
-                                echo '<a href="javascript:deleteuser(' . $get[ 'idstudents' ] . ')" class="link"><img src="../style/false.png" alt="delete"></a>';
-                                echo '</td>';
-                                echo '</tr>';
-                                $i++;
-                            }
-                        }*/
-                    ?>
                 </tbody>
             </table>
         </div>
