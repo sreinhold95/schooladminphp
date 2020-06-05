@@ -36,7 +36,7 @@
 <div class="d-flex flex-column content_allg">
 	<div class="p-2 row">
 		<div class="col-sm">
-			<h3>geänderte SuS in den letzen 30 Tagen</h3>
+			<h3>geänderte SuS in den letzen 90 Tagen</h3>
 		</div>
 	</div>
 	<div class="p-2 row">

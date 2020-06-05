@@ -21,7 +21,7 @@
 		}
 	};
 	let table = new Tabulator("#students", {
-		ajaxURL: "../api/v2/students.php?lastdays=30", //ajax URL
+		ajaxURL: "../api/v2/students.php?lastdays=90", //ajax URL
 		//ajaxProgressiveLoad:"scroll", //enable progressive loading
 		//ajaxProgressiveLoadScrollMargin:300, //triger next ajax load when scroll bar is 300px or less from the bottom of the table.
 		ajaxConfig: Config,
