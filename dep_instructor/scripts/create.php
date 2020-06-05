@@ -58,7 +58,7 @@
                     'birthcountry': $('input#birthcountry').val(),
                     'nationality': $('#nationality option:selected').val(),
                     'sex': $('#sex option:selected').val(),
-                    'classcode': $("#classc option:selected'").val(),
+                    'classcode': $("#classc option:selected").val(),
                     'family_speech': $('input#family_speech').val(),
                     'phone': $('input#phone').val(),
                     'mobilephone': $('input#mobilephone').val(),
@@ -111,8 +111,8 @@
                 xhr.open("POST", url, true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.setRequestHeader("uuid", getCookie("uuid"))
-                xhr.setRequestHeader("class",$("input#classc").val())
-                xhr.setRequestHeader("classtoken",getCookie("classtoken"))
+                //xhr.setRequestHeader("class",$("input#classc").val())
+                //xhr.setRequestHeader("classtoken",getCookie("classtoken"))
                 xhr.onload = function() {
                     var users = JSON.parse(xhr.responseText);
                     if (xhr.readyState == 4 && xhr.status == "200") {

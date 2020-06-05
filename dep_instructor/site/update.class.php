@@ -1,10 +1,11 @@
 <?php
 $session_timeout = 600; // 1800 Sek./60 Sek. = 10 Minuten
+ini_set('error_reporting', E_ERROR);
 session_start();
 if((time() - $_SESSION['last_visit']) > $session_timeout) {
 session_destroy();
 session_unset();
-header( 'location: ../index.php' );
+header( 'location: ../logout.php' );
 // Aktion der Session wird erneut ausgeführt
 }
 $_SESSION['last_visit'] = time();
@@ -17,7 +18,7 @@ $_SESSION['last_visit'] = time();
             
         }
     } else {
-        header( 'location: ../index.php' );
+        header( 'location: ../logout.php' );
     }
 
     $id = $_GET['id'];
@@ -70,7 +71,6 @@ $_SESSION['last_visit'] = time();
                     <table class="table" id="side-table">
                         <?php
                         $query1 = $mysqli->query( "Update class set activetoken=0 where classcode='".$id."'and TIMESTAMPDIFF(MINUTE,tokenactivateat, NOW())>15;" );
-                        if(isset($_GET["class"])){
                             $query=$mysqli->query("select * from classinformation where classcode='".$id."';");
                             $query1=$mysqli->query("select * from classinformation where classcode='".$id."';");
                             if($query->num_rows) {
@@ -106,7 +106,6 @@ $_SESSION['last_visit'] = time();
                                     $classteacher=$get["idteacher"];
                                 }
                             }
-                        }
                         ?>
                     </table>
                 </div>

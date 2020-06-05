@@ -2,30 +2,29 @@
 session_start();
 $session_timeout = 600; // 1800 Sek./60 Sek. = 10 Minuten
 if (!isset($_SESSION['last_visit'])) {
-$_SESSION['last_visit'] = time();
-// Aktion der Session wird ausgeführt
+	$_SESSION['last_visit'] = time();
+	// Aktion der Session wird ausgeführt
 }
-if((time() - $_SESSION['last_visit']) > $session_timeout) {
-session_destroy();
-session_unset();
-header( 'location: ../logout.php' );
-// Aktion der Session wird erneut ausgeführt
+if ((time() - $_SESSION['last_visit']) > $session_timeout) {
+	session_destroy();
+	session_unset();
+	header('location: ../logout.php');
+	// Aktion der Session wird erneut ausgeführt
 }
 $_SESSION['last_visit'] = time();
 
-if ( isset( $_SESSION[ 'loggedin' ] ) ) {
-    $loggedin = $_SESSION[ 'loggedin' ];
-}else
-    $loggedin = false;
-if ( $loggedin == true ) {
-    if ( $_SESSION[ 'userrole' ] == 1 ) {
-        
-    }
+if (isset($_SESSION['loggedin'])) {
+	$loggedin = $_SESSION['loggedin'];
+} else
+	$loggedin = false;
+if ($loggedin == true) {
+	if ($_SESSION['userrole'] == 1) {
+	}
 } else {
 	session_destroy();
-    session_unset();
-    header( 'location: ../index.php' );
-}?>
+	session_unset();
+	header('location: ../index.php');
+} ?>
 <div class="error_wrap">
 	<div id="searchempty">Oops! Nach was soll ich suchen?</div>
 	<div id="searcherror">Leider finde ich keine Schüler mit ihren werten in der Datenbank.</div>
@@ -47,18 +46,21 @@ if ( $loggedin == true ) {
 		<br>
 		<div class="box_header">Klasse auswählen</div>
 		<div class="box">
-			<select name="classs" id=classs class="field" size="1">
-				<?php
-				$check = $mysqli->query( "SELECT * FROM class;" );
-				while ( $row = mysqli_fetch_array( $check ) ) {
-					if ( $row[ 'classcode' ] != "" ) {
-						$classcode = $row[ 'classcode' ];
-					} else
-						$classcode = "noclass";
-					echo "<option value=" . $classcode . ">" . $classcode . " , " . $row[ 'longname' ] . "</option>";
-				}
-				?>
-			</select>
+			<div class="box">
+				<select name="classs" id=classs class="field" size="1">
+					<option selected="selected" value="alle">Alle Klassen</option>
+					<?php
+					$check = $mysqli->query("SELECT * FROM class;");
+					while ($row = mysqli_fetch_array($check)) {
+						if ($row['classcode'] != "") {
+							$classcode = $row['classcode'];
+						} else
+							$classcode = "noclass";
+						echo "<option value=" . $classcode . ">" . $classcode . "</option>";
+					}
+					?>
+				</select>
+			</div>
 		</div>
 	</div>
 	<div class="p-2 content_allg">
@@ -68,9 +70,7 @@ if ( $loggedin == true ) {
 					<th scope="col">#</th>
 					<th scope="col">Aktiv</th>
 					<th scope="col">Vorname</th>
-					<!-- <th scope="col">Vorname 2</th> -->
 					<th scope="col">Nachname</th>
-					<!-- <th scope="col">Nachname weitere</th> -->
 					<th scope="col">Klasse</th>
 					<th scope="col">bearbeiten</th>
 					<th scope="col">drucken</th>

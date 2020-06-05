@@ -30,6 +30,7 @@ if ( $loggedin == true ) {
 		<div class="box_header">Klasse auswählen</div>
 			<div class="box">
 				<select name="classs" id=classs class="field" size="1">
+				<option selected="selected" value="alle">Alle Klassen</option>
 					<?php
 					$check = $mysqli->query( "SELECT * FROM class;" );
 					while ( $row = mysqli_fetch_array( $check ) ) {

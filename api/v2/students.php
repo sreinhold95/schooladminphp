@@ -50,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		$check = $mysqli->query("SELECT teacher from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 	if ($check->num_rows) {
 		while ($row = $check->fetch_assoc()) {
-			//$idteacher=$row["teacher"];
 			$auth = true;
 		}
 	}
@@ -257,7 +256,7 @@ function getalllastdaystudent($days)
 	$data = array();
 	if ($_SESSION['isactiv'] == 1) {
 		if ($_SESSION['userrole'] == 1) {
-			$student = $mysqli->prepare("SELECT * from all_students where admin_modified=0 and TIMESTAMPDIFF(DAY,modified, NOW())<".$days." order by classcode;");
+			$student = $mysqli->prepare("SELECT * from all_students where admin_modified=0 and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
 			$student->execute();
 			if ($student) {
 				$data = array();
@@ -282,7 +281,7 @@ function getalllastdaystudent($days)
 		} else if ($_SESSION['userrole'] == 4) {
 			if (isset($_GET['active'])) {
 				if ($_GET['active'] == 1) {
-					$student = $mysqli->prepare("SELECT * from all_students where administration_modified=0 and TIMESTAMPDIFF(DAY,modified, NOW())<".$days." and active=1 order by classcode;");
+					$student = $mysqli->prepare("SELECT * from all_students where administration_modified=0 and active=1 and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
 					$student->execute();
 					if ($student) {
 						$data = array();
@@ -306,7 +305,7 @@ function getalllastdaystudent($days)
 					}
 				}
 			} else {
-				$student = $mysqli->prepare("SELECT * from all_students where administration_modified=0 and TIMESTAMPDIFF(DAY,modified, NOW())<".$days." order by classcode;");
+				$student = $mysqli->prepare("SELECT * from all_students where administration_modified=0 and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
 				$student->execute();
 				if ($student) {
 					$data = array();
@@ -330,7 +329,7 @@ function getalllastdaystudent($days)
 				}
 			}
 		} else if ($_SESSION['userrole'] == 2) {
-			$student = $mysqli->prepare("SELECT * from all_students where dep_modified=0 and TIMESTAMPDIFF(Days,modified, NOW())<.$days. order by classcode;");
+			$student = $mysqli->prepare("SELECT * from all_students_from_department where dep_modified=0 and headofdepartment='".$_SESSION["idteacher"]."' and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
 			$student->execute();
 			if ($student) {
 				$data = array();

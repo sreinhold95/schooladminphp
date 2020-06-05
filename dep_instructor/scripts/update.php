@@ -111,7 +111,7 @@ else {
             if(users.success){
                 var nodes = document.querySelectorAll(".field");
                 if ( confirm( "gespeichert." ) ){
-                    window.location.replace('/admin/index.php?site=update.class&id='+student.classcode);
+                    window.location.replace('/dep_instructor/index.php?site=update.class&id='+student.classcode);
                     }
             }
         } else {

@@ -21,7 +21,7 @@
 		}
 	};
 	let table = new Tabulator("#students", {
-		ajaxURL: "../api/v2/students.php?lastdays=30", //ajax URL
+		ajaxURL: "../api/v2/students.php?lastdays=7", //ajax URL
 		//ajaxProgressiveLoad:"scroll", //enable progressive loading
 		//ajaxProgressiveLoadScrollMargin:300, //triger next ajax load when scroll bar is 300px or less from the bottom of the table.
 		ajaxConfig: Config,
@@ -72,23 +72,9 @@
 					xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 					xhr.setRequestHeader("uuid", getCookie("uuid"))
 					xhr.send("setdone=1&idstudent=" + cell.getData().idstudents);
+					location.reload();
 				}
 			}
 		]
-	});
-	$("#classs").change(function(event) {
-		var classcode = $("#classs option:selected").val();
-		event.preventDefault();
-		if (classcode == '') {
-			$("#searchempty").show();
-			$("#searcherror").hide();
-			$("deleteuser").hide();
-
-		} else {
-			if (classcode == "alle")
-				table.clearFilter();
-			else
-				table.setFilter("classcode", "like", classcode);
-		}
 	});
 </script>

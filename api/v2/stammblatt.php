@@ -39,6 +39,8 @@ if($auth){
         $query=$query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' and headidteacher='".$idteacher."';");
     else if($role==1){
         $query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' order by all_studentspdf.sgivenname;");
+    }else if($role==4){
+        $query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' order by all_studentspdf.sgivenname;");
     }
     if ( $query->num_rows ) {
         $html=array();

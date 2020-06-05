@@ -182,7 +182,7 @@ if ($loggedin == true) {
                             <label for="classc" class="label">Klasse:</label>
 									<?php
 									echo '<select name "classc"  id="classc" class="form-control form-control-sm size="1">';
-									$check = $mysqli->query("SELECT classcode FROM class;");
+									$check = $mysqli->query("SELECT * FROM classteacher where idteacher='".$_SESSION['idteacher']."';");
 									while ($row = mysqli_fetch_array($check)) {
 										if ($row['classcode'] != "") {
 											$classcode = $row['classcode'];

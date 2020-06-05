@@ -8,7 +8,7 @@ $_SESSION['last_visit'] = time();
 if((time() - $_SESSION['last_visit']) > $session_timeout) {
 session_destroy();
 session_unset();
-header( 'location: ../index.php' );
+header( 'location: ../logout.php' );
 // Aktion der Session wird erneut ausgeführt
 }
 $_SESSION['last_visit'] = time();
@@ -24,7 +24,7 @@ if ( $loggedin == true ) {
 } else {
     session_destroy();
     session_unset();
-    header( 'location: ../index.php' );
+    header( 'location: ../logout.php' );
 }
 ?>
 

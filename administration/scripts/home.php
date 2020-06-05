@@ -72,6 +72,7 @@
 					xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 					xhr.setRequestHeader("uuid", getCookie("uuid"))
 					xhr.send("setdone=1&idstudent=" + cell.getData().idstudents);
+					location.reload();
 				}
 			}
 		]

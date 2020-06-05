@@ -36,136 +36,19 @@ var table = new Tabulator("#classes", {
 		},
     ]
 });
+$( "#classs" ).change( function ( event ) {
+		var classcode = $( "#classs option:selected" ).val();
+		event.preventDefault();
+		if ( classcode == '' ) {
+			$( "#searchempty" ).show();
+			$( "#searcherror" ).hide();
+			$("deleteuser").hide();
 
-
-
-
-// $(document).ready(function() {
-// 	$.ajax({
-// 		url:'../api/v2/classes.php',
-// 		type:'GET',
-// 		headers:{"uuid": getCookie("uuid")},
-// 		success:function(data){
-// 			//var result = JSON.parse(data);
-// 			var i=1
-// 			$.each(data, function(key, value){
-// 				$("#classes >tbody:last").append(
-// 						$('<tr>').append(
-// 							$('<th scope="row">').append(i)
-// 							.append(
-// 								$('</th>').append(
-// 									$('</tr>')
-// 									)
-// 								)
-// 							)
-// 						);
-// 					i++
-// 				$.each(value, function(k, v){
-// 					if(k === "classcode"){
-// 						$("#classes >tbody >tr:last").append(
-
-// 							$('<td>').append('<a href="index.php?site=update.class&idteacher=0&class=1&id='+v+'" class="link"><img src="../style/edit.png" alt="Edit"></a>')
-// 							.append(
-// 								$('</td>')
-// 								)
-// 						);
-// 					}
-// 					if(k === "classcode"){
-//                         $("#classes >tbody >tr:last").append(
-
-//                             $('<td>').append(v)
-//                             .append(
-//                                 $('</td>')
-
-//                                 )
-
-//                             );
-// 					}
-					
-// 					if(k === "longname"){
-// 						$("#classes >tbody >tr:last").append(
-
-// 							$('<td>').append(v)
-// 							.append(
-// 								$('</td>')
-
-// 								)
-
-// 						);
-// 					}
-// 				});
-				
-// 			});
-// 		}
-// 	})
-// });
-	// $( "#classs" ).change( function ( event ) {
-	// 	var classcode = $( "#classs option:selected" ).val();
-	// 	event.preventDefault();
-	// 	if ( classcode == '' ) {
-	// 		$( "#searchempty" ).show();
-	// 		$( "#searcherror" ).hide();
-	// 		$("deleteuser").hide();
-
-	// 	} else {
-	// 		$("#classes tbody tr").remove(); 
-	// 		$.ajax({
-	// 			url:'../api/v2/classes.php?classcode='+classcode,
-	// 			type:'GET',
-	// 			headers:{"uuid": getCookie("uuid")},
-	// 			success:function(data){
-	// 				//var result = JSON.parse(data);
-	// 				var i=1
-	// 				$.each(data, function(key, value){
-	// 					$("#classes >tbody:last").append(
-	// 							$('<tr>').append(
-	// 								$('<th scope="row">').append(i)
-	// 								.append(
-	// 									$('</th>').append(
-	// 										$('</tr>')
-	// 										)
-	// 									)
-	// 								)
-	// 							);
-	// 						i++
-	// 					$.each(value, function(k, v){
-	// 						if(k === "classcode"){
-	// 							$("#classes >tbody >tr:last").append(
-
-	// 								$('<td>').append('<a href="index.php?site=update&idteacher=0&class=1&id='+v+'" class="link"><img src="../style/edit.png" alt="Edit"></a>')
-	// 								.append(
-	// 									$('</td>')
-	// 									)
-	// 							);
-	// 						}
-	// 						if(k === "classcode"){
-	// 							$("#classes >tbody >tr:last").append(
-
-	// 								$('<td>').append(v)
-	// 								.append(
-	// 									$('</td>')
-
-	// 									)
-
-	// 								);
-	// 						}
-							
-	// 						if(k === "longname"){
-	// 							$("#classes >tbody >tr:last").append(
-
-	// 								$('<td>').append(v)
-	// 								.append(
-	// 									$('</td>')
-
-	// 									)
-
-	// 							);
-	// 						}
-	// 					});
-						
-	// 				});
-	// 			}
-	// 		})  
-	// 	}
-	// });
+		} else {
+			if(classcode=="alle")
+				table.clearFilter();
+			else
+				table.setFilter("classcode","like",classcode);
+		}
+	});
 </script>

@@ -67,6 +67,10 @@
                 field: "birthdate"
             },
             {
+                title: "E-Mail",
+                field: "email"
+            },
+            {
                 title: "bearbeiten",
                 headerSort: false,
                 formatter: "link",

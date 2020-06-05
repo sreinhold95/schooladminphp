@@ -66,7 +66,7 @@ if (isset($_GET['idteacher'])) {
                 <table class="table" id="side-table">
                     <?php
                     $query1 = $mysqli->query("Update class set activetoken=0 where classcode='" . $id . "'and TIMESTAMPDIFF(MINUTE,tokenactivateat, NOW())>15;");
-                    if (isset($_GET["class"])) {
+                    
                         $query = $mysqli->query("select * from classinformation where classcode='" . $id . "';");
                         $query1 = $mysqli->query("select * from classinformation where classcode='" . $id . "';");
                         if ($query->num_rows) {
@@ -102,7 +102,6 @@ if (isset($_GET['idteacher'])) {
                                 $classteacher = $get["idteacher"];
                             }
                         }
-                    }
                     ?>
                 </table>
             </div>

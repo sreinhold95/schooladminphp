@@ -1,5 +1,6 @@
 <?php
 $session_timeout = 600; // 1800 Sek./60 Sek. = 10 Minuten
+ini_set('error_reporting', E_ERROR);
 session_start();
 if((time() - $_SESSION['last_visit']) > $session_timeout) {
 session_destroy();
