@@ -21,11 +21,12 @@ $data = array();
 if (!isset($uuid))
     $uuid = $_GET["uuid"];
 //uuid teacher-ID
-$check = $mysqli->query("select teacher,role from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+$check = $mysqli->query("select teacher,role,school from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 if ($check->num_rows) {
     while ($row = $check->fetch_assoc()) {
         if (isset($row["role"])) {
             $role = $row["role"];
+            $school=$row["school"];
         }
         if (isset($row["teacher"])) {
             $idteacher = $row["teacher"];
@@ -39,13 +40,13 @@ if ($auth) {
     // tcpdf unterstützt recht viele HTML-Befehle. Die Nutzung von CSS ist allerdings
     // stark eingeschränkt.
     if ($role == 3) {
-        $query = $mysqli->query("SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.idstudents='" . $idstudent . "' and teacher_class.idteacher='" . $idteacher . "';");
+        $query = $mysqli->query("SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.idstudents='" . $idstudent . "' and teacher_class.idteacher='" . $idteacher . "'and all_studentspdf.school='".$school."';");
     } else if ($role == 2) {
-        $query = $mysqli->query("SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.idstudents='" . $idstudent . "' and headidteacher='" . $idteacher . "';");
+        $query = $mysqli->query("SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.idstudents='" . $idstudent . "' and headidteacher='" . $idteacher . "' and all_studentspdf.school='".$school."';");
     } else if ($role == 1) {
         $query = $mysqli->query("SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.idstudents='" . $idstudent . "' limit 1;");
     }else if ($role == 4) {
-        $query = $mysqli->query("SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.idstudents='" . $idstudent . "' limit 1;");
+        $query = $mysqli->query("SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.idstudents='" . $idstudent . "' and all_studentspdf.school='".$school."' limit 1;");
     }
     if ($query->num_rows) {
         $html = array();
@@ -56,7 +57,7 @@ if ($auth) {
             $susname = $get['ssurname'] . ' ' . $get['sgivenname'];
             if ($get["Schulform"] == "Teilzeit") {
                 $html[$i] = '
-                <span style="text-allign:justify;"><h1>Stammbogen der FLS Darmstadt (' . $get['Schulform'] . ')</h3></span>
+                <span style="text-allign:justify;"><h1>Stammbogen der '.$get[ 'schoolname' ].' (' . $get['Schulform'] . ')</h3></span>
                 <table>
                     <tbody>
                         <tr>
@@ -273,7 +274,7 @@ if ($auth) {
             ';
             } else if ($get["Schulform"] == "Vollzeit") {
                 $html[$i] = '
-                <span style="text-allign:justify;"><h1>Stammbogen der FLS Darmstadt (' . $get['Schulform'] . ')</h3></span>
+                <span style="text-allign:justify;"><h1>Stammbogen der '.$get[ 'schoolname' ].' (' . $get['Schulform'] . ')</h3></span>
                 <table border="0">
                     <tbody>
                         <tr>

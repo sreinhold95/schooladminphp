@@ -68,7 +68,7 @@
 				cellClick: function(e, cell, value, data) {
 					var url = "../../api/v2/students.php" ;
 					var xhr = new XMLHttpRequest();
-					xhr.open("PATCH", url, true);
+					xhr.open("PATCH", url, false);
 					xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 					xhr.setRequestHeader("uuid", getCookie("uuid"))
 					xhr.send("setdone=1&idstudent=" + cell.getData().idstudents);

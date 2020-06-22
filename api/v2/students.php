@@ -45,19 +45,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$auth = false;
 	if (isset($headers['classtoken'])) {
 		$classcode = $headers['classtoken'];
-		$check = $mysqli->query("SELECT classcode from class where uuid='" . $uuid . "' and tokenactivateat>=DATE_SUB(NOW(),INTERVAL 15 MINUTE)");
+		$check = $mysqli->query("SELECT classcode,school from class where uuid='" . $uuid . "' and tokenactivateat>=DATE_SUB(NOW(),INTERVAL 15 MINUTE)");
+		$school=$row["school"];
 	} else
-		$check = $mysqli->query("SELECT teacher from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+		$check = $mysqli->query("SELECT teacher,school from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 	if ($check->num_rows) {
 		while ($row = $check->fetch_assoc()) {
 			$auth = true;
+			$school=$row["school"];
 		}
 	}
 	if ($auth) {
 		header('HTTP/1.0 200 OK');
 		header('Content-Type: application/json');
 		$student = $_POST['student'];
-		createstudent($student);
+		createstudent($student,$school);
 	} else {
 		header('HTTP/1.0 200 OK');
 		header('Content-Type: application/json');
@@ -116,6 +118,7 @@ function login()
 					if ($row['teacher'] != '')
 						$_SESSION['idteacher'] = $row['teacher'];
 				}
+				$_SESSION['school']=$row['school'];
 				$_SESSION['isactiv'] = 1;
 			}
 			if ($_SESSION['isactiv'] == 1) {
@@ -165,7 +168,7 @@ function getallstudent()
 		} else if ($_SESSION['userrole'] == 4) {
 			if (isset($_GET['active'])) {
 				if ($_GET['active'] == 1) {
-					$student = $mysqli->prepare("select * from all_students order by classcode ;");
+					$student = $mysqli->prepare("select * from all_students where school='".$_SESSION['school']."' order by classcode ;");
 					$student->execute();
 					if ($student) {
 						$data = array();
@@ -486,7 +489,7 @@ function searchstudent($search)
 					$json = json_encode($data);
 				}
 			} else if ($_SESSION['userrole'] == 4) {
-				$student = $mysqli->prepare("select * from students where surname LIKE '%$search%' or middlename LIKE '%$search%' or givenname LIKE '%$search%' or moregivenname LIKE '%$search%';");
+				$student = $mysqli->prepare("select * from students where '".$_SESSION['userrole']."' and surname LIKE '%$search%' or middlename LIKE '%$search%' or givenname LIKE '%$search%' or moregivenname LIKE '%$search%';");
 				//$student->bind_param('ssss',$search);
 				$student->execute();
 				if ($student) {
@@ -522,7 +525,7 @@ function searchstudent($search)
 	}
 	return ($json);
 }
-function createstudent($json)
+function createstudent($json,$school)
 {
 	global $mysqli;
 	$error = array();
@@ -559,10 +562,10 @@ function createstudent($json)
 	$data["parentid"] = $idparents;
 	$parentidstmt->close();
 	$entrydate = date('Y-m-d');
-	$studentstmt = $mysqli->prepare("INSERT INTO students(surname,middlename,givenname,moregivenname,birthdate,birthtown,birthcountry,province,entryDate,classcode,address,religion,nationality,family_speech,phone,mobilephone,email,idparents,idgraduation,idberuf,active,town,plz,sex,lastschool,lastschooltown,lastschooldate,lastschoolprovince,Ausbildungsbeginn,Ausbildungsbetrieb,Ausbildungsbetrieb_strasse,Ausbildungsbetrieb_PLZ,Ausbildungsbetrieb_Telefon,Ausbildungsbetrieb_Fax,Ausbildungsbetrieb_Email,Ausbildungsbetrieb_Ausbilder_Anrede,Ausbildungsbetrieb_Ausbilder_Name,indeutschlandseit,sprachniveau,dsgvo,houserules,edvrules) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+	$studentstmt = $mysqli->prepare("INSERT INTO students(surname,middlename,givenname,moregivenname,birthdate,birthtown,birthcountry,province,entryDate,classcode,address,religion,nationality,family_speech,phone,mobilephone,email,idparents,idgraduation,idberuf,active,town,plz,sex,lastschool,lastschooltown,lastschooldate,lastschoolprovince,Ausbildungsbeginn,Ausbildungsbetrieb,Ausbildungsbetrieb_strasse,Ausbildungsbetrieb_PLZ,Ausbildungsbetrieb_Telefon,Ausbildungsbetrieb_Fax,Ausbildungsbetrieb_Email,Ausbildungsbetrieb_Ausbilder_Anrede,Ausbildungsbetrieb_Ausbilder_Name,indeutschlandseit,sprachniveau,dsgvo,houserules,edvrules,school) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 	if ($studentstmt) {
 		$studentstmt->bind_param(
-			'sssssssssssssssssiiiissssssssssssssssssiii',
+			'sssssssssssssssssiiiissssssssssssssssssiiis',
 			$jsonobj->surname,
 			$jsonobj->middlename,
 			$jsonobj->givenname,
@@ -604,7 +607,8 @@ function createstudent($json)
 			$jsonobj->sprachniveau,
 			$jsonobj->dsgvo,
 			$jsonobj->houserules,
-			$jsonobj->edvrules
+			$jsonobj->edvrules,
+			$school
 		);
 		$studentstmt->execute();
 		$errors["studentstmt"] = $studentstmt->error;

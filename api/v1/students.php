@@ -84,6 +84,7 @@ function getstudent($id){
 function createstudent($json){
 	global $mysqli;
 	global $apikey;
+	global $school;
 	$error=array();
 	$data = array();
 	$json=str_replace("%26","&",$_POST['student']);
@@ -119,7 +120,7 @@ function createstudent($json){
 		$entrydate=date('Y-m-d');
 		$studentstmt=$mysqli->prepare("INSERT INTO students(surname,middlename,givenname,moregivenname,birthdate,birthtown,birthcountry,province,entryDate,classcode,address,religion,nationality,family_speech,phone,mobilephone,email,idparents,idgraduation,idberuf,active,town,plz,sex,lastschool,lastschooltown,lastschooldate,lastschoolprovince,Ausbildungsbeginn,Ausbildungsbetrieb,Ausbildungsbetrieb_strasse,Ausbildungsbetrieb_PLZ,Ausbildungsbetrieb_Telefon,Ausbildungsbetrieb_Fax,Ausbildungsbetrieb_Email,Ausbildungsbetrieb_Ausbilder_Anrede,Ausbildungsbetrieb_Ausbilder_Name,indeutschlandseit,sprachniveau) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"); 
 		if($studentstmt){
-			$studentstmt->bind_param('sssssssssssssssssiiiissssssssssssssssss',
+			$studentstmt->bind_param('sssssssssssssssssiiiisssssssssssssssssss',
 			$jsonobj->surname,
 			$jsonobj->middlename,
 			$jsonobj->givenname,
@@ -158,7 +159,8 @@ function createstudent($json){
 			$jsonobj->Ausbildungsbetrieb->Ausbilder->Anrede,
 			$jsonobj->Ausbildungsbetrieb->Ausbilder->Name,
 			$jsonobj->indeutschlandseit,
-			$jsonobj->sprachniveau);
+			$jsonobj->sprachniveau,
+			$school);
 			$studentstmt->execute();
 			$errors["studentstmt"]=$studentstmt->error;
 			$studentstmt->close();
@@ -173,7 +175,7 @@ function createstudent($json){
 		echo json_encode($data);
 	}
 	else{
-		echo json_decode();
+		echo json_decode($data);
 	}
 }
 
@@ -276,7 +278,7 @@ function updatestudent($json){
 		echo json_encode($data);
 	}
 	else{
-		echo json_decode();
+		echo json_decode($data);
 	}
 	//echo json_decode(iconv('ASCII', 'UTF-8//IGNORE', $_POST['student']));
 	//echo json_encode($jsonobj);

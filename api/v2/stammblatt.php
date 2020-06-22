@@ -19,11 +19,12 @@ $role=0;
 if(!isset($uuid))
     $uuid=$_GET["uuid"];
 //uuid teacher-ID
-$check=$mysqli->query("select teacher,role from user where uuid='".$uuid."'and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR);");
+$check=$mysqli->query("select teacher,role,school from user where uuid='".$uuid."'and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR);");
 if($check->num_rows){
     while($row=$check->fetch_assoc()){
         $idteacher=$row["teacher"];
         $role=$row["role"];
+        $school=$row["school"];
         $auth=true;
     }
 }
@@ -33,14 +34,14 @@ if($auth){
     // tcpdf unterstützt recht viele HTML-Befehle. Die Nutzung von CSS ist allerdings
     // stark eingeschränkt.
     if ($role==3){
-        $query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' and teacher_class.idteacher='".$idteacher."' order by all_studentspdf.sgivenname;");
+        $query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' and teacher_class.idteacher='".$idteacher."' and all_studentspdf.school='".$school."' order by all_studentspdf.sgivenname;");
     }
     else if($role==2)
-        $query=$query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' and headidteacher='".$idteacher."';");
+        $query=$query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' and headidteacher='".$idteacher."' and all_studentspdf.school='".$school."';");
     else if($role==1){
         $query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' order by all_studentspdf.sgivenname;");
     }else if($role==4){
-        $query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' order by all_studentspdf.sgivenname;");
+        $query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' and all_studentspdf.school='".$school."' order by all_studentspdf.sgivenname;");
     }
     if ( $query->num_rows ) {
         $html=array();
@@ -52,7 +53,7 @@ if($auth){
                 if(mb_detect_encoding ($get[ 'Ausbildungsbetrieb' ])=="ASCII") $Ausbildungsbetrieb=utf8_decode($get['Ausbildungsbetrieb']); else $Ausbildungsbetrieb=$get['Ausbildungsbetrieb'];
                 if(mb_detect_encoding ($get[ 'Ausbildungsbetrieb_Strasse' ])=="ASCII") $Ausbildungsbetrieb_Strasse = utf8_decode($get['Ausbildungsbetrieb_Strasse']); else $Ausbildungsbetrieb_Strasse=$get['Ausbildungsbetrieb_Strasse'];
                 $html[$i]= '
-                <span style="text-allign:justify;"><h1>Stammbogen der FLS Darmstadt (' .$get[ 'Schulform' ].')</h3></span>
+                <span style="text-allign:justify;"><h1>Stammbogen der '.$get[ 'schoolname' ].' (' .$get[ 'Schulform' ].')</h3></span>
                 <table>
                     <tbody>
                         <tr>
@@ -271,7 +272,7 @@ if($auth){
             }else if($get["Schulform"]=="Vollzeit")
             {
                 $html[$i]= '
-                <span style="text-allign:justify;"><h1>Stammbogen der FLS Darmstadt (' .$get[ 'Schulform' ].')</h3></span>
+                <span style="text-allign:justify;"><h1>Stammbogen der '.$get[ 'schoolname' ].' (' .$get[ 'Schulform' ].')</h3></span>
                 <table border="0">
                     <tbody>
                         <tr>
