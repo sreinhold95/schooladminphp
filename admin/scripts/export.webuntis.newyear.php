@@ -21,7 +21,7 @@
         }
     };
     let table = new Tabulator("#students", {
-        ajaxURL: "../api/v2/export.php?webuntis", //ajax URL
+        ajaxURL: "../api/v2/export.php?webuntisnewyear", //ajax URL
         //ajaxProgressiveLoad:"scroll", //enable progressive loading
         //ajaxProgressiveLoadScrollMargin:300, //triger next ajax load when scroll bar is 300px or less from the bottom of the table.
         ajaxConfig: Config,

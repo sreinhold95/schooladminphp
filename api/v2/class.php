@@ -80,6 +80,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 			session_abort();
 		}
 	}
+}else if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
+	$headers = apache_request_headers();
+	$uuid = $headers['uuid'];
+	$auth = false;
+	$check = $mysqli->query("SELECT teacher,role from user where active=1 and uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+	if ($check->num_rows) {
+		while ($row = $check->fetch_assoc()) {
+			$_SESSION['userrole']=$row["role"];
+			$auth = true;
+		}
+	}
+	if ($auth) {
+		$data = array();
+		header('HTTP/1.0 200 OK Patch');
+		header('Content-Type: application/json');
+		parse_str(file_get_contents('php://input'), $_PATCH);
+		if($_PATCH["schoolyearchange"]){
+			schoolyearchange();
+			//echo $_PATCH["schoolyearchange"];
+		}
+	} else {
+		header('HTTP/1.0 403 Forbitten');
+		header('Content-Type: application/json');
+		$data = array();
+		$data["error"] = "uuid false or outdated";
+		echo json_encode($data);
+	}
 }
 
 function login($uuid)
@@ -333,4 +360,61 @@ function settoken($status, $classcode)
 		$data['errors'] = $errors;
 		echo json_encode($data);
 	}
+}
+function schoolyearchange()
+{
+	global $mysqli;
+	global $tab;
+	$errors = array();
+	$data = array();
+	$exitDate = "2020-07-03";
+	$classes=$mysqli->query("SELECT classcode,new_classcode from class where sequence=1");
+	/*while ($get=$classes->fetch_assoc())
+	{
+		$new_classcode=$mysqli->prepare("UPDATE students set classcode=? where classcode=? and idstudents>=0");
+		$new_classcode->bind_param("ss",$get["new_classcode"],$get["classcode"]);
+		$new_classcode->execute();
+		$errors["new_classodeseq1"]=$new_classcode->error;
+	}*/
+	if ($errors["new_classodeseq1"] == ""){
+		$classes=$mysqli->query("SELECT classcode,new_classcode from class where sequence=2");
+		/*while ($get=$classes->fetch_assoc())
+		{
+			$new_classcode=$mysqli->prepare("UPDATE students set classcode=? where classcode=? and idstudents>=0");
+			$new_classcode->bind_param("ss",$get["new_classcode"],$get["classcode"]);
+			$new_classcode->execute();
+			$errors["new_classodeseq2"]=$new_classcode->error;
+		}*/
+	}
+	if ($errors["new_classodeseq2"] == ""){
+		$classes=$mysqli->query("SELECT classcode,new_classcode from class where sequence=3");
+		/*while ($get=$classes->fetch_assoc())
+		{
+			$new_classcode=$mysqli->prepare("UPDATE students set classcode=? where classcode=? and idstudents>=0");
+			$new_classcode->bind_param("ss",$get["new_classcode"],$get["classcode"]);
+			$new_classcode->execute();
+			$errors["new_classodeseq3"]=$new_classcode->error;
+		}*/
+	}
+	if ($errors["new_classodeseq3"] == ""){
+		$classcode="delete";
+		$inactivetodelete=$mysqli->prepare("update students set classcode =? where active=0 and idstudents>=0;");
+		$inactivetodelete->bind_param("s",$classcode);
+		$inactivetodelete->execute();
+		$errors["inactivtodelete"]=$inactivetodelete->error;
+		$inactivetodelete=$mysqli->prepare("update students set active =? where classcode=? and idstudents>=0;");
+		$inactivetodelete->bind_param("is",0,$classcode);
+		$inactivetodelete->execute();
+		$errors["inactivtodelete"]=$inactivetodelete->error;
+		$new_classcode=$mysqli->prepare("UPDATE students set exitDate=? where classcode=? and idstudents>=0 and exitDate is null");
+		$new_classcode->bind_param("ss",$exitDate,$classcode);
+		$new_classcode->execute();
+		$errors["setExitDate"]=$new_classcode->error;
+	}
+	if ($errors["new_classodeseq1"] == ""&& $errors["new_classodeseq2"] == ""&& $errors["new_classodeseq3"] == ""&& $errors["inactivetodelete"] == ""&& $errors["setExitDate"] == "")
+			$data['success'] = true;
+		else
+			$data['success'] = false;
+		$data['errors'] = $errors;
+		echo json_encode($data);
 }

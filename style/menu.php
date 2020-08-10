@@ -32,6 +32,8 @@
 								<a class="dropdown-item" href="index.php?site=export.lanis">LANiS  Sync Export</a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="index.php?site=export.webuntis">Webuntis Export</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="index.php?site=export.webuntis.newyear">Webuntis Export Angänger</a>
 							</div>
 						</li>
 						<li class="nav-item">
