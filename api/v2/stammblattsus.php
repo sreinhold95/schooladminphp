@@ -200,7 +200,7 @@ if ($auth) {
                         </table>
                         <br>
                         ';
-                $html[$i] .= '<h4>- Zustimmungen zu Datenschutz,Haus und EDV Nutzungsordnung -</h4><br>';
+                $html[$i] .= '<h4>- Zustimmungen zu Datenschutz,Schul- und EDV Nutzungsordnung -</h4><br>';
                 if ($get['dsgvo'] == 2) {
                     $html[$i] .= "Datenschutzverordnung Klassenordner schauen<br>";
                 } else if ($get['dsgvo'] == 1)
@@ -208,11 +208,11 @@ if ($auth) {
                 else
                     $html[$i] .= "Datenschutzverordnung nein<br>";
                 if ($get['houserules'] == 2) {
-                    $html[$i] .= "Hausordnung Klassenordner schauen<br>";
+                    $html[$i] .= "Schulordnung Klassenordner schauen<br>";
                 } else if ($get['houserules'] == 1)
-                    $html[$i] .= "Hausordnung: zugestimmt<br>";
+                    $html[$i] .= "Schulordnung: zugestimmt<br>";
                 else
-                    $html[$i] .= "Hausordnung nein<br>";
+                    $html[$i] .= "Schulordnung nein<br>";
                 if ($get['edvrules'] == 2) {
                     $html[$i] .= "EDV Nutzungsordnung Klassenordner schauen <br>";
                 } else if ($get['edvrules'] == 1)
@@ -358,7 +358,7 @@ if ($auth) {
                         </table>
                         <br>
                 ';
-                $html[$i] .= '<h4>- Zustimmungen zu Datenschutz,Haus und EDV Nutzungsordnung -</h4><br>';
+                $html[$i] .= '<h4>- Zustimmungen zu Datenschutz,Schulordnung- und EDV Nutzungsordnung -</h4><br>';
                 if ($get['dsgvo'] == 2) {
                     $html[$i] .= "Datenschutzverordnung Klassenordner schauen<br>";
                 } else if ($get['dsgvo'] == 1)
@@ -366,11 +366,11 @@ if ($auth) {
                 else
                     $html[$i] .= "Datenschutzverordnung nein<br>";
                 if ($get['houserules'] == 2) {
-                    $html[$i] .= "Hausordnung Klassenordner schauen<br>";
+                    $html[$i] .= "Schulordnung Klassenordner schauen<br>";
                 } else if ($get['houserules'] == 1)
-                    $html[$i] .= "Hausordnung: zugestimmt<br>";
+                    $html[$i] .= "Schulordnung: zugestimmt<br>";
                 else
-                    $html[$i] .= "Hausordnung nein, ";
+                    $html[$i] .= "Schulordnung: nein, ";
                 if ($get['edvrules'] == 2) {
                     $html[$i] .= "EDV Nutzungsordnung Klassenordner schauen<br>";
                 } else if ($get['edvrules'] == 1)

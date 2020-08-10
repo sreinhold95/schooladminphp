@@ -168,7 +168,7 @@ function getallstudent()
 		} else if ($_SESSION['userrole'] == 4) {
 			if (isset($_GET['active'])) {
 				if ($_GET['active'] == 1) {
-					$student = $mysqli->prepare("select * from all_students where school='".$_SESSION['school']."' order by classcode ;");
+					$student = $mysqli->prepare("select * from all_students where school='".$_SESSION['school']."' and active='".$_GET['active']."' order by classcode ;");
 					$student->execute();
 					if ($student) {
 						$data = array();
@@ -192,7 +192,7 @@ function getallstudent()
 					}
 				}
 			} else {
-				$student = $mysqli->prepare("select * from all_students order by classcode;");
+				$student = $mysqli->prepare("select * from all_students where school='".$_SESSION['school']."' order by classcode;");
 				$student->execute();
 				if ($student) {
 					$data = array();
@@ -216,7 +216,7 @@ function getallstudent()
 				}
 			}
 		} else if ($_SESSION['userrole'] == 2) {
-			$student = $mysqli->prepare("select * from all_students order by classcode;");
+			$student = $mysqli->prepare("select * from all_students where school='".$_SESSION['school']."' order by classcode;");
 			$student->execute();
 			if ($student) {
 				$data = array();
@@ -284,7 +284,7 @@ function getalllastdaystudent($days)
 		} else if ($_SESSION['userrole'] == 4) {
 			if (isset($_GET['active'])) {
 				if ($_GET['active'] == 1) {
-					$student = $mysqli->prepare("SELECT * from all_students where administration_modified=0 and active=1 and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
+					$student = $mysqli->prepare("SELECT * from all_students where administration_modified=0 and active=1 and school='".$_SESSION['school']."' and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
 					$student->execute();
 					if ($student) {
 						$data = array();
@@ -308,7 +308,7 @@ function getalllastdaystudent($days)
 					}
 				}
 			} else {
-				$student = $mysqli->prepare("SELECT * from all_students where administration_modified=0 and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
+				$student = $mysqli->prepare("SELECT * from all_students where administration_modified=0 and school='".$_SESSION['school']."' and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
 				$student->execute();
 				if ($student) {
 					$data = array();
@@ -332,7 +332,7 @@ function getalllastdaystudent($days)
 				}
 			}
 		} else if ($_SESSION['userrole'] == 2) {
-			$student = $mysqli->prepare("SELECT * from all_students_from_department where dep_modified=0 and headofdepartment='".$_SESSION["idteacher"]."' and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
+			$student = $mysqli->prepare("SELECT * from all_students_from_department where dep_modified=0 and headofdepartment='".$_SESSION["idteacher"]."' and school='".$_SESSION['school']."' and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
 			$student->execute();
 			if ($student) {
 				$data = array();
@@ -461,7 +461,7 @@ function searchstudent($search)
 	if ($_SESSION['isactiv'] == 1) {
 		if ($search != '') {
 			if ($_SESSION['userrole'] == 2) {
-				$student = $mysqli->prepare("select * from all_students_from_department where (surname LIKE '%$search%' or middlename LIKE '%$search%' or givenname LIKE '%$search%' or moregivenname LIKE '%$search%') and headofdepartment='" . $mysqli->real_escape_string($_SESSION['idteacher']) . "';");
+				$student = $mysqli->prepare("SELECT * from all_students_from_department where school='".$_SESSION['school']."' and (surname LIKE '%$search%' or middlename LIKE '%$search%' or givenname LIKE '%$search%' or moregivenname LIKE '%$search%') and headofdepartment='" . $mysqli->real_escape_string($_SESSION['idteacher']) . "';");
 				//$student->bind_param('ssss',$search);
 				$student->execute();
 				if ($student) {
@@ -475,7 +475,7 @@ function searchstudent($search)
 					$json = json_encode($data);
 				}
 			} else if ($_SESSION['userrole'] == 1) {
-				$student = $mysqli->prepare("select * from students where surname LIKE '%$search%' or middlename LIKE '%$search%' or givenname LIKE '%$search%' or moregivenname LIKE '%$search%';");
+				$student = $mysqli->prepare("SELECT * from students where surname LIKE '%$search%' or middlename LIKE '%$search%' or givenname LIKE '%$search%' or moregivenname LIKE '%$search%';");
 				//$student->bind_param('ssss',$search);
 				$student->execute();
 				if ($student) {
@@ -489,7 +489,7 @@ function searchstudent($search)
 					$json = json_encode($data);
 				}
 			} else if ($_SESSION['userrole'] == 4) {
-				$student = $mysqli->prepare("select * from students where '".$_SESSION['userrole']."' and surname LIKE '%$search%' or middlename LIKE '%$search%' or givenname LIKE '%$search%' or moregivenname LIKE '%$search%';");
+				$student = $mysqli->prepare("SELECT * from students where school='".$_SESSION['school']."' and (surname LIKE '%$search%' or middlename LIKE '%$search%' or givenname LIKE '%$search%' or moregivenname LIKE '%$search%');");
 				//$student->bind_param('ssss',$search);
 				$student->execute();
 				if ($student) {

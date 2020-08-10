@@ -35,6 +35,7 @@ if (isset($username) & isset($password)) {
 				setcookie("idteacher", $row['teacher'], 0, "/", $domain, true);
 			$_SESSION['id'] = $row['iduser'];
 			$_SESSION["username"] = $row['username'];
+			$_SESSION["school"] = $row['school'];
 			if (isset($row['role'])) {
 				$_SESSION['userrole'] = $row['role'];
 				if ($row['teacher'] != '')

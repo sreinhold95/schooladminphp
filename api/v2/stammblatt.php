@@ -203,11 +203,11 @@ if($auth){
                 else
                     $html[$i] .= "Datenschutzverordnung nein, ";
                 if ($get['houserules'] == 2) {
-                    $html[$i] .= "Hausordnung Klassenordner schauen, ";
+                    $html[$i] .= "Schulordnung Klassenordner schauen, ";
                 } else if ($get['houserules'] == 1)
-                    $html[$i] .= "Hausordnung ja, ";
+                    $html[$i] .= "Schulordnung ja, ";
                 else
-                    $html[$i] .= "Hausordnung nein, ";
+                    $html[$i] .= "Schulordnung nein, ";
                 if ($get['edvrules'] == 2) {
                     $html[$i] .= "EDV NUtzungsordnung Klassenordner schauen, ";
                 } else if ($get['edvrules'] == 1)
@@ -356,7 +356,7 @@ if($auth){
                         </table>
                         <br>
                         ';
-                $html[$i] .= '<h4>- Zustimmungen zu Datenschutz,Haus und EDV Nutzungsordnung -</h4><br>';
+                $html[$i] .= '<h4>- Zustimmungen zu Datenschutz,Schul und EDV Nutzungsordnung -</h4><br>';
                 if ($get['dsgvo'] == 2) {
                     $html[$i] .= "Datenschutzverordnung Klassenordner schauen, ";
                 } else if ($get['dsgvo'] == 1)
@@ -364,11 +364,11 @@ if($auth){
                 else
                     $html[$i] .= "Datenschutzverordnung nein, ";
                 if ($get['houserules'] == 2) {
-                    $html[$i] .= "Hausordnung Klassenordner schauen, ";
+                    $html[$i] .= "Schulordnung Klassenordner schauen, ";
                 } else if ($get['houserules'] == 1)
-                    $html[$i] .= "Hausordnung ja, ";
+                    $html[$i] .= "Schulordnung ja, ";
                 else
-                    $html[$i] .= "Hausordnung nein, ";
+                    $html[$i] .= "Schulordnung nein, ";
                 if ($get['edvrules'] == 2) {
                     $html[$i] .= "EDV NUtzungsordnung Klassenordner schauen, ";
                 } else if ($get['edvrules'] == 1)

@@ -58,6 +58,8 @@
 							$_SESSION[ 'userrole' ] = $row[ 'role' ];
 							if($row['teacher']!='')
 								$_SESSION['idteacher'] = $row['teacher'];
+							if($row['school']!='')
+								$_SESSION['school'] = $row['school'];
 						}
 						//if (isset($row[ 'isactiv' ])){
 							$_SESSION[ 'isactiv' ] = 1;
@@ -114,7 +116,7 @@
 			}
 		}
 		else if($_SESSION[ 'userrole' ] == 4 ){
-			$query = $mysqli->query( "SELECT * FROM class;" );
+			$query = $mysqli->query( "SELECT * FROM class where school='".$_SESSION['school']."';" );
 			if ( $query->num_rows ) {
 				while ($get=$query->fetch_assoc() ){
 					if($tab=="yes")

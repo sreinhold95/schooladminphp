@@ -32,7 +32,7 @@ if ( $loggedin == true ) {
 				<select name="classs" id=classs class="field" size="1">
 				<option selected="selected" value="alle">Alle Klassen</option>
 					<?php
-					$check = $mysqli->query( "SELECT * FROM class;" );
+					$check = $mysqli->query( "SELECT * FROM class where school='".$_SESSION['school']."';" );
 					while ( $row = mysqli_fetch_array( $check ) ) {
 						if ( $row[ 'classcode' ] != "" ) {
 							$classcode = $row[ 'classcode' ];
