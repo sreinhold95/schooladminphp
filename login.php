@@ -63,7 +63,7 @@ if (isset($username) & isset($password)) {
 	}
 }
 if (isset($_POST['token'])) {
-	$stmt = $mysqli->prepare("SELECT classcode,token,activetoken,uuid FROM class WHERE activetoken=1 and TIMESTAMPDIFF(MINUTE,tokenactivateat, NOW())<15 and token=? limit 1;");
+	$stmt = $mysqli->prepare("SELECT classcode,token,activetoken,uuid,school FROM class WHERE activetoken=1 and TIMESTAMPDIFF(MINUTE,tokenactivateat, NOW())<15 and token=? limit 1;");
 	$stmt->bind_param("s", $mysqli->real_escape_string($_POST['token']));
 	if ($stmt->execute()) {
 		$pid = $stmt->get_result();
@@ -74,10 +74,12 @@ if (isset($_POST['token'])) {
 			setcookie("classcode", $row['classcode'],0, "/", $domain);
 			setcookie("userrole", "0",0, "/", $domain);
 			setcookie("uuid", $row['uuid'], 0, "/", $domain);
+			setcookie("school", $row['school'],0, "/", $domain);
 			ob_end_flush();
 			$_SESSION['token'] = $row['token'];
 			$_SESSION['classcode'] = $row['classcode'];
 			$_SESSION["userrole"] = 0;
+			$_SESSION["school"] = $row['school'];
 			
 		}
 		if (isset($_SESSION['token']) & isset($_SESSION['classcode'])) {

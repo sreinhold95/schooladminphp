@@ -21,6 +21,9 @@ session_start();
 		<form method="POST" action="/class/index.php?site=login" class="normal" id="logintoken">
 			<input type="submit" class="button" value="zum Token" name="management">
 		</form>
+		<h8><a href="Schulordnung_ab August_2020.pdf" target="_blank">Schulordnung der FLS</a><h8><br>
+		<h8><a href="" target="_blank">Datenschutzerklärung der FLS</a><h8><br>
+		<h8><a href="Nutzungsordnung für PC_ab August_2020.pdf" target="_blank">EDV Nutzererklärung der FLS</a><h8>
 	</div>
 	<br>
 	 <div class="login_wrap">

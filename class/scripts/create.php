@@ -45,6 +45,12 @@
                 $("#emptyfield").show();
                 if (confirm("Das Speichern ist nicht möglich, \nbitte füllen Sie alle markierten Felder.")) {}
             } else {
+                if($('#dsvgo').is(':checked'))
+                    let dsgvo=1;
+                if($('#hordnung').is(':checked'))
+                    let hordnung=1;
+                if($('#edvordnung').is(':checked'))
+                    let edvordnung=1;
                 var student = {
                     'surname': $('input#surname').val(),
                     'middlename': $('input#middlename').val(),
@@ -102,9 +108,9 @@
                             'Name': $('input#ausbildungsbetrieb_ausbilder_name').val(),
                         }
                     },
-                    'dsgvo':1,
-                    'houserules':1,
-                    'edvrules':1,
+                    'dsgvo':dsvgo,
+                    'houserules':hordnung,
+                    'edvrules':edvordnung,
                 };
                 var url = "../../api/v2/students.php";
                 var xhr = new XMLHttpRequest();

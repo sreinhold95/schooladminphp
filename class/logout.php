@@ -1,5 +1,6 @@
 <?php
 	require_once('../include/config.inc.php');
+	$school=$_SESSION["school"];
 	session_start();
 	session_destroy();
 	//unlink ( SESSION_FILE_DIR . '/sess_' . session_id());
@@ -10,5 +11,11 @@
 	setcookie("classcode", "", 0, "/", $domain);
 	setcookie("classtoken", "", 0, "/", $domain);
 	session_unset();
-	header('location: ../index.php')
+	if ($school=="fls"){
+		header('location: https://app.edkimo.com/survey/digitales-arbeiten/fuluwgi');
+	}
+	else{
+		header('location: ../index.php');
+	}
+	
 ?>

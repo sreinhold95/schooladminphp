@@ -402,22 +402,29 @@ if ($loggedin == true) {
                             </div>
                         </div>
                     </div>
-                    <div class="box">
+                    <?php
+                    if($_SESSION["school"]!="fls"){
+                        echo '<div class="box" display:none>';
+                    }
+                    else
+                        echo '<div class="box" >';
+                    ?>
+                    <!--<div class="box">-->
                         <div class="box_header">Datenschutzerklärung, Schulordnung (Hausordnung), EDV Nutzungsordnung</div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="status" id="dsgvo" value="1">
+                            <input class="form-check-input" type="checkbox" name="dsgvo" id="dsgvo" value="1">
                             <label class="form-check-label" for="activate">
                                 Datenschutzerklärung
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="status" id="hordnung" value="1">
+                            <input class="form-check-input" type="checkbox" name="hordnung" id="hordnung" value="1">
                             <label class="form-check-label" for="activate">
                                 Hausordnung
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="status" id="edvordnung" value="1">
+                            <input class="form-check-input" type="checkbox" name="edvordnung" id="edvordnung" value="1">
                             <label class="form-check-label" for="activate">
                                 EDV Nutzungsordnung
                             </label>
