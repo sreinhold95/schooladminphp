@@ -45,12 +45,15 @@
                 $("#emptyfield").show();
                 if (confirm("Das Speichern ist nicht möglich, \nbitte füllen Sie alle markierten Felder.")) {}
             } else {
-                if($('#dsvgo').is(':checked'))
-                    let dsgvo=1;
+                let dsgvo=2;
+                let hordnung=2;
+                let edvordnung=2;
+                if($('#dsgvo').is(':checked'))
+                    dsgvo=1;
                 if($('#hordnung').is(':checked'))
-                    let hordnung=1;
+                    hordnung=1;
                 if($('#edvordnung').is(':checked'))
-                    let edvordnung=1;
+                    edvordnung=1;
                 var student = {
                     'surname': $('input#surname').val(),
                     'middlename': $('input#middlename').val(),
@@ -108,7 +111,7 @@
                             'Name': $('input#ausbildungsbetrieb_ausbilder_name').val(),
                         }
                     },
-                    'dsgvo':dsvgo,
+                    'dsgvo':dsgvo,
                     'houserules':hordnung,
                     'edvrules':edvordnung,
                 };

@@ -213,7 +213,7 @@ if ($loggedin == true) {
                     <br>
                     <div class="form-group">
                         <label for="ausbildungsbetrieb_name" class="label">Name:</label>
-                        <input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="ausbildungsbetrieb_name" id="ausbildungsbetrieb_name" value="">
+                        <input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="ausbildungsbetrieb_name" id="ausbildungsbetrieb_name" value=""  onchange='stringreplace("input#ausbildungsbetrieb_name","ausbildungsbetrieb_name","&"," und ")'>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-sm-6">
@@ -270,7 +270,7 @@ if ($loggedin == true) {
                     <div class="box_header">Abgehende Schule</div>
                     <div class="form-group">
                         <label for="lastschool" class="label">Name</label>
-                        <input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="lastschool" id="lastschool" value="">
+                        <input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="lastschool" id="lastschool" value="" onchange='stringreplace("input#lastschool","lastschool","&"," und ")'>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-sm 3">
@@ -404,7 +404,7 @@ if ($loggedin == true) {
                     </div>
                     <?php
                     if($_SESSION["school"]!="fls"){
-                        echo '<div class="box" display:none>';
+                        echo '<div class="box" style="display:none;">';
                     }
                     else
                         echo '<div class="box" >';

@@ -97,10 +97,10 @@ function tabellen_none(select,tabelle,apikey){
 			if (xhr.readyState == 4 && xhr.status == "200") {
 				if(users.Schulform=="Teilzeit"){
                     document.getElementById(tabelle).style.display="";
-                    document.getElementById("Abgang").style.display="";
+                    //document.getElementById("Abgang").style.display="";
                 }else{
                     document.getElementById(tabelle).style.display="none";
-                    document.getElementById("Abgang").style.display="none";
+                    //document.getElementById("Abgang").style.display="none";
                 }
 			} else {
 				console.error(users);

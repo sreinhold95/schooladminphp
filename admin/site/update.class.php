@@ -74,7 +74,7 @@
                 <div class="box">
                     <table class="table" id="side-table">
                         <?php
-                        $token = $mysqli->query( "Update class set activetoken=0 where classcode='".$id."'and TIMESTAMPDIFF(MINUTE,tokenactivateat, NOW())>15;" );
+                        $token = $mysqli->query( "Update class set activetoken=0 where classcode='".$id."'and TIMESTAMPDIFF(MINUTE,tokenactivateat, NOW())>45;" );
                         if(isset($_GET["id"])){
                             $query=$mysqli->query("select * from classinformation where classcode='".$id."';");
                             $query1=$mysqli->query("select * from classinformation where classcode='".$id."';");

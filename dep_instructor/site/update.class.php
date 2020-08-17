@@ -70,7 +70,7 @@ $_SESSION['last_visit'] = time();
                 <div class="box">
                     <table class="table" id="side-table">
                         <?php
-                        $query1 = $mysqli->query( "Update class set activetoken=0 where classcode='".$id."'and TIMESTAMPDIFF(MINUTE,tokenactivateat, NOW())>15;" );
+                        $query1 = $mysqli->query( "Update class set activetoken=0 where classcode='".$id."'and TIMESTAMPDIFF(MINUTE,tokenactivateat, NOW())>45;" );
                             $query=$mysqli->query("select * from classinformation where classcode='".$id."';");
                             $query1=$mysqli->query("select * from classinformation where classcode='".$id."';");
                             if($query->num_rows) {

@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$auth = false;
 	if (isset($headers['classtoken'])) {
 		$classcode = $headers['classtoken'];
-		$check = $mysqli->query("SELECT classcode,school from class where uuid='" . $uuid . "' and tokenactivateat>=DATE_SUB(NOW(),INTERVAL 15 MINUTE)");
+		$check = $mysqli->query("SELECT classcode,school from class where uuid='" . $uuid . "' and tokenactivateat>=DATE_SUB(NOW(),INTERVAL 45 MINUTE)");
 		$school=$row["school"];
 	} else
 		$check = $mysqli->query("SELECT teacher,school from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");

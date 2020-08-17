@@ -63,6 +63,33 @@ if (isset($_GET['idteacher'])) {
 							echo '<td>Geburtsdatum:</td>';
 							echo '<td>' . $get['birthdate'] . '</td>';
 							echo '</tr>';
+							echo '<tr>';
+							echo '<td>Schulordnung:</td>';
+							if ($get['houserules']==1)
+								echo '<td> zugestimmt </td>';
+							else if ($get['houserules']==2)
+								echo '<td> Klassenordner </td>';
+							else if ($get['houserules']==3)
+								echo '<td> Klassenordner </td>';
+							echo '</tr>';
+							echo '<tr>';
+							echo '<td>EDV Nutzungsordnung:</td>';
+							if ($get['edvrules']==1)
+								echo '<td> zugestimmt </td>';
+							else if ($get['edvrules']==2)
+								echo '<td> Klassenordner </td>';
+							else if ($get['edvrules']==3)
+								echo '<td> Klassenordner </td>';
+							echo '</tr>';
+							echo '<tr>';
+							echo '<td>Datenschutzerklärung:</td>';
+							if ($get['dsgvo']==1)
+								echo '<td> zugestimmt </td>';
+							else if ($get['dsgvo']==2)
+								echo '<td> Klassenordner </td>';
+							else if ($get['dsgvo']==3)
+								echo '<td> Klassenordner </td>';
+							echo '</tr>';	
 							$classcode = $get['classcode'];
 						}
 					}

@@ -108,7 +108,7 @@
 
         var activetoken = $('input#activate:checked').val()
         if (activetoken == 1) {
-            if (confirm("Der Token gilt ab jetzt 15 Minutren.")) {
+            if (confirm("Der Token gilt ab jetzt 45 Minuten.")) {
                 var activetoken = $('input#activate:checked').val()
                 var classcode = "<?php echo $classcode ?>"
                 var url = "../../api/v2/class.php";

@@ -1,7 +1,9 @@
 <?php
 	require_once('../include/config.inc.php');
-	$school=$_SESSION["school"];
 	session_start();
+	$school=$_SESSION["school"];
+	if($school=="")
+		$school=$_COOKIE["school"];
 	session_destroy();
 	//unlink ( SESSION_FILE_DIR . '/sess_' . session_id());
 	setcookie("userid", "", 0, "/", $domain);

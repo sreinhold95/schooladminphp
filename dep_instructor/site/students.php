@@ -1,4 +1,5 @@
 <?php
+ini_set('error_reporting', E_ERROR);
 $session_timeout = 600; // 1800 Sek./60 Sek. = 10 Minuten
 session_start();
 if((time() - $_SESSION['last_visit']) > $session_timeout) {
