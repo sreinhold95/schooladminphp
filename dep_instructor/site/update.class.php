@@ -117,6 +117,12 @@ $_SESSION['last_visit'] = time();
             </div>
         </div>
         <div class="add_wrap">
+            <div class="box_header">Download</div>
+            <div class="box">
+                <button id="download-xlsx" type="button" class="btn btn-primary btn-sm">Download Excel</button>
+            </div>
+        </div>
+        <div class="add_wrap">
             <div class="box_header">Klasseneinstellungen</div>
                 <div class="box">
                     <table class="table" id="side-table">

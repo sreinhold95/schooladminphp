@@ -30,7 +30,7 @@
         responsiveLayout: true,
         responsiveLayout: "hide",
         layout: "fitColumns",
-        pagination: "local", //enable local pagination.
+        //pagination: "local", //enable local pagination.
         autoColumns: true
         /*columns:[
         	{title:"#",formatter:"rownum", align:"left", width:20, headerSort:false},

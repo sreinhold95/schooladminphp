@@ -195,25 +195,27 @@ if($auth){
                         </tr>
                         </table>
                         ';
-                $html[$i] .= '<h4>- Zustimmungen zu Datenschutz,Haus und EDV Nutzungsordnung -</h4><br>';
-                if ($get['dsgvo'] == 2) {
-                    $html[$i] .= "Datenschutzverordnung Klassenordner schauen, ";
-                } else if ($get['dsgvo'] == 1)
-                    $html[$i] .= "Datenschutzverordnung ja, ";
-                else
-                    $html[$i] .= "Datenschutzverordnung nein, ";
-                if ($get['houserules'] == 2) {
-                    $html[$i] .= "Schulordnung Klassenordner schauen, ";
-                } else if ($get['houserules'] == 1)
-                    $html[$i] .= "Schulordnung ja, ";
-                else
-                    $html[$i] .= "Schulordnung nein, ";
-                if ($get['edvrules'] == 2) {
-                    $html[$i] .= "EDV NUtzungsordnung Klassenordner schauen, ";
-                } else if ($get['edvrules'] == 1)
-                    $html[$i] .= "EDV Nutzungsordnung ja, ";
-                else
-                    $html[$i] .= "EDV Nutzungsordnung nein, ";
+                        if($get[ 'school' ]=="fls"){
+                            $html[$i] .= '<h4>- Zustimmungen zu Datenschutz,Schul und EDV Nutzungsordnung -</h4><br>';
+                            if ($get['dsgvo'] == 2) {
+                                $html[$i] .= "Datenschutzverordnung Klassenordner schauen, ";
+                            } else if ($get['dsgvo'] == 1)
+                                $html[$i] .= "Datenschutzverordnung ja, ";
+                            else
+                                $html[$i] .= "Datenschutzverordnung nein, ";
+                            if ($get['houserules'] == 2) {
+                                $html[$i] .= "Schulordnung Klassenordner schauen, ";
+                            } else if ($get['houserules'] == 1)
+                                $html[$i] .= "Schulordnung ja, ";
+                            else
+                                $html[$i] .= "Schulordnung nein, ";
+                            if ($get['edvrules'] == 2) {
+                                $html[$i] .= "EDV NUtzungsordnung Klassenordner schauen, ";
+                            } else if ($get['edvrules'] == 1)
+                                $html[$i] .= "EDV Nutzungsordnung ja, ";
+                            else
+                                $html[$i] .= "EDV Nutzungsordnung nein, ";
+                        }
 
                 $html[$i] .= '
                         <h4>- Schulischer Werdegang: -</h4>
@@ -356,25 +358,27 @@ if($auth){
                         </table>
                         <br>
                         ';
-                $html[$i] .= '<h4>- Zustimmungen zu Datenschutz,Schul und EDV Nutzungsordnung -</h4><br>';
-                if ($get['dsgvo'] == 2) {
-                    $html[$i] .= "Datenschutzverordnung Klassenordner schauen, ";
-                } else if ($get['dsgvo'] == 1)
-                    $html[$i] .= "Datenschutzverordnung ja, ";
-                else
-                    $html[$i] .= "Datenschutzverordnung nein, ";
-                if ($get['houserules'] == 2) {
-                    $html[$i] .= "Schulordnung Klassenordner schauen, ";
-                } else if ($get['houserules'] == 1)
-                    $html[$i] .= "Schulordnung ja, ";
-                else
-                    $html[$i] .= "Schulordnung nein, ";
-                if ($get['edvrules'] == 2) {
-                    $html[$i] .= "EDV NUtzungsordnung Klassenordner schauen, ";
-                } else if ($get['edvrules'] == 1)
-                    $html[$i] .= "EDV Nutzungsordnung ja, ";
-                else
-                    $html[$i] .= "EDV Nutzungsordnung nein, ";
+                        if($get[ 'school' ]=="fls"){
+                            $html[$i] .= '<h4>- Zustimmungen zu Datenschutz,Schul und EDV Nutzungsordnung -</h4><br>';
+                            if ($get['dsgvo'] == 2) {
+                                $html[$i] .= "Datenschutzverordnung Klassenordner schauen, ";
+                            } else if ($get['dsgvo'] == 1)
+                                $html[$i] .= "Datenschutzverordnung ja, ";
+                            else
+                                $html[$i] .= "Datenschutzverordnung nein, ";
+                            if ($get['houserules'] == 2) {
+                                $html[$i] .= "Schulordnung Klassenordner schauen, ";
+                            } else if ($get['houserules'] == 1)
+                                $html[$i] .= "Schulordnung ja, ";
+                            else
+                                $html[$i] .= "Schulordnung nein, ";
+                            if ($get['edvrules'] == 2) {
+                                $html[$i] .= "EDV NUtzungsordnung Klassenordner schauen, ";
+                            } else if ($get['edvrules'] == 1)
+                                $html[$i] .= "EDV Nutzungsordnung ja, ";
+                            else
+                                $html[$i] .= "EDV Nutzungsordnung nein, ";
+                        }
 
                 $html[$i] .= '
                 <h4>- Erziehungsberechtigte (unter 18 Jahre): -</h4>
@@ -430,8 +434,9 @@ if($auth){
                 Datum, Unterschrift Schüler/in
             ';
             }
-            $htmlsusanmeldung[$i]='
-                <span style="text-allign:justify;"><h1>Zugangsdaten und Informationen für den Unterricht in der FLS</h3></span>
+            if($get[ 'school' ]=="fls"){
+                $htmlsusanmeldung[$i]='
+                <span style="text-allign:justify;"><h1>Zugangsdaten und Informationen für den Unterricht in der '.$get[ 'schoolname' ].'</h3></span>
                 <table style="border:1px solid #D4D4D4">
                     <tbody>
                         <tr>
@@ -494,8 +499,11 @@ if($auth){
                         </tr>
                         <tr>
                         <td  style="border-bottom:1px solid #D4D4D4;">
-                            WLAN<br>
-                            Name: FLS
+                        WLAN<br>
+                        Hilpertstraße:<br>
+                        Name: FLS<br>
+                        BSZN:<br>
+                        Name: BSZN
                         </td> 
                         <td style="border-bottom:1px solid #D4D4D4;border-left:1px solid #D4D4D4; border-right:1px solid #D4D4D4">
                             '.$get['ssurname'].'.'.$get['sgivenname'].'
@@ -509,6 +517,69 @@ if($auth){
             <br><b style="color:red">Das Passwort muss nach der ersten Anmeldung am PC im Schülermodul geändert werden.</b>
             <br><b>Ihre Anmeldedaten werden im Laufe von 2 Werktagen in allen elektronischen Systemen der Schule eingebunden.</b>
             ';
+            }
+            else if ($get[ 'school' ]=="mbs"){
+                $htmlsusanmeldung[$i]='
+                <span style="text-allign:justify;"><h1>Zugangsdaten und Informationen für den Unterricht in der '.$get[ 'schoolname' ].'</h3></span>
+                <table style="border:1px solid #D4D4D4">
+                    <tbody>
+                        <tr>
+                            <td style="border-top:1px solid #000000; border-bottom:1px solid #000000;border-left:1px solid #000000;border-right:1px solid #000000">
+                                Dienst/Programm
+                            </td>
+                            <td style="border-top:1px solid #000000; border-bottom:1px solid #000000;border-left:1px solid #000000;border-right:1px solid #000000">
+                                Benutzername/Identität
+                            </td>
+                            <td style="border-top:1px solid #000000; border-bottom:1px solid #000000;border-left:1px solid #000000;border-right:1px solid #000000">
+                                Passwort
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  style="border-bottom:1px solid #D4D4D4;">
+                                LANiS (PCs)
+                                <br> 
+                            </td>
+                            <td style="border-bottom:1px solid #D4D4D4;border-left:1px solid #D4D4D4; border-right:1px solid #D4D4D4">
+                                '.$get['ssurname'].'.'.$get['sgivenname'].'
+                            </td>
+                            <td style="border-bottom:1px solid #D4D4D4;">
+                                '.$newDate = date("dmY", strtotime($get["birthdate"])).'
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  style="border-bottom:1px solid #D4D4D4;">
+                                Schulportal <br>
+                                https://portal.lanis-system.de/6283
+                            </td> 
+                            <td style="border-bottom:1px solid #D4D4D4;border-left:1px solid #D4D4D4; border-right:1px solid #D4D4D4">
+                                '.$get['ssurname'].'.'.$get['sgivenname'].'
+                            </td>
+                            <td  style="border-bottom:1px solid #D4D4D4;">
+                            '.$newDate = date("dmY", strtotime($get["birthdate"])).'
+                            </td>
+                        </tr>
+                        <tr>
+                        <td  style="border-bottom:1px solid #D4D4D4;">
+                            WLAN<br>
+                            Hilpertstraße:<br>
+                            Name: FLS<br>
+                            BSZN:<br>
+                            Name: BSZN
+                        </td> 
+                        <td style="border-bottom:1px solid #D4D4D4;border-left:1px solid #D4D4D4; border-right:1px solid #D4D4D4">
+                            '.$get['ssurname'].'.'.$get['sgivenname'].'
+                        </td>
+                        <td  style="border-bottom:1px solid #D4D4D4;">
+                        '.$newDate = date("dmY", strtotime($get["birthdate"])).'
+                        </td>
+                    </tr>
+                    </tbody>
+            </table><br><br>
+            <br><b style="color:red">Das Passwort muss nach der ersten Anmeldung am PC im Schülermodul geändert werden.</b>
+            <br><b>Ihre Anmeldedaten werden im Laufe von 2 Werktagen in allen elektronischen Systemen der Schule eingebunden.</b>
+            ';
+            }
+            
             $i++;
         }
     }

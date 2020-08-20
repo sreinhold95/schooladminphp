@@ -332,7 +332,7 @@ function getalllastdaystudent($days)
 				}
 			}
 		} else if ($_SESSION['userrole'] == 2) {
-			$student = $mysqli->prepare("SELECT * from all_students_from_department where dep_modified=0 and headofdepartment='".$_SESSION["idteacher"]."' and school='".$_SESSION['school']."' and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
+			$student = $mysqli->prepare("SELECT * from all_students_from_department where dep_modified=0 and headofdepartment='".$_SESSION["idteacher"]."' and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
 			$student->execute();
 			if ($student) {
 				$data = array();

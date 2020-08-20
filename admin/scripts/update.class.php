@@ -151,4 +151,9 @@
             } else {}
         }
     });
+    $("#download-xlsx").click(function() {
+        table.download("xlsx", "alle_meine_Schueler.xlsx", {
+            sheetName: "meine Schüler"
+        });
+    });
 </script>
