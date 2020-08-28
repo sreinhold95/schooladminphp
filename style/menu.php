@@ -34,6 +34,8 @@
 								<a class="dropdown-item" href="index.php?site=export.webuntis">Webuntis Export</a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="index.php?site=export.webuntis.newyear">Webuntis Export Angänger</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="index.php?site=export.ReNo">Export ReNo Nach,Vor,Mail</a>
 							</div>
 						</li>
 						<li class="nav-item">
@@ -76,6 +78,10 @@
 								<a class="dropdown-item" href="index.php?site=export.all">SuS Export-Alle</a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="index.php?site=export.new">SuS Export-nur neue Seit letzer Anmeldung</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="index.php?site=export.webuntis">Webuntis Export</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="index.php?site=export.webuntis.newyear">Webuntis Export Angänger</a>
 							</div>
 						</li>
 						<li class="nav-item">

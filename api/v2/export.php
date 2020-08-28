@@ -26,6 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 			$result = getallstudentwebuntis();
 		if (isset($_GET['webuntisnewyear']))
 			$result = getallstudentwebuntisnewyear();
+		if (isset($_GET['nachvoremail']))
+			$result = getnachvoremail($_GET['nachvoremail']);
 		echo $result;
 	} else {
 		header('HTTP/1.0 403 Forbitten');
@@ -138,6 +140,29 @@ function getallstudentwebuntis()
 				header('HTTP/1.0 200 OK');
 				header('Content-Type: application/json');
 			}
+		}else if($_SESSION['userrole'] == 4){
+			$student = $mysqli->prepare("select * from untis_klassenbuch_mbs;");
+			$student->execute();
+			if ($student) {
+				$data = array();
+				$stdt = $student->get_result();
+				while ($row = $stdt->fetch_assoc()) {
+					if ($tab == "yes")
+						$data[] = $row;
+					else
+						$data[$row["extern"]] = $row;
+				}
+				$json = json_encode($data);
+			}
+			if ($json == "null") {
+				$data["error"] = "no Student";
+				$json = json_encode($data);
+				header('HTTP/1.0 900 no data');
+				header('Content-Type: application/json');
+			} else {
+				header('HTTP/1.0 200 OK');
+				header('Content-Type: application/json');
+			}
 		}else {
 			$data["error"] = "no rights" . " " . $_SESSION['userrole'];
 			$json = json_encode($data);
@@ -160,6 +185,72 @@ function getallstudentwebuntisnewyear()
 	if ($_SESSION['isactiv'] == 1) {
 		if ($_SESSION['userrole'] == 1) {
 			$student = $mysqli->prepare("select * from untis_klassenbuch_abgänger;");
+			$student->execute();
+			if ($student) {
+				$data = array();
+				$stdt = $student->get_result();
+				while ($row = $stdt->fetch_assoc()) {
+					if ($tab == "yes")
+						$data[] = $row;
+					else
+						$data[$row["extern"]] = $row;
+				}
+				$json = json_encode($data);
+			}
+			if ($json == "null") {
+				$data["error"] = "no Student";
+				$json = json_encode($data);
+				header('HTTP/1.0 900 no data');
+				header('Content-Type: application/json');
+			} else {
+				header('HTTP/1.0 200 OK');
+				header('Content-Type: application/json');
+			}
+		}else if($_SESSION['userrole'] == 4){
+			$student = $mysqli->prepare("select * from untis_klassenbuch_abgänger where school='mbs';");
+			$student->execute();
+			if ($student) {
+				$data = array();
+				$stdt = $student->get_result();
+				while ($row = $stdt->fetch_assoc()) {
+					if ($tab == "yes")
+						$data[] = $row;
+					else
+						$data[$row["extern"]] = $row;
+				}
+				$json = json_encode($data);
+			}
+			if ($json == "null") {
+				$data["error"] = "no Student";
+				$json = json_encode($data);
+				header('HTTP/1.0 900 no data');
+				header('Content-Type: application/json');
+			} else {
+				header('HTTP/1.0 200 OK');
+				header('Content-Type: application/json');
+			}
+		}else {
+			$data["error"] = "no rights" . " " . $_SESSION['userrole'];
+			$json = json_encode($data);
+			header('HTTP/1.0 403 no rights');
+			header('Content-Type: application/json');
+		}
+	} else {
+		$data["error"] = "not loggedin";
+		$json = json_encode($data);
+		header('HTTP/1.0 403 not loggedin');
+		header('Content-Type: application/json');
+	}
+	return ($json);
+}
+function getnachvoremail($classcode)
+{
+	global $mysqli;
+	global $tab;
+	$data = array();
+	if ($_SESSION['isactiv'] == 1) {
+		if ($_SESSION['userrole'] == 1) {
+			$student = $mysqli->prepare("SELECT givenname as Nachname,surname as Vorname,email as 'E-Mail',sex as Geschlecht from students where classcode LIKE '%".$classcode."%' and active=1 and exitDate is null;");
 			$student->execute();
 			if ($student) {
 				$data = array();
