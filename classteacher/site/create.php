@@ -225,7 +225,7 @@ if ($loggedin == true) {
                     <br>
                     <div class="form-group">
                         <label for="ausbildungsbetrieb_name" class="label">Name:</label>
-                        <input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="ausbildungsbetrieb_name" id="ausbildungsbetrieb_name" value="">
+                        <input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="ausbildungsbetrieb_name" id="ausbildungsbetrieb_name" value="" onchange='stringreplace("input#ausbildungsbetrieb_name","ausbildungsbetrieb_name","&"," und ")'>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-sm-6">

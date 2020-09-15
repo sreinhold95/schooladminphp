@@ -23,7 +23,7 @@ if ($loggedin == true) {
     if ($_SESSION['userrole'] == 2) {
     }
 } else {
-    header('location: ../index.php');
+    header('location: ../dep_instructor/logout.php');
 }
 ?>
 <div class="d-flex">

@@ -42,7 +42,7 @@ if ($auth) {
     if ($role == 3) {
         $query = $mysqli->query("SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.idstudents='" . $idstudent . "' and teacher_class.idteacher='" . $idteacher . "'and all_studentspdf.school='".$school."';");
     } else if ($role == 2) {
-        $query = $mysqli->query("SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.idstudents='" . $idstudent . "' and headidteacher='" . $idteacher . "' and all_studentspdf.school='".$school."';");
+        $query = $mysqli->query("SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.idstudents='" . $idstudent . "' and headidteacher='" . $idteacher . "' and all_studentspdf.school='".$school."' limit 1;");
     } else if ($role == 1) {
         $query = $mysqli->query("SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.idstudents='" . $idstudent . "' limit 1;");
     }else if ($role == 4) {

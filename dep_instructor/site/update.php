@@ -9,7 +9,7 @@ if (!isset($_SESSION['last_visit'])) {
 if ((time() - $_SESSION['last_visit']) > $session_timeout) {
 	session_destroy();
 	session_unset();
-	header('location: ../index.php');
+	header('location: ../dep_instructor/logout.php');
 	// Aktion der Session wird erneut ausgeführt
 }
 $_SESSION['last_visit'] = time();

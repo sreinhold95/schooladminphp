@@ -18,7 +18,7 @@ if ( $loggedin == true ) {
         
     }
 } else {
-    header( 'location: ../index.php' );
+    header('location: ../dep_instructor/logout.php');
 }?>
 
 <div class="d-flex">
