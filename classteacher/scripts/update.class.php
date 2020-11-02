@@ -98,7 +98,7 @@
         ]
     });
     $("#download-xlsx").click(function() {
-        table.download("xlsx", "alle_meine_Schueler.xlsx", {
+        table.download("xlsx", "alle_meine_Schueler <?php echo $classcode ?>.xlsx", {
             sheetName: "meine Schüler"
         });
     });

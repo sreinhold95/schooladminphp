@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		login();
 		if (isset($_GET['lanis']))
 			$result = getallstudentlanis();
+			if (isset($_GET['lanisold']))
+			$result = getallstudentlanisold();
 		if (isset($_GET['webuntis']))
 			$result = getallstudentwebuntis();
 		if (isset($_GET['webuntisnewyear']))
@@ -111,6 +113,51 @@ function getallstudentlanis()
 	}
 	return ($json);
 }
+
+function getallstudentlanisold()
+{
+	global $mysqli;
+	global $tab;
+	$data = array();
+	if ($_SESSION['isactiv'] == 1) {
+		if ($_SESSION['userrole'] == 1) {
+			$student = $mysqli->prepare("select * from lanis_delete;");
+			$student->execute();
+			if ($student) {
+				$data = array();
+				$stdt = $student->get_result();
+				while ($row = $stdt->fetch_assoc()) {
+					if ($tab == "yes")
+						$data[] = $row;
+					else
+						$data[] = $row;
+				}
+				$json = json_encode($data);
+			}
+			if ($json == "null") {
+				$data["error"] = "no Student";
+				$json = json_encode($data);
+				header('HTTP/1.0 900 no data');
+				header('Content-Type: application/json');
+			} else {
+				header('HTTP/1.0 200 OK');
+				header('Content-Type: application/json');
+			}
+		}else {
+			$data["error"] = "no rights" . " " . $_SESSION['userrole'];
+			$json = json_encode($data);
+			header('HTTP/1.0 403 no rights');
+			header('Content-Type: application/json');
+		}
+	} else {
+		$data["error"] = "not loggedin";
+		$json = json_encode($data);
+		header('HTTP/1.0 403 not loggedin');
+		header('Content-Type: application/json');
+	}
+	return ($json);
+}
+
 function getallstudentwebuntis()
 {
 	global $mysqli;

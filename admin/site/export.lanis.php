@@ -29,7 +29,11 @@ if ( $loggedin == true ) {
 ?>
 <div class="d-flex">
     <div class="p-2 content_allg">
-        <button class="btn btn-primary export" id="exportcsv" type="button">Download csv</button>
+        <button class="btn btn-primary export" id="exportcsv" type="button">Download aktuelle SuS</button>
         <div class="students" id="students"></div>
+    </div>
+    <div class="p-2 content_allg">
+        <button class="btn btn-primary export" id="exportcsv1" type="button">Download alte SuS</button>
+        <div class="students1" id="students1"></div>
     </div>
 </div>

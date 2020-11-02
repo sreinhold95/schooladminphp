@@ -63,7 +63,7 @@ if (isset($username) & isset($password)) {
 	}
 }
 if (isset($_POST['token'])) {
-	$stmt = $mysqli->prepare("SELECT classcode,token,activetoken,uuid,school FROM class WHERE activetoken=1 and TIMESTAMPDIFF(MINUTE,tokenactivateat, NOW())<15 and token=? limit 1;");
+	$stmt = $mysqli->prepare("SELECT classcode,token,activetoken,uuid,school FROM class WHERE activetoken=1 and TIMESTAMPDIFF(MINUTE,tokenactivateat, NOW())<45 and token=? limit 1;");
 	$stmt->bind_param("s", $mysqli->real_escape_string($_POST['token']));
 	if ($stmt->execute()) {
 		$pid = $stmt->get_result();

@@ -123,7 +123,7 @@
                             for (var i = 0; i < nodes.length; i++) {
                                 nodes[i].value == "";
                             }
-                            window.location.replace('../ndex.php?site=home');
+                            window.location.replace('../dep_instructor/index.php?site=update.class&id='+$("#classc option:selected").val());
                         }
                     } else {
                         console.error(users);

@@ -38,6 +38,7 @@ let table = new Tabulator("#students", {
         {title:"Nachname", field:"givenname", headerFilter:"input", headerFilterPlaceholder:"NN"},
         {title:"weitere NN", field:"moregivenname"},
 		{title:"Klasse", field:"classcode"},
+        {title:"E-Mail", field:"email"},
 		{title:"bearbeiten", headerSort:false ,formatter:"link",formatterParams:
 			{
 				label:"öffnen",
@@ -107,7 +108,7 @@ $("#Klasseneinstellungen").submit(function(event) {
         }
     });
     $("#download-xlsx").click(function() {
-        table.download("xlsx", "alle_meine_Schueler.xlsx", {
+        table.download("xlsx", "alle_meine_Schueler <?php echo $classcode ?>.xlsx", {
             sheetName: "meine Schüler"
         });
     });

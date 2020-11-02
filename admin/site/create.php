@@ -158,7 +158,7 @@ if ($loggedin == true) {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="email" class="label">Email:</label>
+                        <label for="email" class="label">E-Mail:</label>
                         <input class="form-control form-control-sm" type="text" size="24" maxlength="100" name="email" id="email" value="">
                     </div>
                     <div class="form-row">

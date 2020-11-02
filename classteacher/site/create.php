@@ -263,7 +263,7 @@ if ($loggedin == true) {
                     </div>
                     <div class="form-row">
                         <div class="form-group col-sm-4">
-                            <label for="ausbildungsbetrieb_email" class="label">Email:</label>
+                            <label for="ausbildungsbetrieb_email" class="label">E-Mail:</label>
                             <input class="form-control form-control-sm" type="text" size="24" maxlength="100" name="ausbildungsbetrieb_email" id="ausbildungsbetrieb_email" value="">
                         </div>
                         <div class="form-group col-sm-4">
