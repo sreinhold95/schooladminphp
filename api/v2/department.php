@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET'){
 	$headers = apache_request_headers();
 	$uuid = $headers['uuid'];
 	$auth=false;
-	$check=$mysqli->query("select teacher from user where uuid='".$uuid."' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+	$check=$mysqli->query("select teacher from user where uuid='".$mysqli->real_escape_string($uuid)."' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 	if($check->num_rows){
     	while($row=$check->fetch_assoc()){
         	$auth=true;
@@ -56,12 +56,13 @@ function login($uuid){
 }
 function getdepartment($json){
 	global $mysqli;
+	global $classcode;
 	$data=array();
-	$dataobj;
+	#$dataobj;
 	if($_SESSION['isactiv']==1){
 		if($classcode==''){
 			if($_SESSION['userrole']=1){
-				$student= $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.givenname as tgivenname FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and depteacher.idteacher='".$_SESSION['idteacher']."';");
+				$student= $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.givenname as tgivenname FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and depteacher.idteacher='".$mysqli->real_escape_string($_SESSION['idteacher'])."';");
 					while ($get=$student->fetch_assoc() ){
 						$data[$get["idstudents"]]=$get;
 					}
@@ -70,7 +71,7 @@ function getdepartment($json){
 			
 		}else{
 			if($_SESSION['userrole']=2){
-				$student= $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.givenname as tgivenname FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and depteacher.idteacher='".$_SESSION['idteacher']."' and class.classcode='".$classcode."';");
+				$student= $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.givenname as tgivenname FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and depteacher.idteacher='".$mysqli->real_escape_string($_SESSION['idteacher'])."' and class.classcode='".$mysqli->real_escape_string($classcode)."';");
 				while ($get=$student->fetch_object() ){
 						$data[$get["idstudents"]]=$get;
 					}

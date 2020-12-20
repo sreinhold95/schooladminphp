@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET'){
 	$headers = apache_request_headers();
 	$uuid = $headers['uuid'];
 	$auth=false;
-	$check=$mysqli->query("select teacher from user where uuid='".$uuid."' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+	$check=$mysqli->query("select teacher from user where uuid='".$mysqli->real_escape_string($uuid)."' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 	if($check->num_rows){
     	while($row=$check->fetch_assoc()){
 			//$idteacher=$row["teacher"];
@@ -49,7 +49,7 @@ function getberuf($Beruf_ID){
 	global $mysqli;
 	//require $_SERVER['DOCUMENT_ROOT'].'/include/config.inc.php';
 	$data = array();
-    $beruf= $mysqli->query("select * from beruf where Berufs_ID ='".$Beruf_ID."';");
+    $beruf= $mysqli->query("select * from beruf where Berufs_ID ='".$mysqli->real_escape_string($Beruf_ID)."';");
     $json=json_encode($beruf->fetch_assoc());
 	return($json);
 }

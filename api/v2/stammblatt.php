@@ -19,7 +19,7 @@ $role=0;
 if(!isset($uuid))
     $uuid=$_GET["uuid"];
 //uuid teacher-ID
-$check=$mysqli->query("select teacher,role,school from user where uuid='".$uuid."'and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR);");
+$check=$mysqli->query("select teacher,role,school from user where uuid='".$mysqli->real_escape_string($uuid)."'and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR);");
 if($check->num_rows){
     while($row=$check->fetch_assoc()){
         $idteacher=$row["teacher"];
@@ -34,14 +34,14 @@ if($auth){
     // tcpdf unterstützt recht viele HTML-Befehle. Die Nutzung von CSS ist allerdings
     // stark eingeschränkt.
     if ($role==3){
-        $query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' and teacher_class.idteacher='".$idteacher."' and all_studentspdf.school='".$school."' order by all_studentspdf.sgivenname;");
+        $query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$mysqli->real_escape_string($classcode)."' and teacher_class.idteacher='".$mysqli->real_escape_string($idteacher)."' and all_studentspdf.school='".$mysqli->real_escape_string($school)."' order by all_studentspdf.sgivenname;");
     }
     else if($role==2)
-        $query=$query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' and headidteacher='".$idteacher."' and all_studentspdf.school='".$school."';");
+        $query=$query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$mysqli->real_escape_string($classcode)."' and headidteacher='".$mysqli->real_escape_string($idteacher)."' and all_studentspdf.school='".$mysqli->real_escape_string($school)."';");
     else if($role==1){
-        $query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' order by all_studentspdf.sgivenname;");
+        $query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$mysqli->real_escape_string($classcode)."' order by all_studentspdf.sgivenname;");
     }else if($role==4){
-        $query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$classcode."' and all_studentspdf.school='".$school."' order by all_studentspdf.sgivenname;");
+        $query = $mysqli->query( "SELECT * from all_studentspdf inner join teacher_class on all_studentspdf.classcode=teacher_class.classcode inner join teacher on teacher_class.idteacher=teacher.idteacher where all_studentspdf.active=1 and all_studentspdf.classcode='".$mysqli->real_escape_string($classcode)."' and all_studentspdf.school='".$mysqli->real_escape_string($school)."' order by all_studentspdf.sgivenname;");
     }
     if ( $query->num_rows ) {
         $html=array();
