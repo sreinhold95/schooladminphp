@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$tab = $headers['tab'];
 	$auth = false;
 	$username = "";
-	$check = $mysqli->query("SELECT username from user where active=1 and uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+	$check = $mysqli->query("SELECT username from user where active=1 and uuid='" . $mysqli->real_escape_string($uuid) . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 	if ($check->num_rows) {
 		while ($row = $check->fetch_assoc()) {
 			$username = $row["username"];
@@ -45,10 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$auth = false;
 	if (isset($headers['classtoken'])) {
 		$classcode = $headers['classtoken'];
-		$check = $mysqli->query("SELECT classcode,school from class where uuid='" . $uuid . "' and tokenactivateat>=DATE_SUB(NOW(),INTERVAL 45 MINUTE)");
+		$check = $mysqli->query("SELECT classcode,school from class where uuid='" . $mysqli->real_escape_string($uuid) . "' and tokenactivateat>=DATE_SUB(NOW(),INTERVAL 45 MINUTE)");
 		$school=$row["school"];
 	} else
-		$check = $mysqli->query("SELECT teacher,school from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+		$check = $mysqli->query("SELECT teacher,school from user where uuid='" . $mysqli->real_escape_string($uuid) . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 	if ($check->num_rows) {
 		while ($row = $check->fetch_assoc()) {
 			$auth = true;
@@ -170,7 +170,8 @@ function getallstudent()
 		} else if ($_SESSION['userrole'] == 4) {
 			if (isset($_GET['active'])) {
 				if ($_GET['active'] == 1) {
-					$student = $mysqli->prepare("select * from all_students where school='".$_SESSION['school']."' and active='".$_GET['active']."' order by classcode ;");
+					$student = $mysqli->prepare("select * from all_students where school=? and active=? order by classcode ;");
+					$student->bind_param('si', $_SESSION['school'],$_GET['active']);
 					$student->execute();
 					if ($student) {
 						$data = array();
@@ -194,7 +195,8 @@ function getallstudent()
 					}
 				}
 			} else {
-				$student = $mysqli->prepare("select * from all_students where school='".$_SESSION['school']."' order by classcode;");
+				$student = $mysqli->prepare("select * from all_students where school=? order by classcode;");
+				$student->bind_param('s', $_SESSION['school']);
 				$student->execute();
 				if ($student) {
 					$data = array();
@@ -218,7 +220,8 @@ function getallstudent()
 				}
 			}
 		} else if ($_SESSION['userrole'] == 2) {
-			$student = $mysqli->prepare("select * from all_students where school='".$_SESSION['school']."' order by classcode;");
+			$student = $mysqli->prepare("select * from all_students where school=? order by classcode;");
+			$student->bind_param('s', $_SESSION['school']);
 			$student->execute();
 			if ($student) {
 				$data = array();
@@ -377,7 +380,8 @@ function getdepstudent()
 	$data = array();
 	if ($_SESSION['isactiv'] == 1) {
 		if ($_SESSION["userrole" == 2]) {
-			$student = $mysqli->prepare("select * from all_students_from_department where headofdepartment='" . $mysqli->real_escape_string($_SESSION['idteacher']) . "' order by classcode;");
+			$student = $mysqli->prepare("select * from all_students_from_department where headofdepartment==? order by classcode;");
+			$student->bind_param('i', $_SESSION['idteacher']);
 			$student->execute();
 			if ($student) {
 				$data = array();
@@ -463,8 +467,8 @@ function searchstudent($search)
 	if ($_SESSION['isactiv'] == 1) {
 		if ($search != '') {
 			if ($_SESSION['userrole'] == 2) {
-				$student = $mysqli->prepare("SELECT * from all_students_from_department where school='".$_SESSION['school']."' and (surname LIKE '%$search%' or middlename LIKE '%$search%' or givenname LIKE '%$search%' or moregivenname LIKE '%$search%') and headofdepartment='" . $mysqli->real_escape_string($_SESSION['idteacher']) . "';");
-				//$student->bind_param('ssss',$search);
+				$student = $mysqli->prepare("SELECT * from all_students_from_department where school=? and (surname LIKE '%?%' or middlename LIKE '%?%' or givenname LIKE '%$?%' or moregivenname LIKE '%?%') and headofdepartment=?;");
+				$student->bind_param('sssssi',$_SESSION['school'],$search,$search,$search,$search,$_SESSION['idteacher']);
 				$student->execute();
 				if ($student) {
 					$stmt = $student->get_result();
@@ -477,8 +481,8 @@ function searchstudent($search)
 					$json = json_encode($data);
 				}
 			} else if ($_SESSION['userrole'] == 1) {
-				$student = $mysqli->prepare("SELECT * from students where surname LIKE '%$search%' or middlename LIKE '%$search%' or givenname LIKE '%$search%' or moregivenname LIKE '%$search%';");
-				//$student->bind_param('ssss',$search);
+				$student = $mysqli->prepare("SELECT * from students where surname LIKE '%$?%' or middlename LIKE '%$?%' or givenname LIKE '%$?%' or moregivenname LIKE '%$?%';");
+				$student->bind_param('ssss',$search,$search,$search,$search);
 				$student->execute();
 				if ($student) {
 					$stmt = $student->get_result();
@@ -491,8 +495,8 @@ function searchstudent($search)
 					$json = json_encode($data);
 				}
 			} else if ($_SESSION['userrole'] == 4) {
-				$student = $mysqli->prepare("SELECT * from students where school='".$_SESSION['school']."' and (surname LIKE '%$search%' or middlename LIKE '%$search%' or givenname LIKE '%$search%' or moregivenname LIKE '%$search%');");
-				//$student->bind_param('ssss',$search);
+				$student = $mysqli->prepare("SELECT * from students where school=? and (surname LIKE '%?%' or middlename LIKE '%?%' or givenname LIKE '%?%' or moregivenname LIKE '%?%');");
+				$student->bind_param('sssss',$_SESSION['school'],$search,$search,$search,$search);
 				$student->execute();
 				if ($student) {
 					$stmt = $student->get_result();

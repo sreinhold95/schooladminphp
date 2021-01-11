@@ -51,6 +51,10 @@
 				field: "classcode"
 			},
 			{
+				title: "geändert von",
+				field: "changedby"
+			},
+			{
 				title: "bearbeiten",
 				formatter: "link",
 				headerSort: false,

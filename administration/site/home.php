@@ -48,6 +48,7 @@
 					<th scope="col">Vorname</th>
 					<th scope="col">Nachname</th>
 					<th scope="col">Klasse</th>
+					<th scope="col">geändert von</th>
 					<th scope="col">bearbeiten</th>
 				</tr>
 			</thead>

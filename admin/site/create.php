@@ -319,13 +319,16 @@ if ($loggedin == true) {
                             <label for="graduation" class="label">Schulabschluss:</label>
                             <select name="graduation" id="graduation" class="form-control form-control-sm" size="1">
                                 <?php
-                                echo '<option value="" selected>Bitte auswählen</option>';
+                               // echo '<option value="" selected>Bitte auswählen</option>';
                                 $check = $mysqli->query("SELECT * FROM graduation;");
                                 while ($row = mysqli_fetch_array($check)) {
                                     if ($row['graduation'] != "") {
                                         $graduation = $row['graduation'];
                                         $idgraduation = $row['idgraduation'];
-                                        echo "<option value=" . $idgraduation . ">" . $graduation . "</option>";
+                                        if ($row['idgraduation'] == "0")
+                                            echo '<option value='. $idgraduation .' selected>'. $graduation .'</option>';
+                                        else
+                                            echo "<option value=" . $idgraduation . ">" . $graduation . "</option>";
                                     }
                                 }
                                 ?>

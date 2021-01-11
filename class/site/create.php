@@ -307,7 +307,7 @@ if ($loggedin == true) {
                             <label for="graduation" class="label">Schulabschluss:</label>
                             <select name="graduation" id="graduation" class="form-control form-control-sm" size="1">
                                 <?php
-                                echo '<option value="" selected>Bitte auswählen</option>';
+                                echo '<option value="0" selected>Bitte auswählen</option>';
                                 $check = $mysqli->query("SELECT * FROM graduation;");
                                 while ($row = mysqli_fetch_array($check)) {
                                     if ($row['graduation'] != "") {
