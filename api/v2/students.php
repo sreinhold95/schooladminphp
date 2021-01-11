@@ -73,9 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$id = (int) $_GET['id'];
 	$auth = false;
 	$check = $mysqli->query("SELECT teacher,role from user where active=1 and uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+	$teacherid=0;
 	if ($check->num_rows) {
 		while ($row = $check->fetch_assoc()) {
 			$_SESSION['userrole']=$row["role"];
+			$teacherid=$row["teacher"];
 			$auth = true;
 		}
 	}
@@ -89,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		$data["idstudentfile"] = file_get_contents('php://input');
 		if(isset($_PATCH['student'])){
 			$student = $_PATCH['student'];
-			updatestudent($student);
+			updatestudent($student,$teacherid);
 		}
 		else if (isset($_PATCH['setdone'])){
 			setdone((int) $_PATCH['setdone'],(int) $_PATCH['idstudent']);
@@ -259,7 +261,7 @@ function getalllastdaystudent($days)
 	$data = array();
 	if ($_SESSION['isactiv'] == 1) {
 		if ($_SESSION['userrole'] == 1) {
-			$student = $mysqli->prepare("SELECT * from all_students where admin_modified=0 and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
+			$student = $mysqli->prepare("SELECT surname,givenname,classcode,idstudents,changedby from all_students where admin_modified=0 and active=1 and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
 			$student->execute();
 			if ($student) {
 				$data = array();
@@ -284,7 +286,7 @@ function getalllastdaystudent($days)
 		} else if ($_SESSION['userrole'] == 4) {
 			if (isset($_GET['active'])) {
 				if ($_GET['active'] == 1) {
-					$student = $mysqli->prepare("SELECT * from all_students where administration_modified=0 and active=1 and school='".$_SESSION['school']."' and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
+					$student = $mysqli->prepare("SELECT surname,givenname,classcode,idstudents,changedby from all_students where administration_modified=0 and active=1 and school='".$_SESSION['school']."' and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
 					$student->execute();
 					if ($student) {
 						$data = array();
@@ -308,7 +310,7 @@ function getalllastdaystudent($days)
 					}
 				}
 			} else {
-				$student = $mysqli->prepare("SELECT * from all_students where administration_modified=0 and school='".$_SESSION['school']."' and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
+				$student = $mysqli->prepare("SELECT surname,givenname,classcode,idstudents,changedby from all_students where administration_modified=0 and school='".$_SESSION['school']."' and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
 				$student->execute();
 				if ($student) {
 					$data = array();
@@ -332,7 +334,7 @@ function getalllastdaystudent($days)
 				}
 			}
 		} else if ($_SESSION['userrole'] == 2) {
-			$student = $mysqli->prepare("SELECT * from all_students_from_department where dep_modified=0 and headofdepartment='".$_SESSION["idteacher"]."' and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
+			$student = $mysqli->prepare("SELECT surname,givenname,classcode,idstudents,changedby from all_students_from_department where dep_modified=0 and headofdepartment='".$_SESSION["idteacher"]."' and (TIMESTAMPDIFF(DAY,modified, NOW())<".$days." or TIMESTAMPDIFF(DAY,created, NOW())<".$days.") order by classcode;");
 			$student->execute();
 			if ($student) {
 				$data = array();
@@ -625,7 +627,7 @@ function createstudent($json,$school)
 	echo json_encode($data);
 }
 
-function updatestudent($json)
+function updatestudent($json,$teacherid)
 {
 	global $mysqli;
 	$error = array();
@@ -667,10 +669,10 @@ function updatestudent($json)
 		$exitDate = null;
 	else
 		$exitDate = $jsonobj->exitDate;
-	$studentstmt = $mysqli->prepare("update students set surname=?,middlename=?,givenname=?,moregivenname=?,birthdate=?,birthtown=?,birthcountry=?,province=?,entryDate=?,classcode=?,address=?,religion=?,nationality=?,family_speech=?,phone=?,mobilephone=?,email=?,idgraduation=?,idberuf=?,active=?,town=?,plz=?,sex=?,lastschool=?,lastschooltown=?,lastschooldate=?,lastschoolprovince=?,Ausbildungsbeginn=?,Ausbildungsbetrieb=?,Ausbildungsbetrieb_strasse=?,Ausbildungsbetrieb_PLZ=?,Ausbildungsbetrieb_Telefon=?,Ausbildungsbetrieb_Fax=?,Ausbildungsbetrieb_Email=?,Ausbildungsbetrieb_Ausbilder_Anrede=?,Ausbildungsbetrieb_Ausbilder_Name=?,indeutschlandseit=?,sprachniveau=?,exitDate=? where idstudents=?;");
+	$studentstmt = $mysqli->prepare("update students set surname=?,middlename=?,givenname=?,moregivenname=?,birthdate=?,birthtown=?,birthcountry=?,province=?,entryDate=?,classcode=?,address=?,religion=?,nationality=?,family_speech=?,phone=?,mobilephone=?,email=?,idgraduation=?,idberuf=?,active=?,town=?,plz=?,sex=?,lastschool=?,lastschooltown=?,lastschooldate=?,lastschoolprovince=?,Ausbildungsbeginn=?,Ausbildungsbetrieb=?,Ausbildungsbetrieb_strasse=?,Ausbildungsbetrieb_PLZ=?,Ausbildungsbetrieb_Telefon=?,Ausbildungsbetrieb_Fax=?,Ausbildungsbetrieb_Email=?,Ausbildungsbetrieb_Ausbilder_Anrede=?,Ausbildungsbetrieb_Ausbilder_Name=?,indeutschlandseit=?,sprachniveau=?,exitDate=?,changedby=? where idstudents=?;");
 	if ($studentstmt) {
 		$studentstmt->bind_param(
-			'sssssssssssssssssiiissssssssssssssssssss',
+			'sssssssssssssssssiiisssssssssssssssssssis',
 			$jsonobj->surname,
 			$jsonobj->middlename,
 			$jsonobj->givenname,
@@ -711,7 +713,9 @@ function updatestudent($json)
 			$jsonobj->sprachniveau,
 			//$jsonobj->exitDate,
 			$exitDate,
+			$teacherid,
 			$jsonobj->idstudent
+			
 		);
 		$studentstmt->execute();
 		$errors["studentstmt"] = $studentstmt->error;
