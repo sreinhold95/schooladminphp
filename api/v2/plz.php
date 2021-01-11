@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET'){
 	$headers = apache_request_headers();
 	$uuid = $headers['uuid'];
 	$auth=false;
-	$check=$mysqli->query("select teacher from user where uuid='".$uuid."' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+	$check=$mysqli->query("select teacher from user where uuid='".$mysqli->real_escape_string($uuid)."' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 	if($check->num_rows){
     	while($row=$check->fetch_assoc()){
         	$auth=true;
@@ -36,9 +36,9 @@ if ($_SERVER['REQUEST_METHOD']=='GET'){
 function getplz($plz){
 	global $mysqli;
 	$data=array();
-	$dataobj;
+	#$dataobj;
 		if(!$plz==''){
-                $query=$mysqli->query("select * from town where plz='".$plz."';");
+                $query=$mysqli->query("select * from town where plz='".$mysqli->real_escape_string($plz)."';");
 				$json=json_encode($query->fetch_assoc());
         }
         else{

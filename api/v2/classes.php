@@ -12,7 +12,7 @@
 		//}
 			
 		$auth=false;
-		$check=$mysqli->query("select teacher from user where uuid='".$uuid."' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+		$check=$mysqli->query("select teacher from user where uuid='".$mysqli->real_escape_string($uuid)."' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 		if($check->num_rows){
 			while($row=$check->fetch_assoc()){
 				$idteacher=$row["teacher"];
@@ -93,7 +93,7 @@
 				return json_encode($data);
 			}
 		}else if($_SESSION[ 'userrole' ] == 2 ){
-			$query = $mysqli->query( "SELECT * FROM classdepartment where headidteacher= '".$_SESSION['idteacher']."' ;" );
+			$query = $mysqli->query( "SELECT * FROM classdepartment where headidteacher= '".$mysqli->real_escape_string($_SESSION['idteacher'])."' ;" );
 			if ( $query->num_rows ) {
 				while ($get=$query->fetch_assoc() ){
 					if($tab=="yes")
@@ -104,7 +104,7 @@
 				return json_encode($data);
 			}
 		}else if($_SESSION[ 'userrole' ] == 3 ){
-			$query = $mysqli->query( "SELECT * FROM classteacher where idteacher= '".$_SESSION['idteacher']."' ;" );
+			$query = $mysqli->query( "SELECT * FROM classteacher where idteacher= '".$mysqli->real_escape_string($_SESSION['idteacher'])."' ;" );
 			if ( $query->num_rows ) {
 				while ($get=$query->fetch_assoc() ){
 					if($tab=="yes")
@@ -116,7 +116,7 @@
 			}
 		}
 		else if($_SESSION[ 'userrole' ] == 4 ){
-			$query = $mysqli->query( "SELECT * FROM class where school='".$_SESSION['school']."';" );
+			$query = $mysqli->query( "SELECT * FROM class where school='".$mysqli->real_escape_string($_SESSION['school'])."';" );
 			if ( $query->num_rows ) {
 				while ($get=$query->fetch_assoc() ){
 					if($tab=="yes")
@@ -137,7 +137,7 @@
 		global $mysqli;
 		$data=array();
 		if($_SESSION[ 'userrole' ] == 1 ){
-			$query = $mysqli->query( "SELECT * FROM class where classcode='".$classcode."';" );
+			$query = $mysqli->query( "SELECT * FROM class where classcode='".$mysqli->real_escape_string($classcode)."';" );
 			if ( $query->num_rows ) {
 				while ($get=$query->fetch_assoc() ){
 					$data[$get["classcode"]]=$get;
@@ -145,7 +145,7 @@
 				return json_encode($data);
 			}
 		}else if($_SESSION[ 'userrole' ] == 2 ){
-			$query = $mysqli->query( "SELECT * FROM classdepartment where classcode='".$classcode."' and headidteacher= '".$_SESSION['idteacher']."' ;" );
+			$query = $mysqli->query( "SELECT * FROM classdepartment where classcode='".$mysqli->real_escape_string($classcode)."' and headidteacher= '".$mysqli->real_escape_string($_SESSION['idteacher'])."' ;" );
 			if ( $query->num_rows ) {
 				while ($get=$query->fetch_assoc() ){
 					$data[$get["classcode"]]=$get;

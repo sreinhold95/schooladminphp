@@ -15,7 +15,7 @@ $pdfAuthor="FLS Darmstadt";
 $datenow = date("d.m.Y H:i:s");
 $auth=false;
 //uuid teacher-ID
-$check=$mysqli->query("select teacher from user where uuid='".$uuid."' and username='".$username."'");
+$check=$mysqli->query("select teacher from user where uuid='".$mysqli->real_escape_string($uuid)."' and username='".$mysqli->real_escape_string($username)."'");
 if($check->num_rows){
     while($row=$check->fetch_assoc()){
         $idteacher=$row["teacher"];

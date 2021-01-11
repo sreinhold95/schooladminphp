@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$uuid = $headers['uuid'];
 	$tab = $headers['tab'];
 	$auth = false;
-	$check = $mysqli->query("select teacher from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+	$check = $mysqli->query("select teacher from user where uuid='" . $mysqli->real_escape_string($uuid) . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 	if ($check->num_rows) {
 		while ($row = $check->fetch_assoc()) {
 			$idteacher = $row["teacher"];
@@ -88,7 +88,7 @@ function getallteacher()
 			return json_encode($data);
 		}
 	} else if ($_SESSION['userrole'] == 4) {
-		$query = $mysqli->query("SELECT * FROM adminteacher where school='".$_SESSION['school']."';");
+		$query = $mysqli->query("SELECT * FROM adminteacher where school='".$mysqli->real_escape_string($_SESSION['school'])."';");
 		if ($query->num_rows) {
 			while ($get = $query->fetch_assoc()) {
 				if ($tab == "yes")
@@ -110,7 +110,7 @@ function getteacher($idteacher)
 	global $tab;
 	$data = array();
 	if ($_SESSION['userrole'] == 1) {
-		$query = $mysqli->query("SELECT * FROM adminteacher where idteacher='" . $idteacher . "';");
+		$query = $mysqli->query("SELECT * FROM adminteacher where idteacher='" . $mysqli->real_escape_string($idteacher) . "';");
 		if ($query->num_rows) {
 			while ($get = $query->fetch_assoc()) {
 				if ($tab == "yes")

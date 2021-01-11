@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$tab = $headers['tab'];
 	$auth = false;
 	$username = "";
-	$check = $mysqli->query("select username from user where uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+	$check = $mysqli->query("select username from user where uuid='" . $mysqli->real_escape_string($uuid) . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
 	if ($check->num_rows) {
 		while ($row = $check->fetch_assoc()) {
 			$username = $row["username"];
