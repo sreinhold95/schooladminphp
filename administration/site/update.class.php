@@ -116,6 +116,18 @@
                     </table>
                 </div>
         </div>
+        <div class="add_wrap" id="Schüeleranlegen_wrap">
+            <div class="box_header">Schüeler anlegen</div>
+            <div class="box">
+                <button id="create_sus" type="button" class="btn btn-primary btn-sm"><a href="index.php?site=create" style="color:inherit"> neuer SuS</a></button>
+            </div>
+        </div>
+        <div class="add_wrap">
+            <div class="box_header">Download</div>
+            <div class="box">
+                <button id="download-xlsx" type="button" class="btn btn-primary btn-sm">Download Excel</button>
+            </div>
+        </div>
         <div class="add_wrap">
             <div class="box_header">Klasseneinstellungen</div>
                 <div class="box">
