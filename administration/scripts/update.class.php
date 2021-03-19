@@ -36,7 +36,8 @@
                 formatter: "rownum",
                 align: "left",
                 width: 20,
-                headerSort: false
+                headerSort: false,
+                download: false
             },
             {
                 title: "Status",
@@ -66,7 +67,8 @@
             },
             {
                 title: "Klasse",
-                field: "classcode"
+                field: "classcode",
+                download: false
             },
             {
                 title: "bearbeiten",
@@ -77,7 +79,8 @@
                     url: function(cell) {
                         return "index.php?site=update&id=" + cell.getData().idstudents
                     }
-                }
+                },
+                download: false
             },
             {
                 title: "drucken",
@@ -89,9 +92,16 @@
                     url: function(cell) {
                         return "../api/v2/stammblattsus.php?student=" + cell.getData().idstudents + "&uuid=" + getCookie("uuid")
                     }
-                }
+                } ,
+                download: false
             }
         ]
+    });
+
+    $("#download-xlsx").click(function() {
+        table.download("xlsx", "alle_SuS_<?php echo $classcode ?>.xlsx", {
+            sheetName: "meine Schüler"
+        });
     });
 
     $("#Klasseneinstellungen").submit(function(event) {

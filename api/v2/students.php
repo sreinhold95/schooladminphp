@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$headers = apache_request_headers();
 	$uuid = $headers['uuid'];
+	
 	$auth = false;
 	if (isset($headers['classtoken'])) {
 		$classcode = $headers['classtoken'];
@@ -65,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		header('Content-Type: application/json');
 		$data = array();
 		$data['error'] = 'uuid is too old please generate new one';
+		$data['uuid']= $headers['uuid'];
 		echo json_encode($data);
 	}
 } else if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
@@ -73,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$id = (int) $_GET['id'];
 	$auth = false;
 	$check = $mysqli->query("SELECT teacher,role from user where active=1 and uuid='" . $uuid . "' and uuidlifetime>=DATE_SUB(NOW(),INTERVAL 24 HOUR)");
+	
 	$teacherid=0;
 	if ($check->num_rows) {
 		while ($row = $check->fetch_assoc()) {
