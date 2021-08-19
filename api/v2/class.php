@@ -367,11 +367,11 @@ function schoolyearchange()
 	global $tab;
 	$errors = array();
 	$data = array();
-	$exitDate = "2020-07-03";
+	$exitDate = "2021-07-16";
 	$classes=$mysqli->query("SELECT classcode,new_classcode from class where sequence=1");
 	while ($get=$classes->fetch_assoc())
 	{
-		$new_classcode=$mysqli->prepare("UPDATE students set classcode=? where classcode=? and idstudents>=0");
+		$new_classcode=$mysqli->prepare("UPDATE students set classcode=? where classcode=? and idstudents>=0 and active=1 ");
 		$new_classcode->bind_param("ss",$get["new_classcode"],$get["classcode"]);
 		$new_classcode->execute();
 		$errors["new_classodeseq1"]=$new_classcode->error;
@@ -380,7 +380,7 @@ function schoolyearchange()
 		$classes=$mysqli->query("SELECT classcode,new_classcode from class where sequence=2");
 		while ($get=$classes->fetch_assoc())
 		{
-			$new_classcode=$mysqli->prepare("UPDATE students set classcode=? where classcode=? and idstudents>=0");
+			$new_classcode=$mysqli->prepare("UPDATE students set classcode=? where classcode=? and idstudents>=0 and active=1 ");
 			$new_classcode->bind_param("ss",$get["new_classcode"],$get["classcode"]);
 			$new_classcode->execute();
 			$errors["new_classodeseq2"]=$new_classcode->error;
@@ -390,7 +390,7 @@ function schoolyearchange()
 		$classes=$mysqli->query("SELECT classcode,new_classcode from class where sequence=3");
 		while ($get=$classes->fetch_assoc())
 		{
-			$new_classcode=$mysqli->prepare("UPDATE students set classcode=? where classcode=? and idstudents>=0");
+			$new_classcode=$mysqli->prepare("UPDATE students set classcode=? where classcode=? and idstudents>=0 and active=1 ");
 			$new_classcode->bind_param("ss",$get["new_classcode"],$get["classcode"]);
 			$new_classcode->execute();
 			$errors["new_classodeseq3"]=$new_classcode->error;
@@ -398,11 +398,11 @@ function schoolyearchange()
 	}
 	if ($errors["new_classodeseq3"] == ""){
 		$classcode="delete";
-		$inactivetodelete=$mysqli->prepare("update students set classcode =? where active=0 and idstudents>=0;");
+		$inactivetodelete=$mysqli->prepare("UPDATE students set classcode =? where active=0 and idstudents>=0;");
 		$inactivetodelete->bind_param("s",$classcode);
 		$inactivetodelete->execute();
 		$errors["inactivtodelete"]=$inactivetodelete->error;
-		$inactivetodelete=$mysqli->prepare("update students set active =? where classcode=? and idstudents>=0;");
+		$inactivetodelete=$mysqli->prepare("UPDATE students set active =? where classcode=? and idstudents>=0;");
 		$inactivetodelete->bind_param("is",0,$classcode);
 		$inactivetodelete->execute();
 		$errors["inactivtodelete"]=$inactivetodelete->error;

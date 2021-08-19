@@ -624,8 +624,8 @@ if (isset($_GET['idteacher'])) {
 					</label>
 				</div>
 			</div>
-
-			<input type="submit" name="submit" id="submit" value="Speichern">
+			<input type="button" value="Zurück" onClick="javascript:history.back()">																										
+			<input type="submit" name="submit" id="submit" value="Änderungen Übernehmen">
 			</form>
 	<?php
 							$idparents = $get['idparents'];

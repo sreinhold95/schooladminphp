@@ -1,5 +1,8 @@
 <?php
 session_start();
+setlocale(LC_ALL, 'de_DE.utf8');
+error_reporting(E_ERROR | E_PARSE);
+header('Content-Type: application/json; charset=UTF-8');
 $session_timeout = 600; // 1800 Sek./60 Sek. = 10 Minuten
 if (!isset($_SESSION['last_visit'])) {
 	$_SESSION['last_visit'] = time();
@@ -223,7 +226,34 @@ if (isset($_POST["susbetrieb"])) {
 		fclose($file);
 	}
 }
-
+if (isset($_POST["import_teacher"])) {
+	set_time_limit(600);
+	$filename = $_FILES["file"]["tmp_name"];
+	if ($_FILES["file"]["size"] > 0) {
+		$errors[] = array();
+		$file = fopen($filename, "r");
+		$json=ConvertToJSON($file);
+		//print_r($json);
+		$res =httpPost("https://anmeldung.fls-da.de/api/v2/teacher.php",$json,$_COOKIE["uuid"],"POST");
+		$resj=json_decode($res,true);
+		fclose($file);
+		if($resj["success"]==true)
+			echo "erfolgreich!!";
+		else
+			echo "haha fehler!!";
+	}
+}
+if (isset($_POST["schoolyearchange"])) {
+	set_time_limit(600);
+	$data= array("schoolyearchange"=>"true");
+	//print_r($json);
+	$res =httpPost("https://anmeldung.fls-da.de/api/v2/class.php",$data,$_COOKIE["uuid"],"PATCH");
+	$resj=json_decode($res,true);
+	if($resj["success"]==true)
+		echo "erfolgreich!!";
+	else
+		echo "haha fehler!!";
+}
 if (isset($_POST["Importlusd"])) {
 	set_time_limit(600);
 	$filename = $_FILES["file"]["tmp_name"];
@@ -268,5 +298,100 @@ if (isset($_POST["Importlusd"])) {
 		}
 		fclose($file);
 	}
+}
+function ConvertToJSON($file_handle){
+	
+	
+	$data=array();
+	$y=0;
+	$fheader=fgetcsvUTF8($file_handle, 1000, ';');
+	//$fheader = array_map("utf8_encode", $fheader);
+	while (!feof($file_handle)) {
+		$row=fgetcsvUTF8($file_handle, 1000, ';');
+		//$row = array_map("utf8_encode", $row);
+		foreach ($row as $x=>$value) {
+			//echo mb_detect_encoding($value,'UTF-8');
+			//$value1=utf8_encode($value);
+			$data[$y][$fheader[$x]]=$value;
+		}
+		$y++;
+	}
+	return json_encode($data,JSON_UNESCAPED_UNICODE);
+}
+function httpPost($url, $data,$uuid,$type)
+{
+	$curl = curl_init($url);
+	$cheaders=[
+		// 'Content-type: application/x-www-form-urlencoded',
+		'Content-type: text/plain; charset=UTF-8',
+		// 'Content-Type: multipart/form-data; boundary=---------BOUNDARY',
+		'uuid:'.$uuid.'',
+		'import:true'
+	];
+	//print_r($data);
+	if ($type=="PATCH"){
+		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
+	}
+	else if ($type="POST"){
+		curl_setopt($curl, CURLOPT_POST, true);
+	}
+	curl_setopt($curl, CURLOPT_HEADER, false);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curl, CURLOPT_HTTPHEADER,$cheaders);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($curl, CURLOPT_POSTFIELDS,$data);
+	$json_response = curl_exec($curl);
+	
+	$status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+	
+	if ( $status != 200 ) {
+		$res= $json_response;
+		die("Error: call to URL $url failed with status $status, response $res, curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl));
+	}
+	
+	$response=$json_response;
+	// $response = json_decode($json_response);
+	curl_close($curl);
+	return $response;
+}
+/**
+ * getting CSV array with UTF-8 encoding
+ *
+ * @param   resource    &$handle
+ * @param   integer     $length
+ * @param   string      $separator
+ *
+ * @return  array|false
+ */
+function fgetcsvUTF8(&$handle, $length, $separator = ';')
+{
+    if (($buffer = fgets($handle, $length)) !== false)
+    {
+        $buffer = autoUTF($buffer);
+        return str_getcsv($buffer, $separator);
+    }
+    return false;
+}
+
+/**
+ * automatic convertion windows-1250 and iso-8859-2 info utf-8 string
+ *
+ * @param   string  $s
+ *
+ * @return  string
+ */
+function autoUTF($s)
+{
+    // detect UTF-8
+    if (preg_match('#[\x80-\x{1FF}\x{2000}-\x{3FFF}]#u', $s))
+        return $s;
+
+    // detect WINDOWS-1250
+    if (preg_match('#[\x7F-\x9F\xBC]#', $s))
+        return iconv('WINDOWS-1250', 'UTF-8', $s);
+
+    // assume ISO-8859-2
+    return iconv('ISO-8859-2', 'UTF-8', $s);
 }
 ?>

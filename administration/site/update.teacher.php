@@ -13,30 +13,19 @@ if ((time() - $_SESSION['last_visit']) > $session_timeout) {
 }
 $_SESSION['last_visit'] = time();
 
-if (isset($_SESSION['loggedin'])) {
-	$loggedin = $_SESSION['loggedin'];
-} else
-	$loggedin = false;
-if ($loggedin == true) {
-	if ($_SESSION['userrole'] == 1) {
-		if (isset($_GET['idteacher']))
-			$idteacher = $_GET["idteacher"];
-		else {
-			$_SERVER['HTTP_REFERER'];
-			header('Location:' . $_SERVER['HTTP_REFERER']);
-		}
-	}else if ($_SESSION['userrole'] == 4) {
-		if (isset($_GET['idteacher']))
-			$idteacher = $_GET["idteacher"];
-		else {
-			$_SERVER['HTTP_REFERER'];
-			header('Location:' . $_SERVER['HTTP_REFERER']);
-		}
-	}
+$id = $_GET['id'];
+$classcode = "";
+$activetoken = "";
+$classteacher = "";
+$idparents = 0;
+if (isset($_GET['idteacher'])) {
+	$idteacher = $_GET["idteacher"];
+	$_SESSION['idteacher'] = 0;
+} else if (isset($_GET['id'])) {
+	$id = $_GET['id'];
 } else {
-	session_destroy();
-	session_unset();
-	header('location: ../../logout.php');
+	$_SERVER['HTTP_REFERER'];
+	header('Location:' . $_SERVER['HTTP_REFERER']);
 }
 ?>
 
@@ -48,98 +37,145 @@ if ($loggedin == true) {
 	<div id="success">Benutzerdaten erfolgreich aktualisiert.</div>
 	<div id="password_reset_success">Das Passwort wurde auf das Erstpasswort zurück gesetzt.</div>
 </div>
-
-
-
-<div class="table_wrap">
-	<?php
-	$query = $mysqli->query("SELECT * FROM teacherinf WHERE idteacher='" . $idteacher . "'");
-	if ($query->num_rows) {
-		$i = 0;
-		while ($get = $query->fetch_assoc()) {
-			//if ($i=0){
-	?>
-			<table class="table" id="anlegen-table">
-				<tr>
-					<th>Lehrer</th>
-				</tr>
-				<tr>
-					<td>
+<div class="d-flex">
+	<div class="p-2">
+		<div class="add_wrap">
+			<div class="box">
+				<div class="box_header">Lehrkraft</div>
+				<table class="table" id="side-table">
+				<?php
+					$query = $mysqli->query("select * from adminteacher where idteacher='" . $idteacher . "';");
+					$query1 = $mysqli->query("select classcode from classinformation where idteacher='" . $idteacher . "';");
+					if ($query->num_rows) {
+						while ($get = $query->fetch_assoc()) {
+							echo '<tr>';
+							echo '<td>Vorname:</td>';
+							echo '<td>' . $get['surname'] . '</td>';
+							echo '</tr>';
+							echo '<tr>';
+							echo '<td>Nachname:</td>';
+							echo '<td>' . $get['lastname'] . '</td>';
+							echo '</tr>';
+							echo '<tr>';
+							echo '<td>Klassenlehrer in:</td>';
+							echo '<td>';
+							while ($get1 = $query1->fetch_assoc()) {
+								
+								echo $get1['classcode'].', ';
+								
+							}
+							echo '</td>';
+							echo '</tr>';
+							echo '<tr>';
+							echo '<td>Schule:</td>';
+							echo '<td>' . $get['school'] . '</td>';
+							echo '</tr>';
+							
+						}
+					}
+					?>
+				</table>
+			</div>
+			<div class="box">
+				<div class="box_header">Abteilungsleiter</div>
+				<table class="table" id="side-table">
+				<?php
+					$query = $mysqli->query("select name from headofdepartment where idteacher='" . $idteacher . "';");
+					if ($query->num_rows) {
+						while ($get = $query->fetch_assoc()) {
+							echo '<tr>';
+							echo '<td>Abteilungsname:</td>';
+							echo '<td>' . $get['name'] . '</td>';
+							echo '</tr>';							
+						}
+					}
+					?>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="p-2">
+	
+		<div class="content_allg">
+			<form method="POST" action="" id="adminuser">
+				<?php
+					$query = $mysqli->query("SELECT * FROM teacherinf WHERE idteacher='" . $idteacher . "'");
+					if ($query->num_rows) {
+						$i = 0;
+						while ($get = $query->fetch_assoc()) {
+							
+				?>
+				<div class="box_header">Lehrkraft</div>
+				<div class="form-row">
+					<div class="form-group col-sm-6">
 						<label for="surname" class="label">Vorname:</label>
-						<input class="field" type="text" size="24" maxlength="50" name="surname" id="surname" value="<?php echo $get['Vorname']; ?>">
+						<input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="surname" id="surname" value="<?php echo $get['Vorname']; ?>">
+					</div>
+					<div class="form-group col-sm-6">
 						<label for="middlename" class="label">weitere Vornamen:</label>
-						<input class="field" type="text" size="24" maxlength="50" name="middlename" id="middlename" value="<?php echo $get['middlename']; ?>">
-						<label class="label">Nachname:</label>
-						<input class="field" type="text" size="24" maxlength="50" name="givenname" id="givenname" value="<?php echo $get['Nachname']; ?>">
+						<input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="middlename" id="middlename" value="<?php echo $get['middlename']; ?>">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-sm-6">
+						<label for="lastname" class="label">Nachname:</label>
+						<input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="lastname" id="lastname" value="<?php echo $get['Nachname']; ?>">
+					</div>
+					<div class="form-group col-sm-6">
 						<label for="moregivenname" class="label">weitere Nachnamen:</label>
-						<input class="field" type="text" size="24" maxlength="50" name="moregivenname" id="moregivenname" value="<?php echo $get['moregivenname']; ?>">
-					</td>
-				</tr>
-			</table>
-	<?php
-			//}
-			//$i++;
-		}
-	}
-	?>
+						<input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="moregivenname" id="moregivenname" value="<?php echo $get['moregivenname']; ?>">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-sm-6">
+						<label for="initials" class="label">Kürzel:</label>
+						<input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="initials" id="initials" value="<?php echo $get['initials']; ?>">
+					</div>
+					<div class="form-group col-sm-6">
+						<label for="school" class="label">Schule:</label>
+							<select name="school" id="school" class="form-control form-control-sm" size="1">
+								<?php
+								$check = $mysqli->query("SELECT school,schoolname FROM school;");
+								while ($row = mysqli_fetch_array($check)) {
+									if ($row['school'] != "") {
+										$schoolname = $row['schoolname'];
+										$school = $row['school'];
+										if ($school == $get['school'])
+											echo '<option selected="selected" value="' . $school . '">' . $schoolname . '</option>';
+										else
+											echo '<option value="' . $school . '">' . $schoolname . '</option>';
+									}
+								}
+								?>
+							</select>
+					</div>
+				</div>
+				<div class="box">
+				<div class="box_header">Status</div>
+
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="status" id="active" value="1" <?php if ($get['active'] == 1) {
+																											echo "CHECKED";
+																										} ?>>
+					<label class="form-check-label" for="activate">
+						aktive Lehrkraft
+					</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="status" id="deactive" value="0" <?php if ($get['active'] == 0) {
+																											echo "CHECKED";
+																										} ?>>
+					<label class="form-check-label" for="activate">
+						ehemalige Lehrkraft
+					</label>
+				</div>
+			</div>
+				<?php
+						}
+					}
+				?>
+				<input type="submit" name="submit" id="submit" value="Speichern">
+			</form>
+		</div>
+	</div>
 </div>
-
-
-<style>
-	.left {
-		width: 360px;
-	}
-
-	.table_wrap {
-		float: left;
-		color: #303030;
-		font-weight: 400;
-		font-size: 12px;
-		background: #fff;
-		padding: 10px;
-		-webkit-border-radius: 8px;
-		-moz-border-radius: 8px;
-		border-radius: 8px;
-		border: 1px solid #D4D4D4;
-		margin-bottom: 10px;
-	}
-
-	#anlegen-table td {
-		width: 230px;
-	}
-
-	#anlegen-table th {
-		width: 230px;
-	}
-
-	#Ausbildungsbetrieb-table th {
-		width: 230px;
-	}
-
-	#Ausbildungsbetrieb-table td {
-		width: 230px;
-	}
-
-	#Schulbildung-table th {
-		width: 230px;
-	}
-
-	#Schulbildung-table td {
-		width: 230px;
-	}
-
-	.tabl1e_wrap {
-		float: left;
-		width: 499px;
-		color: #303030;
-		font-weight: 400;
-		font-size: 12px;
-		background: #fff;
-		padding: 10px;
-		-webkit-border-radius: 8px;
-		-moz-border-radius: 8px;
-		border-radius: 8px;
-		border: 1px solid #D4D4D4;
-		margin-bottom: 10px;
-	}
-</style>

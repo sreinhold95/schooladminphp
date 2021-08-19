@@ -539,27 +539,10 @@ function createstudent($json,$school)
 	global $mysqli;
 	$error = array();
 	$data = array();
+	$student =array();
+	$idparents=0;
 	$json = str_replace("%26", "&", $_POST['student']);
 	$jsonobj = json_decode($_POST['student']);
-	$parentstmt = $mysqli->prepare("INSERT INTO parents (mother_surname,mother_lastname,mother_address,mother_postalcode,mother_phone,mother_mobilephone,father_surname,father_lastname,father_address,father_postalcode,father_phone,father_mobilephone)values(?,?,?,?,?,?,?,?,?,?,?,?)");
-	$parentstmt->bind_param(
-		'ssssssssssss',
-		$jsonobj->parents->mother_surname,
-		$jsonobj->parents->mother_lastname,
-		$jsonobj->parents->mother_address,
-		$jsonobj->parents->mother_postalcode,
-		$jsonobj->parents->mother_phone,
-		$jsonobj->parents->mother_mobilephone,
-		$jsonobj->parents->father_surname,
-		$jsonobj->parents->father_lastname,
-		$jsonobj->parents->father_address,
-		$jsonobj->parents->father_postalcode,
-		$jsonobj->parents->father_phone,
-		$jsonobj->parents->father_mobilephone
-	);
-	$parentstmt->execute();
-	$errors["parentstmt"] = $parentstmt->error;
-	$parentstmt->close();
 	$parentidstmt = $mysqli->prepare("select idparents from parents where mother_surname= ? and mother_lastname = ? and mother_address= ? and father_surname= ? and father_lastname= ? and father_address= ? limit 1;");
 	$parentidstmt->bind_param('ssssss', $jsonobj->parents->mother_surname, $jsonobj->parents->mother_lastname, $jsonobj->parents->mother_address, $jsonobj->parents->father_surname, $jsonobj->parents->father_lastname, $jsonobj->parents->father_address);
 	$parentidstmt->execute();
@@ -570,10 +553,63 @@ function createstudent($json,$school)
 	$errors["parentidstmt"] = $parentidstmt->error;
 	$data["parentid"] = $idparents;
 	$parentidstmt->close();
+	if($idparents!=0){
+		$parentstmt = $mysqli->prepare("INSERT INTO parents (mother_surname,mother_lastname,mother_address,mother_postalcode,mother_phone,mother_mobilephone,father_surname,father_lastname,father_address,father_postalcode,father_phone,father_mobilephone)values(?,?,?,?,?,?,?,?,?,?,?,?)");
+		$parentstmt->bind_param(
+			'ssssssssssss',
+			$jsonobj->parents->mother_surname,
+			$jsonobj->parents->mother_lastname,
+			$jsonobj->parents->mother_address,
+			$jsonobj->parents->mother_postalcode,
+			$jsonobj->parents->mother_phone,
+			$jsonobj->parents->mother_mobilephone,
+			$jsonobj->parents->father_surname,
+			$jsonobj->parents->father_lastname,
+			$jsonobj->parents->father_address,
+			$jsonobj->parents->father_postalcode,
+			$jsonobj->parents->father_phone,
+			$jsonobj->parents->father_mobilephone
+		);
+		$parentstmt->execute();
+		$errors["parentstmt"] = $parentstmt->error;
+		$parentstmt->close();
+		$parentidstmt = $mysqli->prepare("select idparents from parents where mother_surname= ? and mother_lastname = ? and mother_address= ? and father_surname= ? and father_lastname= ? and father_address= ? limit 1;");
+		$parentidstmt->bind_param('ssssss', $jsonobj->parents->mother_surname, $jsonobj->parents->mother_lastname, $jsonobj->parents->mother_address, $jsonobj->parents->father_surname, $jsonobj->parents->father_lastname, $jsonobj->parents->father_address);
+		$parentidstmt->execute();
+		$pid = $parentidstmt->get_result();
+		while ($row = $pid->fetch_assoc()) {
+			$idparents = $row['idparents'];
+		}
+		$errors["parentidstmt"] = $parentidstmt->error;
+		$data["parentid"] = $idparents;
+		$parentidstmt->close();
+	}
 	$entrydate = date('Y-m-d');
-	$studentstmt = $mysqli->prepare("INSERT INTO students(surname,middlename,givenname,moregivenname,birthdate,birthtown,birthcountry,province,entryDate,classcode,address,religion,nationality,family_speech,phone,mobilephone,email,idparents,idgraduation,idberuf,active,town,plz,sex,lastschool,lastschooltown,lastschooldate,lastschoolprovince,Ausbildungsbeginn,Ausbildungsbetrieb,Ausbildungsbetrieb_strasse,Ausbildungsbetrieb_PLZ,Ausbildungsbetrieb_Telefon,Ausbildungsbetrieb_Fax,Ausbildungsbetrieb_Email,Ausbildungsbetrieb_Ausbilder_Anrede,Ausbildungsbetrieb_Ausbilder_Name,indeutschlandseit,sprachniveau,dsgvo,houserules,edvrules,school) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
-	if ($studentstmt) {
-		$studentstmt->bind_param(
+	$studentexist=$mysqli->prepare("select idstudents from students where surname= ? and givenname= ? and birthdate= ? limit 1;");
+	$sid=0;
+	if($studentexist)
+	{
+		$studentexist->bind_param('sss',$jsonobj->surname,$jsonobj->givenname,$jsonobj->birthdate);
+		$studentexist->execute();
+		$sidstmt=$studentexist->get_result();
+		while($row=$sidstmt->fetch_assoc()){
+			$sid=$row['idstudents'];
+		}
+		$errors["studentexist"] = $studentexist->error;
+		$studentexist->close();
+		$data["sid"]=$sid;
+	}
+	else{
+		$errors["studentexist"]="MySQL Syntax Error";
+		$errors["studentexisterr"] = $mysqli->error;
+		$data["json"]=$json;
+		$data["sid"]="error";
+	}
+	if($sid==0)
+	{
+		$studentstmt = $mysqli->prepare("INSERT INTO students(surname,middlename,givenname,moregivenname,birthdate,birthtown,birthcountry,province,entryDate,classcode,address,religion,nationality,family_speech,phone,mobilephone,email,idparents,idgraduation,idberuf,active,town,plz,sex,lastschool,lastschooltown,lastschooldate,lastschoolprovince,Ausbildungsbeginn,Ausbildungsbetrieb,Ausbildungsbetrieb_strasse,Ausbildungsbetrieb_PLZ,Ausbildungsbetrieb_Telefon,Ausbildungsbetrieb_Fax,Ausbildungsbetrieb_Email,Ausbildungsbetrieb_Ausbilder_Anrede,Ausbildungsbetrieb_Ausbilder_Name,indeutschlandseit,sprachniveau,dsgvo,houserules,edvrules,school) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+		if ($studentstmt) {
+			$studentstmt->bind_param(
 			'sssssssssssssssssiiiissssssssssssssssssiiis',
 			$jsonobj->surname,
 			$jsonobj->middlename,
@@ -622,11 +658,21 @@ function createstudent($json,$school)
 		$studentstmt->execute();
 		$errors["studentstmt"] = $studentstmt->error;
 		$studentstmt->close();
-	} else {
-		$errors["studentstmt"] = "MySQL Syntax Error";
-		$errors["json"]=$_POST['student'];
+		} 
+		else {
+			$errors["studentstmt"] = "MySQL Syntax Error";
+			$errors["json"]=$_POST['student'];
+		}
 	}
-	if ($errors["parentstmt"] == "" && $errors["parentidstmt"] == "" && $errors["studentstmt"] == "")
+	else{
+		//updatestudentid($json,"",$sid,$pid);
+		$student=updatestudentid($json,"",$sid,$pid);
+		if ($student["success"]==false)
+		{
+			$errors["update"]=$student;
+		}
+	}
+	if ($errors["parentstmt"] == "" && $errors["parentidstmt"] == "" && $errors["studentstmt"] == ""&& $errors["studentexist"] == ""&& $errors["update"] == "")
 		$data['success'] = true;
 	else
 		$data['success'] = false;
@@ -736,6 +782,110 @@ function updatestudent($json,$teacherid)
 		$data['success'] = false;
 	$data['errors'] = $errors;
 	echo json_encode($data);
+}
+function updatestudentid($json,$teacherid,$sid,$pid)
+{
+	global $mysqli;
+	$error = array();
+	$data = array();
+	$json = str_replace("%26", "&", $json);
+	$jsonobj = json_decode($json);
+	$parentstmt = $mysqli->prepare("update parents set mother_surname=?,mother_lastname=?,mother_address=?,mother_postalcode=?,mother_phone=?,mother_mobilephone=?,father_surname=?,father_lastname=?,father_address=?,father_postalcode=?,father_phone=?,father_mobilephone=? where idparents=?");
+	$parentstmt->bind_param(
+		'ssssssssssssi',
+		$jsonobj->parents->mother_surname,
+		$jsonobj->parents->mother_lastname,
+		$jsonobj->parents->mother_address,
+		$jsonobj->parents->mother_postalcode,
+		$jsonobj->parents->mother_phone,
+		$jsonobj->parents->mother_mobilephone,
+		$jsonobj->parents->father_surname,
+		$jsonobj->parents->father_lastname,
+		$jsonobj->parents->father_address,
+		$jsonobj->parents->father_postalcode,
+		$jsonobj->parents->father_phone,
+		$jsonobj->parents->father_mobilephone,
+		$pid
+	);
+	$parentstmt->execute();
+	$errors["parentstmt"] = $parentstmt->error;
+	$parentstmt->close();
+	$parentidstmt = $mysqli->prepare("select idparents from parents where mother_surname= ? and mother_lastname = ? and mother_address= ? and father_surname= ? and father_lastname= ? and father_address= ?");
+	$parentidstmt->bind_param('ssssss', $jsonobj->parents->mother_surname, $jsonobj->parents->mother_lastname, $jsonobj->parents->mother_address, $jsonobj->parents->father_surname, $jsonobj->parents->father_lastname, $jsonobj->parents->father_address);
+	$parentidstmt->execute();
+	$pid = $parentidstmt->get_result();
+	while ($row = $pid->fetch_assoc()) {
+		$idparents = $row['idparents'];
+	}
+	$errors["parentidstmt"] = $parentidstmt->error;
+	$data["parentid"] = $idparents;
+	$parentidstmt->close();
+	//$exitDate="";
+	if ($jsonobj->exitDate == "")
+		$exitDate = null;
+	else
+		$exitDate = $jsonobj->exitDate;
+	$studentstmt = $mysqli->prepare("update students set surname=?,middlename=?,givenname=?,moregivenname=?,birthdate=?,birthtown=?,birthcountry=?,province=?,entryDate=?,classcode=?,address=?,religion=?,nationality=?,family_speech=?,phone=?,mobilephone=?,email=?,idgraduation=?,idberuf=?,active=?,town=?,plz=?,sex=?,lastschool=?,lastschooltown=?,lastschooldate=?,lastschoolprovince=?,Ausbildungsbeginn=?,Ausbildungsbetrieb=?,Ausbildungsbetrieb_strasse=?,Ausbildungsbetrieb_PLZ=?,Ausbildungsbetrieb_Telefon=?,Ausbildungsbetrieb_Fax=?,Ausbildungsbetrieb_Email=?,Ausbildungsbetrieb_Ausbilder_Anrede=?,Ausbildungsbetrieb_Ausbilder_Name=?,indeutschlandseit=?,sprachniveau=?,exitDate=?,changedby=? where idstudents=?;");
+	if ($studentstmt) {
+		$studentstmt->bind_param(
+			'sssssssssssssssssiiisssssssssssssssssssis',
+			$jsonobj->surname,
+			$jsonobj->middlename,
+			$jsonobj->givenname,
+			$jsonobj->moregivenname,
+			$jsonobj->birthdate,
+			$jsonobj->birthtown,
+			$jsonobj->birthcountry,
+			$jsonobj->province,
+			$jsonobj->entryDate,
+			$jsonobj->classcode,
+			$jsonobj->street,
+			$jsonobj->religion,
+			$jsonobj->nationality,
+			$jsonobj->family_speech,
+			$jsonobj->phone,
+			$jsonobj->mobilephone,
+			$jsonobj->email,
+			$jsonobj->idgraduation,
+			$jsonobj->idberuf,
+			$jsonobj->active,
+			$jsonobj->town,
+			$jsonobj->postalcode,
+			$jsonobj->sex,
+			$jsonobj->lastschool,
+			$jsonobj->lastschooltown,
+			$jsonobj->lastschooldate,
+			$jsonobj->lastschoolprovince,
+			$jsonobj->Ausbildungsbeginn,
+			$jsonobj->Ausbildungsbetrieb->Name,
+			$jsonobj->Ausbildungsbetrieb->Strasse,
+			$jsonobj->Ausbildungsbetrieb->PLZ,
+			$jsonobj->Ausbildungsbetrieb->Telefon,
+			$jsonobj->Ausbildungsbetrieb->Fax,
+			$jsonobj->Ausbildungsbetrieb->Email,
+			$jsonobj->Ausbildungsbetrieb->Ausbilder->Anrede,
+			$jsonobj->Ausbildungsbetrieb->Ausbilder->Name,
+			$jsonobj->indeutschlandseit,
+			$jsonobj->sprachniveau,
+			//$jsonobj->exitDate,
+			$exitDate,
+			$teacherid,
+			$sid
+			
+		);
+		$studentstmt->execute();
+		$errors["studentstmt"] = $studentstmt->error;
+		$studentstmt->close();
+	} else {
+		$errors["studentstmt"] = "MySQL Syntax Error";
+	}
+	if ($errors["parentstmt"] == "" && $errors["studentstmt"] == "")
+		$data['success'] = true;
+	else
+		$data['success'] = false;
+	$data['errors'] = $errors;
+	//echo json_encode($data);
+	return $data;
 }
 function setdone($setdone,$studentid){
 	global $mysqli;

@@ -8,7 +8,7 @@ if (!isset($_SESSION['last_visit'])) {
 if ((time() - $_SESSION['last_visit']) > $session_timeout) {
 	session_destroy();
 	session_unset();
-	header('location: ../logout.php');
+	header('location: ../admin/logout.php');
 	// Aktion der Session wird erneut ausgeführt
 }
 $_SESSION['last_visit'] = time();
@@ -23,7 +23,7 @@ if ($loggedin == true) {
 } else {
 	session_destroy();
 	session_unset();
-	header('location: ../logout.php');
+	header('location: ../admin/logout.php');
 } ?>
 <div class="error_wrap">
 	<div id="searchempty">Oops! Nach was soll ich suchen?</div>

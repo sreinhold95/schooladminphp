@@ -24,6 +24,8 @@
 								<a class="dropdown-item" href="index.php?site=lanisimport">LANiS Import</a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="index.php?site=susimport">SuS Import</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="index.php?site=import.teacher">Import Lehrer</a>
 							</div>
 						</li>
 						<li class="nav-item dropdown">
@@ -36,6 +38,18 @@
 								<a class="dropdown-item" href="index.php?site=export.webuntis.newyear">Webuntis Export Angänger</a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="index.php?site=export.ReNo">Export ReNo Nach,Vor,Mail</a>
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">sonstiges</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="index.php?site=schoolyearchange.class">Jahresumzug</a>
+								<!-- <div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="index.php?site=export.webuntis">Webuntis Export</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="index.php?site=export.webuntis.newyear">Webuntis Export Angänger</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="index.php?site=export.ReNo">Export ReNo Nach,Vor,Mail</a> -->
 							</div>
 						</li>
 						<li class="nav-item">

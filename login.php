@@ -45,18 +45,23 @@ if (isset($username) & isset($password)) {
 			$uuid = uuid($username, $password);
 			setcookie("uuid", $uuid, 0, "/", $domain, true);
 		}
-		if ($_SESSION['isactiv'] == 1) {
-			if ($_SESSION['userrole'] == 1) {
-				header('location: admin/index.php?site=home');
-			} else if ($_SESSION['userrole'] == 2) {
-				header('location: dep_instructor/index.php?site=home');
-			} else if ($_SESSION['userrole'] == 3) {
-				header('location: classteacher/index.php?site=home');
-			} else if ($_SESSION['userrole'] == 4) {
-				header('location: administration/index.php?site=home');
+		if(isset($_SESSION['isactiv'])){
+			if ($_SESSION['isactiv'] == 1) {
+				if ($_SESSION['userrole'] == 1) {
+					header('location: admin/index.php?site=home');
+				} else if ($_SESSION['userrole'] == 2) {
+					header('location: dep_instructor/index.php?site=home');
+				} else if ($_SESSION['userrole'] == 3) {
+					header('location: classteacher/index.php?site=home');
+				} else if ($_SESSION['userrole'] == 4) {
+					header('location: administration/index.php?site=home');
+				}
+			} else {
+				echo '<font color="#FF0000">Account gesperrt!</font>';
 			}
-		} else {
-			echo '<font color="#FF0000">Account ist abgelaufen!</font>';
+		}
+		else {
+			echo '<font color="#FF0000">Account... bitte erneut probieren!</font>';
 		}
 	} else {
 		echo '<font color="#FF0000">Account nicht vorhanden!</font>';
