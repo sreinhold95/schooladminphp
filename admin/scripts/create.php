@@ -106,7 +106,7 @@
                     'houserules':1,
                     'edvrules':1,
                 };
-                var url = "../../api/v2/students.php";
+                var url = "../../api/v2/students1.php";
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", url, true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

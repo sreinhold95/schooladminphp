@@ -252,6 +252,7 @@ if (isset($_POST["schoolyearchange"])) {
 	if($resj["success"]==true)
 		echo "erfolgreich!!";
 	else
+		echo $res;
 		echo "haha fehler!!";
 }
 if (isset($_POST["Importlusd"])) {
@@ -345,7 +346,7 @@ function httpPost($url, $data,$uuid,$type)
 	
 	$status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 	
-	if ( $status != 200 ) {
+	if ( $status == 200 ) {
 		$res= $json_response;
 		die("Error: call to URL $url failed with status $status, response $res, curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl));
 	}

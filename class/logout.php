@@ -14,7 +14,8 @@
 	setcookie("classtoken", "", 0, "/", $domain);
 	session_unset();
 	if ($school=="fls"){
-		header('location: https://app.edkimo.com/survey/digitales-arbeiten/fuluwgi');
+		//header('location: https://app.edkimo.com/survey/digitales-arbeiten/fuluwgi');
+		header('location: ../index.php');
 	}
 	else{
 		header('location: ../index.php');

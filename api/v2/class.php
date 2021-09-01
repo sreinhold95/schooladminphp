@@ -95,8 +95,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		$data = array();
 		header('HTTP/1.0 200 OK Patch');
 		header('Content-Type: application/json');
-		parse_str(file_get_contents('php://input'), $_PATCH);
-		if($_PATCH["schoolyearchange"]){
+		$patch=file_get_contents('php://input');
+		//print_r($patch);
+		if($patch["schoolyearchange"]){
+			// echo "juhu";
 			schoolyearchange();
 			//echo $_PATCH["schoolyearchange"];
 		}
@@ -402,8 +404,8 @@ function schoolyearchange()
 		$inactivetodelete->bind_param("s",$classcode);
 		$inactivetodelete->execute();
 		$errors["inactivtodelete"]=$inactivetodelete->error;
-		$inactivetodelete=$mysqli->prepare("UPDATE students set active =? where classcode=? and idstudents>=0;");
-		$inactivetodelete->bind_param("is",0,$classcode);
+		$inactivetodelete=$mysqli->prepare("UPDATE students set active =0 where classcode=? and idstudents>=0;");
+		$inactivetodelete->bind_param("s",$classcode);
 		$inactivetodelete->execute();
 		$errors["inactivtodelete"]=$inactivetodelete->error;
 		$new_classcode=$mysqli->prepare("UPDATE students set exitDate=? where classcode=? and idstudents>=0 and exitDate is null");

@@ -512,7 +512,7 @@ if (isset($_GET['idteacher'])) {
 				</div>
 			</div>
 			<div class="box" id="eltern-table" <?php if ($get['mother_postalcode'] == "00000" && $get['father_postalcode'] == "00000") {
-													echo 'style="display:none"';
+													//echo 'style="display:none"';
 												} else {
 												} ?>>
 												<div class="box_header">zusätliche Informationen der Eltern bei Minderjährigen</div>

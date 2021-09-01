@@ -10,7 +10,7 @@ session_start();
 	<noscript>
  		 <div class="jserror">Bitte aktivieren Sie Javascript, sonst ist der Funktionsumfang eingeschränkt.</div>
 	</noscript>
-	<div id="wartung">Herzlich Willkommen in der Schulverwaltung der FLS</div>
+	<div id="wartung">Herzlich Willkommen in der Schulverwaltung im BSZN</div>
 	<?php
 	include( "style/menu.php" );
 	?>
