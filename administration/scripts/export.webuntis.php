@@ -63,7 +63,7 @@
     });
     $("#exportcsv").click(function() {
         table.download("csv", "webuntis.csv", {
-            delimiter:";",
+            delimiter:",",
             bom:true
         });
     });

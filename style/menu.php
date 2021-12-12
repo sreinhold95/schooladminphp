@@ -35,7 +35,7 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="index.php?site=export.webuntis">Webuntis Export</a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="index.php?site=export.webuntis.newyear">Webuntis Export Angänger</a>
+								<a class="dropdown-item" href="index.php?site=export.webuntis.newyear">Webuntis Export Abgänger</a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="index.php?site=export.ReNo">Export ReNo Nach,Vor,Mail</a>
 							</div>
@@ -95,7 +95,7 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="index.php?site=export.webuntis">Webuntis Export</a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="index.php?site=export.webuntis.newyear">Webuntis Export Angänger</a>
+								<a class="dropdown-item" href="index.php?site=export.webuntis.newyear">Webuntis Export Abgänger</a>
 							</div>
 						</li>
 						<li class="nav-item">

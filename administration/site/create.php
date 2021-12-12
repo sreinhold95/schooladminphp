@@ -184,6 +184,7 @@ if ($loggedin == true) {
                             <label for="classc" class="label">Klasse:</label>
 									<?php
 									echo '<select name "classc"  id="classc" class="form-control form-control-sm size="1">';
+                                    echo 'option selected="selected" value="Parkplatz1">Parkplatz 1</option>';
 									$check = $mysqli->query("SELECT * FROM classdepartment where headidteacher='".$_SESSION['idteacher']."';");
 									while ($row = mysqli_fetch_array($check)) {
 										if ($row['classcode'] != "") {
@@ -227,7 +228,7 @@ if ($loggedin == true) {
                     <br>
                     <div class="form-group">
                         <label for="ausbildungsbetrieb_name" class="label">Name:</label>
-                        <input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="ausbildungsbetrieb_name" id="ausbildungsbetrieb_name" value="">
+                        <input class="form-control form-control-sm" type="text" size="24" maxlength="50" name="ausbildungsbetrieb_name" id="ausbildungsbetrieb_name" value=""  onchange='stringreplace("input#ausbildungsbetrieb_name","ausbildungsbetrieb_name","&"," und ")'>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-sm-6">

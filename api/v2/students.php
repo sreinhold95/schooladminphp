@@ -667,7 +667,7 @@ function createstudent($json,$school)
 	}
 	else{
 		//updatestudentid($json,"",$sid,$pid);
-		$student=updatestudentid($json,"",$sid,$pid);
+		$student=updatestudentid($json,"",$sid,$pid,$school);
 		if ($student["success"]==false)
 		{
 			$errors["update"]=$student;
@@ -813,7 +813,7 @@ function updatestudent($json,$teacherid)
 	$data['errors'] = $errors;
 	echo json_encode($data);
 }
-function updatestudentid($json,$teacherid,$sid,$pid)
+function updatestudentid($json,$teacherid,$sid,$pid,$school)
 {
 	global $mysqli;
 	$error = array();
@@ -883,10 +883,10 @@ function updatestudentid($json,$teacherid,$sid,$pid)
 		$exitDate = null;
 	else
 		$exitDate = $jsonobj->exitDate;
-	$studentstmt = $mysqli->prepare("update students set idparents=?,surname=?,middlename=?,givenname=?,moregivenname=?,birthdate=?,birthtown=?,birthcountry=?,province=?,entryDate=?,classcode=?,address=?,religion=?,nationality=?,family_speech=?,phone=?,mobilephone=?,email=?,idgraduation=?,idberuf=?,active=?,town=?,plz=?,sex=?,lastschool=?,lastschooltown=?,lastschooldate=?,lastschoolprovince=?,Ausbildungsbeginn=?,Ausbildungsbetrieb=?,Ausbildungsbetrieb_strasse=?,Ausbildungsbetrieb_PLZ=?,Ausbildungsbetrieb_Telefon=?,Ausbildungsbetrieb_Fax=?,Ausbildungsbetrieb_Email=?,Ausbildungsbetrieb_Ausbilder_Anrede=?,Ausbildungsbetrieb_Ausbilder_Name=?,indeutschlandseit=?,sprachniveau=?,exitDate=?,changedby=? where idstudents=?;");
+	$studentstmt = $mysqli->prepare("update students set idparents=?,surname=?,middlename=?,givenname=?,moregivenname=?,birthdate=?,birthtown=?,birthcountry=?,province=?,entryDate=?,classcode=?,address=?,religion=?,nationality=?,family_speech=?,phone=?,mobilephone=?,email=?,idgraduation=?,idberuf=?,active=?,town=?,plz=?,sex=?,lastschool=?,lastschooltown=?,lastschooldate=?,lastschoolprovince=?,Ausbildungsbeginn=?,Ausbildungsbetrieb=?,Ausbildungsbetrieb_strasse=?,Ausbildungsbetrieb_PLZ=?,Ausbildungsbetrieb_Telefon=?,Ausbildungsbetrieb_Fax=?,Ausbildungsbetrieb_Email=?,Ausbildungsbetrieb_Ausbilder_Anrede=?,Ausbildungsbetrieb_Ausbilder_Name=?,indeutschlandseit=?,sprachniveau=?,exitDate=?,changedby=?,school=? where idstudents=?;");
 	if ($studentstmt) {
 		$studentstmt->bind_param(
-			'isssssssssssssssssiiisssssssssssssssssssis',
+			'isssssssssssssssssiiisssssssssssssssssssiss',
 			$idparents,
 			$jsonobj->surname,
 			$jsonobj->middlename,
@@ -929,6 +929,7 @@ function updatestudentid($json,$teacherid,$sid,$pid)
 			//$jsonobj->exitDate,
 			$exitDate,
 			$teacherid,
+			$school,
 			$sid
 			
 		);

@@ -65,6 +65,10 @@ if (isset($_GET['idteacher'])) {
 							echo '<td>' . $get['birthdate'] . '</td>';
 							echo '</tr>';
 							echo '<tr>';
+							echo '<td>Userrname:</td>';
+							echo '<td>' . $get['username'] . '</td>';
+							echo '</tr>';
+							echo '<tr>';
 							echo '<td>Schulordnung:</td>';
 							if ($get['houserules']==1)
 								echo '<td> zugestimmt </td>';
@@ -624,7 +628,7 @@ if (isset($_GET['idteacher'])) {
 					</label>
 				</div>
 			</div>
-
+			<input type="button" value="Zurück" onClick="javascript:history.back()">
 			<input type="submit" name="submit" id="submit" value="Speichern">
 			</form>
 	<?php

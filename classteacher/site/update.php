@@ -60,8 +60,13 @@ if (isset($_GET['idteacher'])) {
 							echo '<td>weitere Nachnamen:</td>';
 							echo '<td>' . $get['moregivenname'] . '</td>';
 							echo '</tr>';
+							echo '<tr>';
 							echo '<td>Geburtsdatum:</td>';
 							echo '<td>' . $get['birthdate'] . '</td>';
+							echo '</tr>';
+							echo '<tr>';
+							echo '<td>Userrname:</td>';
+							echo '<td>' . $get['username'] . '</td>';
 							echo '</tr>';
 							echo '<tr>';
 							echo '<td>Schulordnung:</td>';

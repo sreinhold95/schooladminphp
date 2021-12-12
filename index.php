@@ -24,7 +24,7 @@ session_start();
 		<h8><a href="Schulordnung_ab August_2020.pdf" target="_blank">Schulordnung der FLS</a><h8><br>
 		<h8><a href="Datenschutzerklärung.pdf" target="_blank">Datenschutzerklärung der FLS</a><h8><br>
 		<h8><a href="Nutzungsordnung für PC_ab August_2020.pdf" target="_blank">EDV Nutzererklärung der FLS</a><h8><br>
-		<h8><a href="https://app.edkimo.com/survey/digitales-arbeiten/fuluwgi" target="_blank">Umfrage Digitales Arbeiten der FLS</a><h8>
+		<h8><a href="https://app.edkimo.com/feedback/fuluwgi" target="_blank">Umfrage Digitales Arbeiten der FLS</a><h8>
 		
 	</div>
 	<br>

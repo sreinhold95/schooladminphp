@@ -575,7 +575,7 @@ if ($auth) {
                     </tbody>
             </table><br><br>
             <br><b style="color:red">Das Passwort muss nach der ersten Anmeldung am PC im Schülermodul geändert werden.</b>
-            <br><b>Ihre Anmeldedaten werden im Laufe von 2 Werktagen in allen elektronischen Systemen der Schule eingebunden.</b>
+            <br><b>Ihre Anmeldedaten sind nach 2 Werktagen in allen elektronischen Systemen der Schule eingebunden.</b>
             ';
             }
             $i++;
@@ -688,7 +688,7 @@ if ($auth) {
         $pdf->Text(53, 145, 'Untis App Android');
         $pdf->write2DBarcode('https://play.google.com/store/apps/details?id=com.grupet.web.app&hl=de', 'QRCODE,Q', 55, 150, 30, 30, $style, 'N');
         $pdf->Text(93, 145, 'Schulportal');
-        $pdf->write2DBarcode('https://portal.lanis-system.de/6283', 'QRCODE,Q', 90, 150, 30, 30, $style, 'N');
+        $pdf->write2DBarcode('https://start.schulportal.hessen.de/6283', 'QRCODE,Q', 90, 150, 30, 30, $style, 'N');
         $pdf->Text(133, 145, 'Moodle');
         $pdf->write2DBarcode('https://moodle.fls-da.de', 'QRCODE,Q', 125, 150, 30, 30, $style, 'N');
         $pdf->Text(20, 185, 'Bitte bewahren Sie diesen Zettel sorgfältig auf.');
