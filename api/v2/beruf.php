@@ -1,7 +1,8 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'].'/include/config.inc.php';
 session_start();
-
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: deny');
 //global $apikey;
 if ($_SERVER['REQUEST_METHOD']=='GET'){
 	$headers = apache_request_headers();

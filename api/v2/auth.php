@@ -42,5 +42,7 @@ $uuid="";
     }
     header('HTTP/1.0 200 OK');
 	header('Content-Type: application/json');
+    header('X-Content-Type-Options: nosniff');
+    header('X-Frame-Options: deny');
     echo json_encode($data);
 ?>

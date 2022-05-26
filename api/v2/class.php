@@ -1,6 +1,8 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/include/config.inc.php';
 session_start();
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: deny');
 ini_set('error_reporting', E_ERROR);
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$headers = apache_request_headers();
@@ -151,7 +153,7 @@ function getclass($classcode)
 		if ($classcode == '') {
 			switch ($_SESSION['userrole']) {
 				case 1:
-					$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.lastname as tgivenname, students.email FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and depteacher.idteacher='" . $mysqli->real_escape_string($_SESSION['idteacher']) . "' order by classcode;");
+					$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,cteacher.surname as tsurname,cteacher.lastname as tgivenname, students.email, students.idnumber as device FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and depteacher.idteacher='" . $mysqli->real_escape_string($_SESSION['idteacher']) . "' order by classcode;");
 					while ($get = $student->fetch_assoc()) {
 						if ($tab == "yes")
 							$data[] = $get;
@@ -198,7 +200,7 @@ function getclass($classcode)
 		} else {
 			switch ($_SESSION['userrole']) {
 				case 1:
-					$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,students.birthdate,cteacher.surname as tsurname,cteacher.lastname as tgivenname, students.email FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and students.classcode='" . $mysqli->real_escape_string($classcode) . "' group by idstudents;");
+					$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,students.birthdate,cteacher.surname as tsurname,cteacher.lastname as tgivenname, students.email, students.idnumber as device FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and students.classcode='" . $mysqli->real_escape_string($classcode) . "' group by idstudents;");
 					while ($get = $student->fetch_assoc()) {
 						if ($tab == "yes")
 							$data[] = $get;
@@ -218,7 +220,7 @@ function getclass($classcode)
 					$json = json_encode($data);
 					break;
 				case 3:
-					$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,students.birthdate,cteacher.surname as tsurname,cteacher.lastname as tgivenname, students.email FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and cteacher.idteacher='" . $mysqli->real_escape_string($_SESSION['idteacher']) . "' and students.classcode='" . $mysqli->real_escape_string($classcode) . "' group by idstudents;");
+					$student = $mysqli->query("SELECT students.active,students.idstudents, students.surname,students.middlename,students.givenname,students.classcode,students.birthdate,cteacher.surname as tsurname,cteacher.lastname as tgivenname, students.email,students.idnumber as device FROM students inner join class on students.classcode=class.classcode inner join schoolform on class.schoolform=schoolform.idschoolform inner join department on class.department=department.iddepartment inner join teacher_class on class.classcode=teacher_class.classcode inner join teacher  as cteacher on teacher_class.idteacher=cteacher.idteacher inner join teacher as depteacher on depteacher.idteacher=department.headofdepartment where teacher_class.classteacher=1 and cteacher.idteacher='" . $mysqli->real_escape_string($_SESSION['idteacher']) . "' and students.classcode='" . $mysqli->real_escape_string($classcode) . "' group by idstudents;");
 					while ($get = $student->fetch_assoc()) {
 						if ($tab == "yes")
 							$data[] = $get;

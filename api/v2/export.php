@@ -1,7 +1,9 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/include/config.inc.php';
 session_start();
-error_reporting(E_ERROR);
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: deny');
+ini_set('error_reporting', E_ERROR);
 $_SESSION["uuid"] = "";
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$headers = apache_request_headers();
@@ -20,17 +22,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	if ($auth) {
 		$_SESSION["uuid"] = $uuid;
 		login();
-		if (isset($_GET['lanis']))
+		if (isset($_GET["school"]))
+			$school=$_GET["school"];
+		else
+		 $school="";
+		if (isset($_GET['iservstudents']))
+			$result = getallstudentiserv($school);
+		else if (isset($_GET['iservteacher']))
+			$result = getallteacheriserv();
+		else if (isset($_GET['lanis']))
 			$result = getallstudentlanis();
-			if (isset($_GET['lanisold']))
+		else if (isset($_GET['lanisold']))
 			$result = getallstudentlanisold();
-		if (isset($_GET['webuntis']))
+		else if (isset($_GET['webuntis']))
 			$result = getallstudentwebuntis();
-		if (isset($_GET['webuntisnewyear']))
+		else if (isset($_GET['webuntisnewyear']))
 			$result = getallstudentwebuntisnewyear();
-		if (isset($_GET['nachvoremail']))
+		else if (isset($_GET['nachvoremail']))
 			$result = getnachvoremail($_GET['nachvoremail']);
+		else{
+			$data["error"]= "no vaild get inquiry";
+			$result = json_encode($data);
+		}
+			
 		echo $result;
+
 	} else {
 		header('HTTP/1.0 403 Forbitten');
 		header('Content-Type: application/json');
@@ -113,7 +129,100 @@ function getallstudentlanis()
 	}
 	return ($json);
 }
-
+function getallstudentiserv($school)
+{
+	global $mysqli;
+	global $tab;
+	$data = array();
+	if ($_SESSION['isactiv'] == 1) {
+		if ($_SESSION['userrole'] == 1) {
+			if($school=="hems"){
+				$student = $mysqli->prepare("SELECT * FROM bsznsql2.iserv where  school='".$school."' or Klasse LIKE '%IT%';");
+			}
+			else
+				$student = $mysqli->prepare("select * from iserv ;");
+			$student->execute();
+			if ($student) {
+				$data = array();
+				$stdt = $student->get_result();
+				while ($row = $stdt->fetch_assoc()) {
+					if ($tab == "yes")
+						$data[] = $row;
+					else
+						$data[] = $row;
+				}
+				$json = json_encode($data);
+			}
+			if ($json == "null") {
+				$data["error"] = "no Student";
+				$json = json_encode($data);
+				header('HTTP/1.0 900 no data');
+				header('Content-Type: application/json');
+			} else {
+				header('HTTP/1.0 200 OK');
+				header('Content-Type: application/json');
+			}
+		}else {
+			$data["error"] = "no rights" . " " . $_SESSION['userrole'];
+			$json = json_encode($data);
+			header('HTTP/1.0 403 no rights');
+			header('Content-Type: application/json');
+		}
+	} else {
+		$data["error"] = "not loggedin";
+		$json = json_encode($data);
+		header('HTTP/1.0 403 not loggedin');
+		header('Content-Type: application/json');
+	}
+	return ($json);
+}
+function getallteacheriserv()
+{
+	global $mysqli;
+	global $tab;
+	$data = array();
+	if ($_SESSION['isactiv'] == 1) {
+		if ($_SESSION['userrole'] == 1) {
+			if(isset($_GET["school"])){
+				$student = $mysqli->prepare("select * from iserv_teacher where school='hems';");
+			}
+			else
+				$student = $mysqli->prepare("select * from iserv_teacher ;");
+			$student->execute();
+			if ($student) {
+				$data = array();
+				$stdt = $student->get_result();
+				while ($row = $stdt->fetch_assoc()) {
+					if ($tab == "yes")
+						$data[] = $row;
+					else
+						$data[] = $row;
+				}
+				$json = json_encode($data);
+			}
+			if ($json == "null") {
+				$data["error"] = "no teacher";
+				$json = json_encode($data);
+				header('HTTP/1.0 900 no data');
+				header('Content-Type: application/json');
+			} else {
+				header('HTTP/1.0 200 OK');
+				header('Content-Type: application/json');
+			}
+		}else {
+			$data["error"] = "no rights" . " " . $_SESSION['userrole'];
+			$json = json_encode($data);
+			header('HTTP/1.0 403 no rights');
+			header('Content-Type: application/json');
+		}
+	} else {
+		$data["error"] = "not loggedin";
+		$json = json_encode($data);
+		header('HTTP/1.0 403 not loggedin');
+		header('Content-Type: application/json');
+	}
+	return ($json);
+}
 function getallstudentlanisold()
 {
 	global $mysqli;

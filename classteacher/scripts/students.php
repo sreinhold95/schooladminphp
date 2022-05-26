@@ -61,6 +61,10 @@
 				field: "classcode"
 			},
 			{
+				title: "iPad",
+				field: "device"
+			},
+			{
 				title: "bearbeiten",
 				formatter: "link",
 				headerSort: false,

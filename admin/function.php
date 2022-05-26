@@ -65,15 +65,9 @@ if (isset($_POST["Importlanis"])) {
 		}
 		//$studentstmt->close();
 		if (!isset($result)) {
-			echo "<script type=\"text/javascript\">
-				alert(\"Invalid File:Please Upload CSV File.\");
-				//window.location = \index.php?site=lanisimport\"
-				</script>";
+			echo "importlanis";
 		} else {
-			echo "<script type=\"text/javascript\">
-				alert(\"CSV File has been successfully Imported.\");
-				window.location = \"index.php?site=lanisimport\"
-			</script>";
+			echo "importlanis";
 		}
 		fclose($file);
 	}
@@ -139,20 +133,85 @@ if (isset($_POST["importsus"])) {
 		}
 		$studentstmt->close();
 		if (!isset($result)) {
-			echo "<script type=\"text/javascript\">
-				alert(\"Invalid File:Please Upload CSV File.\");
-				//window.location = \index.php?site=lanisimport\"
-				</script>";
+			echo "importsus";
 		} else {
-			echo "<script type=\"text/javascript\">
-				alert(\"CSV File has been successfully Imported.\");
-				//window.location = \"index.php?site=lanisimport\"
-			</script>";
+			echo "importsus success";
 		}
 		fclose($file);
 	}
 }
-if (isset($_POST["susbetrieb"])) {
+else if (isset($_POST["importsusuvngk"])) {
+	set_time_limit(600);
+	$filename = $_FILES["file"]["tmp_name"];
+	if ($_FILES["file"]["size"] > 0) {
+		$errors[] = array();
+		$file = fopen($filename, "r");
+		$i = 0;
+		$result = "";
+		$entrydate = date('Y-m-d');
+		$plz = '00000';
+		$studentstmt = $mysqli->prepare("insert into students (surname,givenname,birthdate,entryDate,classcode,plz,idberuf,school) values(?,?,?,?,?,?,?,?)");
+		while (($getData = fgetcsv($file, 10000, ";")) !== FALSE) {
+			if ($i > 0) {
+				/*switch ($getData[4]) {
+					case "FISI":
+						$beruf = 21;
+					case "FIAE":
+						$beruf = 18;
+					case "ITSE":
+						$beruf = 23;
+					case "ITSK":
+						$beruf = 24;
+					case "IK":
+						$beruf = 22;
+					case "BFS":
+						$beruf = 11;
+					case "EV":
+						$beruf = 2;
+					case "EH":
+						$beruf = 1;
+					case "FL":
+						$beruf = 15;
+				}*/
+				$beruf = 0;
+				$school="hems";
+				$year = substr($getData[2], -4);
+				$month = substr($getData[2], -7, 2);
+				$day = substr($getData[2], -10, 2);
+				//$date = $getData[6];
+				$birthdate = $year . "-" . $month . "-" . $day;
+				//$year = substr($getData[5], -4);
+				//$month = substr($getData[5], -7, 2);
+				//$day = substr($getData[5], -10, 2);
+				//$date = $getData[6];
+				//$entrydate = $year . "-" . $month . "-" . $day;
+				$studentstmt->bind_param(
+					'ssssssis',
+					$getData[0],
+					$getData[1],
+					$birthdate,
+					$entrydate,
+					$getData[3],
+					$plz,
+					$beruf,
+					$school
+				);
+				$studentstmt->execute();
+				echo $studentstmt->error;
+			}
+			$i++;
+		}
+		$studentstmt->close();
+		$result=$studentstmt->error;
+		if (!isset($result)) {
+			echo $result;
+		} else {
+			echo $result;
+		}
+		fclose($file);
+	}
+}
+else if (isset($_POST["susbetrieb"])) {
 	set_time_limit(600);
 	$filename = $_FILES["file"]["tmp_name"];
 	if ($_FILES["file"]["size"] > 0) {
@@ -226,7 +285,7 @@ if (isset($_POST["susbetrieb"])) {
 		fclose($file);
 	}
 }
-if (isset($_POST["import_teacher"])) {
+else if (isset($_POST["import_teacher"])) {
 	set_time_limit(600);
 	$filename = $_FILES["file"]["tmp_name"];
 	if ($_FILES["file"]["size"] > 0) {
@@ -243,7 +302,7 @@ if (isset($_POST["import_teacher"])) {
 			echo "haha fehler!!";
 	}
 }
-if (isset($_POST["schoolyearchange"])) {
+else if (isset($_POST["schoolyearchange"])) {
 	set_time_limit(600);
 	$data= array("schoolyearchange"=>"true");
 	//print_r($json);
@@ -255,7 +314,7 @@ if (isset($_POST["schoolyearchange"])) {
 		echo $res;
 		echo "haha fehler!!";
 }
-if (isset($_POST["Importlusd"])) {
+else if (isset($_POST["Importlusd"])) {
 	set_time_limit(600);
 	$filename = $_FILES["file"]["tmp_name"];
 	if ($_FILES["file"]["size"] > 0) {
@@ -300,6 +359,7 @@ if (isset($_POST["Importlusd"])) {
 		fclose($file);
 	}
 }
+else{}
 function ConvertToJSON($file_handle){
 	
 	

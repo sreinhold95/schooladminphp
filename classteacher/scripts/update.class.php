@@ -71,6 +71,11 @@
                 field: "email"
             },
             {
+                title: "iPad",
+                field: "device",
+                download: false
+            },
+            {
                 title: "bearbeiten",
                 headerSort: false,
                 formatter: "link",

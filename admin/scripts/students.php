@@ -31,7 +31,7 @@
 		layout:"fitColumns",
 		pagination: "local", //enable local pagination.
 		columns:[
-			{title:"#",formatter:"rownum", align:"left", width:20, headerSort:false},
+			{title:"#",formatter:"rownum", hozAlign:"left", width:20, headerSort:false},
 			{title:"Aktiv", field:"active",formatter:"tickCross", headerSort:false},
 			{title:"Vorname", field:"surname", headerFilter:"input", headerFilterPlaceholder:"VN"},
 			{title:"Nachname", field:"givenname", headerFilter:"input", headerFilterPlaceholder:"NN"},

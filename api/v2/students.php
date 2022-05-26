@@ -1,6 +1,9 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/include/config.inc.php';
 session_start();
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: deny');
+ini_set('error_reporting', E_ERROR);
 error_reporting(E_ERROR);
 $_SESSION["uuid"] = "";
 $role=0;

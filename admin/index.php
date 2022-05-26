@@ -3,6 +3,7 @@
     <?php 
         include($_SERVER['DOCUMENT_ROOT']."/style/header.php");
         require( $_SERVER['DOCUMENT_ROOT'].'/include/config.inc.php' );
+        
         error_reporting(E_ERROR);
         session_start();
         $session_timeout = 600; // 1800 Sek./60 Sek. = 10 Minuten

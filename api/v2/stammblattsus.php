@@ -2,6 +2,8 @@
 require $_SERVER['DOCUMENT_ROOT'] . '/include/config.inc.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/tcpdf/tcpdf.php';
 //session_start();
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: deny');
 ini_set('error_reporting', E_ERROR);
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $headers = apache_request_headers();

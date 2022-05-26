@@ -56,6 +56,7 @@ $_SESSION['last_visit'] = time();
 						<th>Vorname</th>
 						<th>Nachname</th>
 						<th>Klasse</th>
+						<th>iPad</th>
 					</tr>
 				</thead>
 				<tbody>

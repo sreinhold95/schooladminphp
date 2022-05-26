@@ -1,6 +1,8 @@
 <?php
 	require $_SERVER['DOCUMENT_ROOT'].'/include/config.inc.php';
 	session_start();
+	header('X-Content-Type-Options: nosniff');
+	header('X-Frame-Options: deny');
 	ini_set('error_reporting', E_ERROR);
 	//$tab="no";
 	if ($_SERVER['REQUEST_METHOD']=='GET'){

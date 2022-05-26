@@ -1,4 +1,5 @@
 <script type="text/javascript">
+	//import {TabulatorFull as Tabulator} from 'tabulator-tables';
 	function getCookie(name) {
 		let matches = document.cookie.match(new RegExp(
 			"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -22,9 +23,17 @@
 	};
 	let table = new Tabulator("#students", {
 		ajaxURL: "../api/v2/students.php?lastdays=7", //ajax URL
-		//ajaxProgressiveLoad:"scroll", //enable progressive loading
+		//progressiveLoad:"load",
 		//ajaxProgressiveLoadScrollMargin:300, //triger next ajax load when scroll bar is 300px or less from the bottom of the table.
-		ajaxConfig: Config,
+		ajaxConfig: {
+			method: "get", //set request type to Position
+			mode:"cors",
+			headers: {
+				"Content-type": 'application/json; charset=utf-8', //set specific content type
+				"uuid": getCookie("uuid"),
+				"tab": "yes"
+			}
+		},
 		index: "classcode",
 		responsiveLayout: true,
 		responsiveLayout: "hide",
@@ -34,7 +43,7 @@
 		columns: [{
 				title: "#",
 				formatter: "rownum",
-				align: "left",
+				hozAlign:"left",
 				width: 20,
 				headerSort: false
 			},
@@ -81,4 +90,5 @@
 			}
 		]
 	});
+	//table.setData("../api/v2/students.php?lastdays=7",{},Config);
 </script>
