@@ -30,6 +30,7 @@
         index: "classcode",
         height: "700px",
         responsiveLayout: true,
+        pagination: "local",
         layout: "fitColumns",
         columns: [{
                 title: "#",
@@ -69,6 +70,10 @@
                 title: "Klasse",
                 field: "classcode",
                 download: false
+            },
+            {
+                title:"iPad",
+                field:"device"
             },
             {
                 title: "bearbeiten",

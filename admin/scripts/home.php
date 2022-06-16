@@ -13,6 +13,7 @@
 	let printIcon = function(cell, formatterParams) { //plain text value
 		return "<i class='fa fa-print'></i>";
 	};
+	let i=0;
 	let Config = {
 		method: "get", //set request type to Position
 		headers: {
@@ -26,8 +27,7 @@
 		//progressiveLoad:"load",
 		//ajaxProgressiveLoadScrollMargin:300, //triger next ajax load when scroll bar is 300px or less from the bottom of the table.
 		ajaxConfig: {
-			method: "get", //set request type to Position
-			mode:"cors",
+			method: "get",
 			headers: {
 				"Content-type": 'application/json; charset=utf-8', //set specific content type
 				"uuid": getCookie("uuid"),
@@ -35,8 +35,8 @@
 			}
 		},
 		index: "classcode",
-		responsiveLayout: true,
-		responsiveLayout: "hide",
+		//responsiveLayout: true,
+		//responsiveLayout: "hide",
 		layout: "fitColumns",
 		height: "400px",
 		pagination: "local",
@@ -90,5 +90,18 @@
 			}
 		]
 	});
-	//table.setData("../api/v2/students.php?lastdays=7",{},Config);
+	/*table.on("dataLoaded", function(data){
+
+		if (i==0){
+			table.setData("../api/v2/students.php?lastdays=7",{},Config);
+			i=+1;
+		}
+		else{
+
+		}
+});*/
+	
+	function loaddata() {
+		table.setData("../api/v2/students.php?lastdays=7",{},Config);
+	}
 </script>

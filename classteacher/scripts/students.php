@@ -29,6 +29,7 @@
 		index: "classcode",
 		height: "700px",
 		responsiveLayout: true,
+		pagination:"local",
 		layout: "fitColumns",
 		columns: [{
 				title: "#",

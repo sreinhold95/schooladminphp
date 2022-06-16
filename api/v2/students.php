@@ -543,10 +543,10 @@ function createstudent($json,$school)
 	$error = array();
 	$data = array();
 	$student =array();
-	$idparents=1;
+	$idparents=0;
 	$json = str_replace("%26", "&", $_POST['student']);
 	$jsonobj = json_decode($_POST['student']);
-	$parentidstmt = $mysqli->prepare("select idparents from parents where mother_surname= ? and mother_lastname = ? and mother_address= ? and father_surname= ? and father_lastname= ? and father_address= ? limit 1;");
+	/*$parentidstmt = $mysqli->prepare("select idparents from parents where mother_surname= ? and mother_lastname = ? and mother_address= ? and father_surname= ? and father_lastname= ? and father_address= ? limit 1;");
 	$parentidstmt->bind_param('ssssss', $jsonobj->parents->mother_surname, $jsonobj->parents->mother_lastname, $jsonobj->parents->mother_address, $jsonobj->parents->father_surname, $jsonobj->parents->father_lastname, $jsonobj->parents->father_address);
 	$parentidstmt->execute();
 	$pid = $parentidstmt->get_result();
@@ -555,7 +555,7 @@ function createstudent($json,$school)
 	}
 	$errors["parentidstmt"] = $parentidstmt->error;
     $data["parentid"] = $idparents;
-	$parentidstmt->close();
+	$parentidstmt->close();*/
 	if($idparents<=6){
 		$parentstmt = $mysqli->prepare("INSERT INTO parents (mother_surname,mother_lastname,mother_address,mother_postalcode,mother_phone,mother_mobilephone,father_surname,father_lastname,father_address,father_postalcode,father_phone,father_mobilephone)values(?,?,?,?,?,?,?,?,?,?,?,?)");
 		$parentstmt->bind_param(

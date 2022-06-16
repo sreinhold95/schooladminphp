@@ -24,8 +24,17 @@
 		ajaxURL:"../api/v2/students.php?all", //ajax URL
 		//ajaxProgressiveLoad:"scroll", //enable progressive loading
 		//ajaxProgressiveLoadScrollMargin:300, //triger next ajax load when scroll bar is 300px or less from the bottom of the table.
-		ajaxConfig:Config,
+		ajaxConfig: {
+			method: "get",
+			headers: {
+				"Content-type": 'application/json; charset=utf-8', //set specific content type
+				"uuid": getCookie("uuid"),
+				"tab": "yes"
+			}
+		},
+		//placeholder:"Awaiting Data...",
 		index:"classcode",
+		pagination: "local",
 		height:"700px",
 		responsiveLayout:true,
 		layout:"fitColumns",
@@ -36,6 +45,7 @@
 			{title:"Vorname", field:"surname", headerFilter:"input", headerFilterPlaceholder:"VN"},
 			{title:"Nachname", field:"givenname", headerFilter:"input", headerFilterPlaceholder:"NN"},
 			{title:"Klasse", field:"classcode"},
+			{title:"iPad", field:"device"},
 			{title:"bearbeiten",formatter:"link", headerSort:false,formatterParams:
 				{
 					label:"öffnen",

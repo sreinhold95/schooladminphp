@@ -30,6 +30,7 @@ let table = new Tabulator("#students", {
 	height:"700px",
 	responsiveLayout:true,
 	layout:"fitColumns",
+    pagination: "local",
 	columns:[
         {title:"#",formatter:"rownum", align:"left", width:20, headerSort:false},
         {title:"Status", field:"active",formatter:"tickCross", headerSort:false},

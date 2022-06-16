@@ -193,8 +193,5 @@
     </div>
 </div>
 <style>
-.content_allg #students{
-    width:900px !important;
-    height:800px !important;
-}
+
 </style>

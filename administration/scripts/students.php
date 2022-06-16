@@ -25,8 +25,9 @@
 		//ajaxProgressiveLoad:"scroll", //enable progressive loading
 		//ajaxProgressiveLoadScrollMargin:300, //triger next ajax load when scroll bar is 300px or less from the bottom of the table.
 		ajaxConfig:Config,
-		index:"classcode",
+		index:"device",
 		height:"700px",
+		pagination: "local",
 		responsiveLayout:true,
 		layout:"fitColumns",
 		columns:[
@@ -35,6 +36,7 @@
 			{title:"Vorname", field:"surname", headerFilter:"input", headerFilterPlaceholder:"VN"},
 			{title:"Nachname", field:"givenname", headerFilter:"input", headerFilterPlaceholder:"NN"},
 			{title:"Klasse", field:"classcode"},
+			{title:"iPad", field:"device"},
 			{title:"bearbeiten",formatter:"link", headerSort:false,formatterParams:
 				{
 					label:"öffnen",

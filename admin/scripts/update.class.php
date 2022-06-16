@@ -30,13 +30,14 @@
         //ajaxProgressiveLoadScrollMargin:300, //triger next ajax load when scroll bar is 300px or less from the bottom of the table.
         ajaxConfig: Config,
         index: "classcode",
-        height: "700px",
+        height: "800px",
         responsiveLayout: true,
+        pagination: "local",
         layout: "fitColumns",
         columns: [{
                 title: "#",
                 formatter: "rownum",
-                align: "left",
+                hozAlign: "left",
                 width: 20,
                 headerSort: false
             },
@@ -70,6 +71,10 @@
                 title: "Klasse",
                 field: "classcode",
                 download: false
+            },
+            {
+                title:"iPad",
+                field:"device"
             },
             {
                 title: "bearbeiten",

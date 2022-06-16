@@ -20,7 +20,7 @@ session_start();
 	<div class="login_wrap">
         <h2>Schüleranmeldung</h2>
 		<form method="POST" action="/class/index.php?site=login" class="normal" id="logintoken">
-			<input type="submit" class="button" value="zum Token" name="management">
+			<input type="submit" class="button" value="zum Token" id="login_token" name="management">
 		</form>
 		<h8><a href="Schulordnung_ab August_2020.pdf" target="_blank">Schulordnung der FLS</a><h8><br>
 		<h8><a href="Datenschutzerklärung.pdf" target="_blank">Datenschutzerklärung der FLS</a><h8><br>
@@ -40,7 +40,7 @@ session_start();
 			<br>
 			<input type="password" class="field" id="password" name="password" />
 			<br> 
-			<input type="submit" value="Login" name="management">
+			<input type="submit" value="Login" id="login_user" name="management">
 		</form>
 	</div>
 		<br>
@@ -50,3 +50,33 @@ include("style/footer.php")
 ?>
 </body>
 </html>
+<script>
+	
+	/*const loginForm = document.getElementById("loginmanagement");
+	const loginButton = document.getElementById("login_user");
+	loginButton.addEventListener("click", (e)=>{
+		login(loginForm);
+	});
+	function login(form) {
+		$.ajax({
+			type: "POST",
+			url: "api/v2/login.php",
+			dataType: "json",
+			data : {'username':form.username,'password':form.password},
+			cache:false,
+			
+			success: function(data){
+				console.log(data);
+				if(data.success == "true" )
+				{
+					alert(' You are successfully log in .. ' );
+				}
+				},
+			error: function (xhr, ajaxOptions, thrownError) {
+				console.log(xhr.status);
+				console.log(thrownError);
+				}
+			});
+	}*/
+
+</script>

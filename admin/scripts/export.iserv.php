@@ -26,10 +26,10 @@
         //ajaxProgressiveLoad:"scroll", //enable progressive loading
         //ajaxProgressiveLoadScrollMargin:300, //triger next ajax load when scroll bar is 300px or less from the bottom of the table.
         ajaxConfig: Config,
-        index: "classcode",
+        index: "Import-ID",
         height: "700px",
         responsiveLayout: true,
-        responsiveLayout: "hide",
+        //responsiveLayout: "hide",
         layout: "fitColumns",
         //pagination: "local", //enable local pagination.
         autoColumns: true
@@ -40,10 +40,11 @@
         //ajaxProgressiveLoad:"scroll", //enable progressive loading
         //ajaxProgressiveLoadScrollMargin:300, //triger next ajax load when scroll bar is 300px or less from the bottom of the table.
         ajaxConfig: Config,
-        index: "classcode",
+        index: "Import-ID",
         height: "700px",
+        
         responsiveLayout: true,
-        responsiveLayout: "hide",
+        //responsiveLayout: "hide",
         layout: "fitColumns",
         //pagination: "local", //enable local pagination.
         autoColumns: true
