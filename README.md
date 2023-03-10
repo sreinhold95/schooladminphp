@@ -3,7 +3,7 @@
 ## Lizenz
 
 Die Software steht unter der GPLv3 Lizenz.
-##Beschreibung
+## Beschreibung
 
 Dies ist ein in PHP und JavaScript geschrieben Webanwendung, die ein Identitätsmanagement für Schulen bereit stellt.
 Durch dieses Programm kann man Lehrer und Schülerdaten verwalten.
