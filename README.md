@@ -1,4 +1,4 @@
-# openWB
+# Schulverwaltung
 
 ## Lizenz
 
